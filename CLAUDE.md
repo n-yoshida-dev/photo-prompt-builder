@@ -45,6 +45,7 @@
 |---|---|---|
 | `/apps-workflow:handoff` | HANDOFF / TODO / KNOWLEDGE を更新して次のセッションへ渡す | プラグイン |
 | `/apps-workflow:pr-check` | CI と同じ検査をローカルでまとめて実行する（コミット・PR の前） | プラグイン |
+| `/apps-workflow:pr-flow` | PR の作成からマージまでの手順（完了条件と証拠、CI の待ち方、acceptance-reviewer の呼び方） | プラグイン |
 | `/decide` | 議論で決めたことを `logs/decisions.md` に 1 件追記する | ユーザー設定（`~/.claude/commands/decide.md`。全リポジトリ共通） |
 | `apps-workflow:acceptance-reviewer` | マージ前に差分を「完了条件：」・SPEC.md・「守ること」に照らして検品する読み取り専用エージェント。PR を作って CI を待つ間に Agent ツールで呼ぶ | プラグイン |
 | `guard-secrets.sh` | 秘密情報・ローカル専用ファイルのコミットを阻止（PreToolUse） | プラグイン |
