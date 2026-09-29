@@ -150,6 +150,10 @@ describe('壊れたデータ・古いデータ', () => {
     }
     const error = vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(loadRecent(storage)).toEqual([])
-    expect(error).toHaveBeenCalled()
+    // 「壊れていた」ではなく「読み込めなかった」と出す（原因と違う文言にしない）
+    expect(error).toHaveBeenCalledWith(
+      expect.stringContaining('読み込めませんでした'),
+      expect.any(DOMException),
+    )
   })
 })

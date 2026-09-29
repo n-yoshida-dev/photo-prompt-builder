@@ -98,9 +98,16 @@ export function loadRecent(
   catalog: Catalog = defaultCatalog,
 ): RecentEntry[] {
   if (!storage) return []
+  // 読み込みそのものの失敗（SecurityError など）と、中身が壊れている場合とで、console の文言を分ける
+  let json: string | null
   try {
-    const json = storage.getItem(RECENT_KEY)
-    if (json === null) return []
+    json = storage.getItem(RECENT_KEY)
+  } catch (error) {
+    console.error('最近使った設定を読み込めませんでした（保存領域が使えません）', error)
+    return []
+  }
+  if (json === null) return []
+  try {
     const { entries, dropped } = parseRecent(json, catalog)
     if (dropped > 0) {
       console.warn(
