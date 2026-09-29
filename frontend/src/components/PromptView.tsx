@@ -1,7 +1,8 @@
-import { useId } from 'react'
+import { useId, type Ref } from 'react'
 
 type Props = {
   prompt: string
+  textareaRef?: Ref<HTMLTextAreaElement> // コピーに失敗したとき、呼び出し側が文字を全選択するため
 }
 
 // 英語の語数を数える（長さの目安として見せる）
@@ -10,7 +11,7 @@ function countWords(text: string): number {
 }
 
 // 生成したプロンプトを、アルバムの黒い台紙に白いペンで書いたように見せる。読み取り専用
-export function PromptView({ prompt }: Props) {
+export function PromptView({ prompt, textareaRef }: Props) {
   const headingId = useId()
   return (
     <section className="album-page" aria-labelledby={headingId}>
@@ -21,6 +22,7 @@ export function PromptView({ prompt }: Props) {
         <p className="album-meta">英語 {countWords(prompt).toLocaleString('ja-JP')} 語</p>
       </div>
       <textarea
+        ref={textareaRef}
         className="album-text"
         aria-labelledby={headingId}
         value={prompt}

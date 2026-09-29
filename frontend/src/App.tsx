@@ -1,8 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { ConditionPanel } from './components/ConditionPanel'
 import { PhotoPicker } from './components/PhotoPicker'
 import { PresetPicker } from './components/PresetPicker'
+import { PromptActions } from './components/PromptActions'
 import { PromptView } from './components/PromptView'
+import { aiSites } from './data/aiSites'
 import { catalog } from './data/catalog'
 import { buildPrompt } from './prompt/buildPrompt'
 import { defaultSelection, switchPreset } from './prompt/selection'
@@ -21,6 +23,13 @@ function initialSelection(): Selection {
 function App() {
   const [selection, setSelection] = useState<Selection>(initialSelection)
   const prompt = useMemo(() => buildPrompt(selection), [selection])
+  const promptRef = useRef<HTMLTextAreaElement>(null)
+
+  // コピーできなかったとき、欄の文字を全選択して手動でコピーできるようにする
+  function selectPromptText() {
+    promptRef.current?.focus()
+    promptRef.current?.select()
+  }
 
   // ラジオの選択を変える
   function handleChoiceChange(choiceId: ChoiceId, optionId: string) {
@@ -65,7 +74,8 @@ function App() {
           />
         </div>
         <div className="output">
-          <PromptView prompt={prompt} />
+          <PromptView prompt={prompt} textareaRef={promptRef} />
+          <PromptActions prompt={prompt} sites={aiSites} onCopyFailed={selectPromptText} />
         </div>
       </main>
     </div>

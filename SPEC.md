@@ -169,6 +169,7 @@ function buildPrompt(selection: Selection, catalog?: Catalog): string
 | 場所 | 中身 | 触ってよいもの |
 |---|---|---|
 | `data/presets.ts` `data/preserve.ts` `data/toggles.ts` `data/choices.ts` `data/headings.ts` `data/catalog.ts` | マスタデータ。英文（見出しを含む）はここだけに置く。`catalog.ts` は一式をまとめるだけ | 定数のみ |
+| `data/aiSites.ts` | 「開く」ボタンの行き先（サイト名と URL）。URL にプロンプトは載せない | 定数のみ |
 | `prompt/buildPrompt.ts` | プロンプト組み立ての純粋関数 | React・DOM・localStorage を import しない |
 | `storage/recent.ts` | 最近使った設定の保存・復元 | localStorage を触るのはここだけ |
 | `components/` | 画面 | 上の 3 つを呼ぶだけ |

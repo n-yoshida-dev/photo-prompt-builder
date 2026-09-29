@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
+import { aiSites } from './data/aiSites'
 import { catalog } from './data/catalog'
 
 // マスタデータから英文を引く（テストに英文を直書きしない）
@@ -77,6 +78,63 @@ describe('App', () => {
     expect(screen.getByRole('checkbox', { name: '柔らかい自然光にする' })).not.toBeChecked()
     expect(screen.getByRole('radio', { name: 'モノクロ' })).toBeChecked()
   })
+})
+
+// jsdom の navigator にはクリップボードが無いので、clipboard だけを差し替える（navigator の他の値は残す）
+function stubClipboard(writeText: (text: string) => Promise<void>) {
+  Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true })
+}
+
+describe('コピーと開くボタン', () => {
+  afterEach(() => {
+    Reflect.deleteProperty(navigator, 'clipboard')
+    vi.restoreAllMocks()
+  })
+
+  it('コピーすると画面のプロンプトと同じ文字をクリップボードへ書き込み、そう知らせる', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined)
+    stubClipboard(writeText)
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
+    expect(await screen.findByText(/コピーしました/)).toBeInTheDocument()
+    expect(writeText).toHaveBeenCalledWith(promptText())
+  })
+
+  it('コピーした後で条件を変えると「コピーしました」を消す（クリップボードは古いままのため）', async () => {
+    stubClipboard(vi.fn().mockResolvedValue(undefined))
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
+    expect(await screen.findByText(/コピーしました/)).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('radio', { name: 'モノクロ' }))
+    expect(screen.queryByText(/コピーしました/)).not.toBeInTheDocument()
+  })
+
+  it('コピーできなかったら失敗を知らせ、欄の文字を全選択する', async () => {
+    const writeText = vi.fn().mockRejectedValue(new Error('denied'))
+    stubClipboard(writeText)
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
+    expect(await screen.findByText(/コピーできませんでした/)).toBeInTheDocument()
+    const textarea = screen.getByRole('textbox', {
+      name: 'できあがったプロンプト',
+    }) as HTMLTextAreaElement
+    expect(document.activeElement).toBe(textarea)
+    expect(textarea.selectionEnd - textarea.selectionStart).toBe(textarea.value.length)
+    expect(console.error).toHaveBeenCalled()
+  })
+
+  it.each(aiSites.map((site) => [site.name, site.url]))(
+    '%s を開くリンクは新しいタブで開き、URL にプロンプトを載せない',
+    (name, url) => {
+      render(<App />)
+      const link = screen.getByRole('link', { name: `${name} を開く` })
+      expect(link).toHaveAttribute('href', url)
+      expect(link).toHaveAttribute('target', '_blank')
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+      expect(link.getAttribute('href')).not.toContain('?')
+    },
+  )
 })
 
 describe('写真の選択', () => {
