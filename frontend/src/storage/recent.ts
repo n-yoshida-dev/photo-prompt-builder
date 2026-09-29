@@ -65,43 +65,70 @@ function toEntry(value: unknown, catalog: Catalog): RecentEntry | null {
   }
 }
 
-// 保存された JSON 文字列を読み、復元できる記録だけを返す（純粋関数）
+// 保存された JSON 文字列を読み、復元できる記録と、捨てた件数を返す（純粋関数）
 // 形が壊れていれば例外を投げる。今のマスタデータに無いプリセットなどを含む記録は、1 件ずつ捨てる
-export function parseRecent(json: string, catalog: Catalog = defaultCatalog): RecentEntry[] {
+export function parseRecent(
+  json: string,
+  catalog: Catalog = defaultCatalog,
+): { entries: RecentEntry[]; dropped: number } {
   const value: unknown = JSON.parse(json)
   if (!Array.isArray(value)) {
     throw new Error('最近使った設定の形が配列ではありません')
   }
-  return value
+  const valid = value
     .map((item) => toEntry(item, catalog))
     .filter((entry): entry is RecentEntry => entry !== null)
-    .slice(0, RECENT_LIMIT)
+  return { entries: valid.slice(0, RECENT_LIMIT), dropped: value.length - valid.length }
+}
+
+// ブラウザの保存領域を取り出す。Cookie をすべてブロックした Chrome などでは参照しただけで例外になるので、
+// その場合は null を返して「最近使った設定」だけを使えなくする（プロンプト作りの画面は止めない）
+export function browserStorage(): KeyValueStorage | null {
+  try {
+    return window.localStorage
+  } catch (error) {
+    console.error('保存領域（localStorage）が使えないので、最近使った設定を残せません', error)
+    return null
+  }
 }
 
 // 保存領域から読む。壊れていたら捨てて空にし、console に出す（握りつぶさない）
 export function loadRecent(
-  storage: KeyValueStorage = localStorage,
+  storage: KeyValueStorage | null = browserStorage(),
   catalog: Catalog = defaultCatalog,
 ): RecentEntry[] {
-  const json = storage.getItem(RECENT_KEY)
-  if (json === null) return []
+  if (!storage) return []
   try {
-    return parseRecent(json, catalog)
+    const json = storage.getItem(RECENT_KEY)
+    if (json === null) return []
+    const { entries, dropped } = parseRecent(json, catalog)
+    if (dropped > 0) {
+      console.warn(
+        `最近使った設定のうち、今のスタイル・条件で復元できない ${dropped} 件を捨てました`,
+      )
+    }
+    return entries
   } catch (error) {
     console.error('最近使った設定が壊れていたので捨てました', error)
-    storage.removeItem(RECENT_KEY)
+    try {
+      storage.removeItem(RECENT_KEY)
+    } catch (removeError) {
+      console.error('壊れた最近使った設定を消せませんでした', removeError)
+    }
     return []
   }
 }
 
-// 1 件を先頭に足して保存し、保存後の一覧を返す。書き込めなかったら console に出し、一覧は画面の中でだけ更新する
+// 画面が持っている一覧の先頭に 1 件を足して保存し、足した後の一覧を返す
+// 書き込めなかったら console に出し、一覧は画面の中でだけ更新する（続けて失敗しても画面の一覧は減らない）
 export function saveRecent(
+  entries: RecentEntry[],
   selection: Selection,
   savedAt: string,
-  storage: KeyValueStorage = localStorage,
-  catalog: Catalog = defaultCatalog,
+  storage: KeyValueStorage | null = browserStorage(),
 ): RecentEntry[] {
-  const next = addRecent(loadRecent(storage, catalog), selection, savedAt)
+  const next = addRecent(entries, selection, savedAt)
+  if (!storage) return next
   try {
     storage.setItem(RECENT_KEY, JSON.stringify(next))
   } catch (error) {

@@ -40,7 +40,7 @@ afterEach(() => {
 describe('保存と復元の往復', () => {
   it('保存した選択を読み戻すと同じ中身になる', () => {
     const storage = memoryStorage()
-    saveRecent(poster, '2026-09-29T10:00:00.000Z', storage)
+    saveRecent([], poster, '2026-09-29T10:00:00.000Z', storage)
     expect(loadRecent(storage)).toEqual([
       { selection: poster, savedAt: '2026-09-29T10:00:00.000Z' },
     ])
@@ -48,7 +48,7 @@ describe('保存と復元の往復', () => {
 
   it('保存するのは選択と時刻だけ（写真や他の値は入らない）', () => {
     const storage = memoryStorage()
-    saveRecent(poster, '2026-09-29T10:00:00.000Z', storage)
+    saveRecent([], poster, '2026-09-29T10:00:00.000Z', storage)
     const saved = JSON.parse(storage.data.get(RECENT_KEY) ?? '[]') as unknown[]
     expect(Object.keys(saved[0] as object).sort()).toEqual(['savedAt', 'selection'])
     expect(Object.keys((saved[0] as { selection: object }).selection).sort()).toEqual([
@@ -111,16 +111,45 @@ describe('壊れたデータ・古いデータ', () => {
       { selection: poster },
       'text',
     ])
-    expect(parseRecent(json).map((e) => e.savedAt)).toEqual(['t4'])
+    const { entries, dropped } = parseRecent(json)
+    expect(entries.map((e) => e.savedAt)).toEqual(['t4'])
+    expect(dropped).toBe(5)
   })
 
-  it('保存に失敗しても一覧は返し、console に出す（画面は止めない）', () => {
+  it('捨てた記録があれば件数を console に出す（黙って消さない）', () => {
+    const json = JSON.stringify([
+      { selection: { ...poster, presetId: 'removed-preset' }, savedAt: 't1' },
+      { selection: poster, savedAt: 't2' },
+    ])
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    expect(loadRecent(memoryStorage(json)).map((e) => e.savedAt)).toEqual(['t2'])
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('1 件'))
+  })
+
+  it('保存に続けて失敗しても、画面の一覧は減らず、そのたび console に出す', () => {
     const storage = memoryStorage()
     storage.setItem = () => {
       throw new Error('QuotaExceededError')
     }
     const error = vi.spyOn(console, 'error').mockImplementation(() => {})
-    expect(saveRecent(poster, 't1', storage)).toHaveLength(1)
+    const once = saveRecent([], poster, 't1', storage)
+    const twice = saveRecent(once, defaultSelection('diorama'), 't2', storage)
+    expect(twice.map((e) => e.savedAt)).toEqual(['t2', 't1'])
+    expect(error).toHaveBeenCalledTimes(2)
+  })
+
+  it('保存領域そのものが使えなければ、空の一覧で動き続ける', () => {
+    expect(loadRecent(null)).toEqual([])
+    expect(saveRecent([], poster, 't1', null)).toHaveLength(1)
+  })
+
+  it('読み込みで例外が出ても（Cookie をブロックしたブラウザなど）、空の一覧で動き続ける', () => {
+    const storage = memoryStorage()
+    storage.getItem = () => {
+      throw new DOMException('The operation is insecure.', 'SecurityError')
+    }
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {})
+    expect(loadRecent(storage)).toEqual([])
     expect(error).toHaveBeenCalled()
   })
 })

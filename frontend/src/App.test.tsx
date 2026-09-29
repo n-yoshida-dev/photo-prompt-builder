@@ -146,6 +146,7 @@ describe('最近使った設定', () => {
   afterEach(() => {
     Reflect.deleteProperty(navigator, 'clipboard')
     localStorage.clear()
+    vi.restoreAllMocks()
   })
 
   it('コピー → リロード → 復元で同じプロンプトが出る', async () => {
@@ -172,6 +173,15 @@ describe('最近使った設定', () => {
     fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
     const item = await screen.findByRole('button', { name: /3D Miniature Diorama/ })
     expect(item).toHaveTextContent('モノクロ・−文字を入れない')
+  })
+
+  it('コピーに失敗しても、押した時点の選択は残す（SPEC「コピーボタンを押した時点で保存」）', async () => {
+    stubClipboard(vi.fn().mockRejectedValue(new Error('denied')))
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
+    await screen.findByText(/コピーできませんでした/)
+    expect(screen.getByRole('button', { name: /3D Miniature Diorama/ })).toBeInTheDocument()
   })
 
   it('まだ何もコピーしていなければ案内を出す', () => {

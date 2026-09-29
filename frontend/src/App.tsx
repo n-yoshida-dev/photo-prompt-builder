@@ -28,15 +28,16 @@ function App() {
   const promptRef = useRef<HTMLTextAreaElement>(null)
   const [recent, setRecent] = useState<RecentEntry[]>(() => loadRecent())
 
-  // コピーした時点の選択を「最近使った設定」に残す（SPEC.md「保存」）
+  // 「コピー」を押した時点の選択を「最近使った設定」に残す（SPEC.md「保存」。コピーの成否は問わない）
   function rememberSelection() {
-    setRecent(saveRecent(selection, new Date().toISOString()))
+    setRecent(saveRecent(recent, selection, new Date().toISOString()))
   }
 
-  // コピーできなかったとき、欄の文字を全選択して手動でコピーできるようにする
-  function selectPromptText() {
+  // コピーできなかったとき、欄の文字を全選択して手動でコピーできるようにする。選択は成功時と同じく残す
+  function handleCopyFailed() {
     promptRef.current?.focus()
     promptRef.current?.select()
+    rememberSelection()
   }
 
   // ラジオの選択を変える
@@ -87,7 +88,7 @@ function App() {
             prompt={prompt}
             sites={aiSites}
             onCopied={rememberSelection}
-            onCopyFailed={selectPromptText}
+            onCopyFailed={handleCopyFailed}
           />
         </div>
         <div className="history">
