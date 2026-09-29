@@ -80,24 +80,38 @@ describe('App', () => {
   })
 })
 
+// jsdom の navigator にはクリップボードが無いので、clipboard だけを差し替える（navigator の他の値は残す）
+function stubClipboard(writeText: (text: string) => Promise<void>) {
+  Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true })
+}
+
 describe('コピーと開くボタン', () => {
   afterEach(() => {
-    vi.unstubAllGlobals()
+    Reflect.deleteProperty(navigator, 'clipboard')
     vi.restoreAllMocks()
   })
 
   it('コピーすると画面のプロンプトと同じ文字をクリップボードへ書き込み、そう知らせる', async () => {
     const writeText = vi.fn().mockResolvedValue(undefined)
-    vi.stubGlobal('navigator', { ...navigator, clipboard: { writeText } })
+    stubClipboard(writeText)
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
     expect(await screen.findByText(/コピーしました/)).toBeInTheDocument()
     expect(writeText).toHaveBeenCalledWith(promptText())
   })
 
+  it('コピーした後で条件を変えると「コピーしました」を消す（クリップボードは古いままのため）', async () => {
+    stubClipboard(vi.fn().mockResolvedValue(undefined))
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
+    expect(await screen.findByText(/コピーしました/)).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('radio', { name: 'モノクロ' }))
+    expect(screen.queryByText(/コピーしました/)).not.toBeInTheDocument()
+  })
+
   it('コピーできなかったら失敗を知らせ、欄の文字を全選択する', async () => {
     const writeText = vi.fn().mockRejectedValue(new Error('denied'))
-    vi.stubGlobal('navigator', { ...navigator, clipboard: { writeText } })
+    stubClipboard(writeText)
     vi.spyOn(console, 'error').mockImplementation(() => {})
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))

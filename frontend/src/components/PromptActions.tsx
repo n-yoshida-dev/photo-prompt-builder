@@ -8,11 +8,14 @@ type Props = {
   onCopyFailed?: () => void // コピーできなかったとき（手動でコピーできるよう欄を選ぶ）
 }
 
-type CopyState = 'idle' | 'copied' | 'failed'
+// 直近のコピーの結果と、そのときのプロンプト
+type CopyResult = { state: 'copied' | 'failed'; prompt: string } | null
 
 // コピーボタンと、各 AI のサイトを新しいタブで開くボタン
 export function PromptActions({ prompt, sites, onCopied, onCopyFailed }: Props) {
-  const [copyState, setCopyState] = useState<CopyState>('idle')
+  const [result, setResult] = useState<CopyResult>(null)
+  // コピーした後で条件を変えたら結果の表示を消す（クリップボードの中身は古いプロンプトのままなので「コピーしました」を残さない）
+  const copyState = result?.prompt === prompt ? result.state : 'idle'
 
   // クリップボードへ書き込む。使えない・拒否されたときは失敗を画面に出す（握りつぶさない）
   async function handleCopy() {
@@ -21,11 +24,11 @@ export function PromptActions({ prompt, sites, onCopied, onCopyFailed }: Props) 
         throw new Error('このブラウザではクリップボードに書き込めません')
       }
       await navigator.clipboard.writeText(prompt)
-      setCopyState('copied')
+      setResult({ state: 'copied', prompt })
       onCopied?.()
     } catch (error) {
       console.error('プロンプトのコピーに失敗しました', error)
-      setCopyState('failed')
+      setResult({ state: 'failed', prompt })
       onCopyFailed?.()
     }
   }
