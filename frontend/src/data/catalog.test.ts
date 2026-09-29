@@ -104,6 +104,16 @@ describe('マスタデータの形', () => {
       }
     }
   })
+
+  it('保持文は大文字始まり・ピリオド無しの箇条（名詞句かどうかまでは機械で見ない）', () => {
+    for (const [subject, set] of Object.entries(catalog.preserve)) {
+      for (const text of [...set.identity, ...set.composition]) {
+        expect(text, subject).toMatch(/^[A-Z]/)
+        expect(text, subject).not.toMatch(/\.$/)
+        expect(text, subject).toBe(text.trim())
+      }
+    }
+  })
 })
 
 describe('全プリセット × 既定の条件の出力全文', () => {

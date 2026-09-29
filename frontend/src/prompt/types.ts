@@ -29,7 +29,7 @@ export type Preset = {
   style: string // 見た目の指定（Style）
   negative: string[] // 「Do not:」に続く動詞句
   defaultToggles: ToggleId[]
-  source: PresetSource // 英文の出どころ（画面と README に出典を出すため）
+  source: PresetSource // 英文の出どころ（README に出典を出すため。画面にも出すかは画面の PR で提案する）
 }
 
 // 英文の出どころ。外部由来の文は出典と確認日を持つ（../CLAUDE.md のマスタデータの扱い）

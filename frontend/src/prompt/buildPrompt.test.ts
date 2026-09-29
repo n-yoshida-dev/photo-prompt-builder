@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { buildPrompt, HEADING_COMPOSITION, HEADING_NEGATIVE, HEADING_PRESERVE } from './buildPrompt'
+import { HEADING_COMPOSITION, HEADING_NEGATIVE, HEADING_PRESERVE } from '../data/headings'
+import { buildPrompt } from './buildPrompt'
 import { defaultSelection, switchPreset } from './selection'
 import type { Catalog, Selection } from './types'
 

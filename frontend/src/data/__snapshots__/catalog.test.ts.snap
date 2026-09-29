@@ -14,7 +14,7 @@ Composition:
 
 Do not:
 - add any new text, letters, numbers, captions, labels, logos, signatures, or watermarks that are not in the photo
-- add people, animals, toys, props, decorations, or effects such as sparkles or confetti that are not in the photo, other than a display base or backdrop that the style itself calls for"
+- add people, animals, objects, props, decorations, or effects such as sparkles or confetti that are not in the photo, other than a display base or backdrop that the style itself calls for"
 `;
 
 exports[`全プリセット × 既定の条件の出力全文 > editorial-poster 1`] = `
@@ -41,5 +41,5 @@ Composition:
 - The same place and background, restyled to fit the look and simplified only as much as the style needs, never replaced with a different scene
 
 Do not:
-- add people, animals, toys, props, decorations, or effects such as sparkles or confetti that are not in the photo, other than a display base or backdrop that the style itself calls for"
+- add people, animals, objects, props, decorations, or effects such as sparkles or confetti that are not in the photo, other than a display base or backdrop that the style itself calls for"
 `;

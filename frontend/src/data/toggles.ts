@@ -14,7 +14,7 @@ export const toggles: Toggle[] = [
     id: 'no-extra-objects',
     label: '写っていない物を足さない',
     block: 'negative',
-    text: 'add people, animals, toys, props, decorations, or effects such as sparkles or confetti that are not in the photo, other than a display base or backdrop that the style itself calls for',
+    text: 'add people, animals, objects, props, decorations, or effects such as sparkles or confetti that are not in the photo, other than a display base or backdrop that the style itself calls for',
   },
   {
     id: 'one-per-photo',

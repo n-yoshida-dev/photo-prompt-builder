@@ -151,6 +151,14 @@ type Selection = {
   choices: Record<ChoiceId, string> // ChoiceId → 選んだ option の id
 }
 
+// buildPrompt が参照するマスタデータ一式（data/catalog.ts）
+type Catalog = {
+  presets: Preset[]
+  preserve: Record<'people' | 'scene', PreserveSet>
+  toggles: Toggle[]
+  choices: Choice[]
+}
+
 // 純粋関数。画面にも localStorage にも触らない
 // 2 つ目の引数（マスタデータ一式）は省略可能。テストで架空データを渡すためのもので、画面からは省略する
 function buildPrompt(selection: Selection, catalog?: Catalog): string
@@ -160,7 +168,7 @@ function buildPrompt(selection: Selection, catalog?: Catalog): string
 
 | 場所 | 中身 | 触ってよいもの |
 |---|---|---|
-| `data/presets.ts` `data/preserve.ts` `data/toggles.ts` `data/choices.ts` | マスタデータ。英文はここだけに置く | 定数のみ |
+| `data/presets.ts` `data/preserve.ts` `data/toggles.ts` `data/choices.ts` `data/headings.ts` `data/catalog.ts` | マスタデータ。英文（見出しを含む）はここだけに置く。`catalog.ts` は一式をまとめるだけ | 定数のみ |
 | `prompt/buildPrompt.ts` | プロンプト組み立ての純粋関数 | React・DOM・localStorage を import しない |
 | `storage/recent.ts` | 最近使った設定の保存・復元 | localStorage を触るのはここだけ |
 | `components/` | 画面 | 上の 3 つを呼ぶだけ |
@@ -201,8 +209,8 @@ Do not:
 ## AI を開くボタン
 
 - MVP は 3 サイトへの単純なリンク（新しいタブ）
-- ChatGPT と Claude は URL のクエリで本文を事前入力できる可能性がある（`chatgpt.com/?q=` / `claude.ai/new?q=`）。
-  **要検証。** 動けば「コピー→貼り付け」の手間が減る。Gemini には無い
+- URL のクエリでの本文の事前入力（`chatgpt.com/?q=` / `claude.ai/new?q=`）は 2026-09-29 に調べ、MVP では使わない
+  （ChatGPT はログアウト中だと写真を添付する前に自動送信されることがある。Gemini には無い。KNOWLEDGE.md 2026-09-29）
 - 画像の添付は各サイトで手動。画面にその旨を書く
 
 ## API

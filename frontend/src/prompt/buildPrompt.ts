@@ -1,12 +1,8 @@
 // プロンプトを組み立てる純粋関数。React・DOM・localStorage を import しない（CLAUDE.md「守ること」）
 // 組み立て規則は SPEC.md「プロンプトの組み立て規則」
 import { catalog as defaultCatalog } from '../data/catalog'
+import { HEADING_COMPOSITION, HEADING_NEGATIVE, HEADING_PRESERVE } from '../data/headings'
 import type { Catalog, Preset, Selection, ToggleBlock } from './types'
-
-// 見出し。Qiita の実験で差し替えるときはここを直す
-export const HEADING_PRESERVE = 'Preserve from the reference photo:'
-export const HEADING_COMPOSITION = 'Composition:'
-export const HEADING_NEGATIVE = 'Do not:'
 
 // 選択内容から最終プロンプトを組み立てる。catalog はテストで差し替えるための引数で、画面からは省略する
 export function buildPrompt(selection: Selection, catalog: Catalog = defaultCatalog): string {

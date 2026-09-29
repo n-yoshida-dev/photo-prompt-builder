@@ -1,5 +1,5 @@
 // プリセットのマスタデータ。英文は原文のまま置き、UI のコードに英文を書かない（CLAUDE.md「守ること」）
-// base と style を繋げると原文に戻ることを presets.test.ts が docs/seed-prompts.md と照合して確かめる
+// base と style を繋げると原文に戻ることを catalog.test.ts が docs/seed-prompts.md と照合して確かめる
 import type { Preset } from '../prompt/types'
 
 export const presets: Preset[] = [
