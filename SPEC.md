@@ -118,8 +118,9 @@ type Preset = {
   subject: 'people' | 'scene' // 被写体。どの固定保持文を付けるかが決まる
   base: string // 何をするか（Base Prompt）
   style: string // 見た目の指定（Style）
-  negative: string[] // プリセット固有の「〜しない」
+  negative: string[] // プリセット固有の「〜しない」（「Do not:」に続く小文字始まりの動詞句）
   defaultToggles: ToggleId[]
+  source: { label: string; url?: string; license?: string; checkedOn?: string; modified?: string } // 英文の出典（外部由来は URL・ライセンス・確認日、書き換えたら箇所）
 }
 
 // 固定の保持文。subject ごとに 1 組。実験モード（MVP 後）以外では常に付く
@@ -151,7 +152,8 @@ type Selection = {
 }
 
 // 純粋関数。画面にも localStorage にも触らない
-function buildPrompt(selection: Selection): string
+// 2 つ目の引数（マスタデータ一式）は省略可能。テストで架空データを渡すためのもので、画面からは省略する
+function buildPrompt(selection: Selection, catalog?: Catalog): string
 ```
 
 配置（`frontend/src/` 以下）：
