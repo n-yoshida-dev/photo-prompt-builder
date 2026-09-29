@@ -92,7 +92,10 @@ describe('壊れたデータ・古いデータ', () => {
     const error = vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(loadRecent(storage)).toEqual([])
     expect(storage.data.has(RECENT_KEY)).toBe(false)
-    expect(error).toHaveBeenCalled()
+    expect(error).toHaveBeenCalledWith(
+      expect.stringContaining('壊れていたので捨てました'),
+      expect.any(SyntaxError),
+    )
   })
 
   it('配列でなければ形が壊れているとみなす', () => {
