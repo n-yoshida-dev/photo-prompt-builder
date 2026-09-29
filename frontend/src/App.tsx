@@ -4,11 +4,13 @@ import { PhotoPicker } from './components/PhotoPicker'
 import { PresetPicker } from './components/PresetPicker'
 import { PromptActions } from './components/PromptActions'
 import { PromptView } from './components/PromptView'
+import { RecentList } from './components/RecentList'
 import { aiSites } from './data/aiSites'
 import { catalog } from './data/catalog'
 import { buildPrompt } from './prompt/buildPrompt'
 import { defaultSelection, switchPreset } from './prompt/selection'
 import type { ChoiceId, Selection, ToggleId } from './prompt/types'
+import { loadRecent, saveRecent, type RecentEntry } from './storage/recent'
 
 // 起動時に選んでおくプリセット（マスタデータの先頭）。空なら設定の誤りなので起動時に止める
 function initialSelection(): Selection {
@@ -24,6 +26,12 @@ function App() {
   const [selection, setSelection] = useState<Selection>(initialSelection)
   const prompt = useMemo(() => buildPrompt(selection), [selection])
   const promptRef = useRef<HTMLTextAreaElement>(null)
+  const [recent, setRecent] = useState<RecentEntry[]>(() => loadRecent())
+
+  // コピーした時点の選択を「最近使った設定」に残す（SPEC.md「保存」）
+  function rememberSelection() {
+    setRecent(saveRecent(selection, new Date().toISOString()))
+  }
 
   // コピーできなかったとき、欄の文字を全選択して手動でコピーできるようにする
   function selectPromptText() {
@@ -75,7 +83,15 @@ function App() {
         </div>
         <div className="output">
           <PromptView prompt={prompt} textareaRef={promptRef} />
-          <PromptActions prompt={prompt} sites={aiSites} onCopyFailed={selectPromptText} />
+          <PromptActions
+            prompt={prompt}
+            sites={aiSites}
+            onCopied={rememberSelection}
+            onCopyFailed={selectPromptText}
+          />
+        </div>
+        <div className="history">
+          <RecentList entries={recent} catalog={catalog} onRestore={setSelection} />
         </div>
       </main>
     </div>
