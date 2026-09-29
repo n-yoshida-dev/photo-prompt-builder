@@ -12,13 +12,14 @@
 
 ### 2026-09-29：許可の確認を減らすコマンドの書き方
 
-- **ハマったこと**：ユーザーから「Bash の許可を求められすぎる」と指摘された。原因の多くは Claude の書き方で、
-  (1) PR 本文の書き換えなどを `python3 - <<'EOF'` のようにシェルからスクリプトで行った（任意のコード実行として審査される）、
-  (2) `cd … && 検査 && commit && push` のように長くつないだ、(3) `npm run lint --silent` のように引数を足して、許可リストの完全一致
-  （`Bash(npm run lint)`）から外れた
-- **回避**：ファイルの変更は Edit / Write で行う（PR 本文は Write で書いてから `gh pr edit --body-file`）。コマンドは 1 つずつ、`git -C <dir>` のように
-  `cd` を使わずに書く。許可リストにある形のまま（余計な引数なしで）呼ぶ。`.claude/settings.json` の `permissions.allow` に、
-  読むだけのコマンド（`npm run lint` `npm run format:check` `gh run watch` `gh search code` `bd show`）を足した
+- **ハマったこと**：2026-09-29 のセッションの途中で、ユーザーから「あまりにもBash実行の許可を求められるんだけど、どうにかならない？」と聞かれた。
+  Claude の推定では、原因の多くは Claude の書き方で、(1) PR 本文の書き換えなどを `python3 - <<'EOF'` のようにシェルからスクリプトで行った
+  （任意のコード実行として審査される）、(2) `node` のスクリプト・`curl`・`pkill`・`for` ループを混ぜて `cd … && 検査 && commit && push` のように長くつないだ。
+  `npm run lint` などの検査は、ユーザー設定（`~/.claude/settings.json`）が既に `Bash(npm run *)` で許可しているので原因ではない
+- **回避**：ファイルの変更は Edit / Write で行う（PR 本文は Write で書いてから `gh pr create/edit --body-file`）。コマンドは 1 つずつ、`git -C <dir>` のように
+  `cd` を使わずに書く。`.claude/settings.json` の `permissions.allow` に、読むだけのコマンドを足した。
+  このうち実際に確認が減るのは `gh search code` と `bd show` の 2 件で、`npm run lint` `npm run format:check` `gh run watch` はユーザー設定で許可済み
+  （別の端末やユーザー設定を変えたときも同じに動くよう、プロジェクト側にも重ねて書いた）
 
 ### 2026-09-29：固定の英文（保持文・トグル・ラジオ）は 3 案を競わせて作り、組み立て後の全文で反証した
 
