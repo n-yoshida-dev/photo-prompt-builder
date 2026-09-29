@@ -36,7 +36,8 @@ export function addRecent(
 function toEntry(value: unknown, catalog: Catalog): RecentEntry | null {
   if (typeof value !== 'object' || value === null) return null
   const { selection, savedAt } = value as { selection?: unknown; savedAt?: unknown }
-  if (typeof savedAt !== 'string' || typeof selection !== 'object' || selection === null) return null
+  if (typeof savedAt !== 'string' || typeof selection !== 'object' || selection === null)
+    return null
   const { presetId, toggleIds, choices } = selection as {
     presetId?: unknown
     toggleIds?: unknown

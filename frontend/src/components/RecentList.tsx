@@ -8,7 +8,10 @@ type Props = {
 }
 
 // 1 件の選択を「スタイル名」と「既定から変えた点」の短い言葉にする。一覧で見分けるため
-export function describeSelection(selection: Selection, catalog: Catalog): {
+export function describeSelection(
+  selection: Selection,
+  catalog: Catalog,
+): {
   presetName: string
   changes: string[]
 } {
