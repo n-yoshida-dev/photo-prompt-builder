@@ -97,14 +97,29 @@ body {
   gap: 2rem;
 }
 
-/* 広い画面では左に操作、右に台紙。台紙はスクロールしても残る */
+/*
+ * 広い画面では左に操作と最近使った設定、右に台紙。台紙はスクロールしても残る。
+ * スマホでは HTML の順（操作 → 台紙 → 最近使った設定）に縦に並び、SPEC の画面構成の順になる
+ */
 @media (min-width: 60rem) {
   .workspace {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    grid-template-areas:
+      'controls output'
+      'history output';
     align-items: start;
   }
 
+  .controls {
+    grid-area: controls;
+  }
+
+  .history {
+    grid-area: history;
+  }
+
   .output {
+    grid-area: output;
     position: sticky;
     top: 1.5rem;
   }
@@ -458,6 +473,68 @@ body {
 
 .open-link:hover {
   background-color: var(--cloth-soft);
+}
+
+/* ---- 最近使った設定 ---- */
+
+.recent-heading {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.recent-empty {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.925rem;
+}
+
+.recent-list {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 写真の裏に鉛筆でメモしたような 1 行。押すとその選択に戻る */
+.recent-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  border: 1.5px solid var(--rule);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.recent-item:hover {
+  border-color: var(--cloth);
+  background-color: var(--cloth-soft);
+}
+
+.recent-name {
+  font-weight: 700;
+}
+
+.recent-changes {
+  overflow: hidden;
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recent-time {
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -137,6 +137,59 @@ describe('コピーと開くボタン', () => {
   )
 })
 
+describe('最近使った設定', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    stubClipboard(vi.fn().mockResolvedValue(undefined))
+  })
+
+  afterEach(() => {
+    Reflect.deleteProperty(navigator, 'clipboard')
+    localStorage.clear()
+    vi.restoreAllMocks()
+  })
+
+  it('コピー → リロード → 復元で同じプロンプトが出る', async () => {
+    const first = render(<App />)
+    fireEvent.click(screen.getByRole('radio', { name: /Editorial Poster/ }))
+    fireEvent.click(screen.getByRole('radio', { name: 'モノクロ' }))
+    fireEvent.click(screen.getByRole('checkbox', { name: '柔らかい自然光にする' }))
+    const copied = promptText()
+    fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
+    await screen.findByText(/コピーしました/)
+    first.unmount()
+
+    // 開き直すと既定の選択に戻っている
+    render(<App />)
+    expect(promptText()).not.toBe(copied)
+    fireEvent.click(screen.getByRole('button', { name: /Editorial Poster/ }))
+    expect(promptText()).toBe(copied)
+  })
+
+  it('一覧は既定から変えた点で見分けられる', async () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('radio', { name: 'モノクロ' }))
+    fireEvent.click(screen.getByRole('checkbox', { name: '文字を入れない' }))
+    fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
+    const item = await screen.findByRole('button', { name: /3D Miniature Diorama/ })
+    expect(item).toHaveTextContent('モノクロ・−文字を入れない')
+  })
+
+  it('コピーに失敗しても、押した時点の選択は残す（SPEC「コピーボタンを押した時点で保存」）', async () => {
+    stubClipboard(vi.fn().mockRejectedValue(new Error('denied')))
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
+    await screen.findByText(/コピーできませんでした/)
+    expect(screen.getByRole('button', { name: /3D Miniature Diorama/ })).toBeInTheDocument()
+  })
+
+  it('まだ何もコピーしていなければ案内を出す', () => {
+    render(<App />)
+    expect(screen.getByText(/コピーすると、そのときの選択がここに残ります/)).toBeInTheDocument()
+  })
+})
+
 describe('写真の選択', () => {
   const originalCreate = URL.createObjectURL
   const originalRevoke = URL.revokeObjectURL
