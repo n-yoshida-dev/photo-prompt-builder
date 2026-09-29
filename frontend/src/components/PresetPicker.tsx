@@ -8,8 +8,8 @@ type Props = {
 
 // 被写体の区別を利用者の言葉で表す
 const SUBJECT_LABEL: Record<Preset['subject'], string> = {
-  people: '人物を残す',
-  scene: '建物・風景が主役（人物は消える）',
+  people: '人物が主役',
+  scene: '建物・風景が主役',
 }
 
 // スタイル（プリセット）を 1 つだけ選ぶ。見た目はカードだが、中身はラジオボタンなのでキーボードでも選べる
