@@ -385,7 +385,8 @@ body {
 .album-text {
   display: block;
   width: 100%;
-  height: min(70vh, 42rem);
+  /* 右の列（台紙＋ボタン）が画面の高さに収まるよう、ボタンの分を引く。収まらないと sticky で台紙の上端が隠れる */
+  height: clamp(16rem, calc(100vh - 21rem), 40rem);
   padding: 0.75rem 1.25rem 1rem;
   border: 0;
   resize: vertical;
@@ -400,6 +401,63 @@ body {
 .album-text:focus-visible {
   outline: 2px dashed var(--pen);
   outline-offset: -2px;
+}
+
+/* ---- コピーと開くボタン（台紙のすぐ下） ---- */
+
+.actions {
+  margin-top: 1rem;
+}
+
+.copy-button {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 0;
+  border-radius: 6px;
+  background-color: var(--cloth);
+  color: var(--paper);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.copy-button:hover {
+  filter: brightness(1.1);
+}
+
+.copy-status {
+  min-height: 1.5em;
+  margin: 0.5rem 0 0;
+  font-size: 0.925rem;
+}
+
+.open-note {
+  margin: 0.75rem 0 0.4rem;
+  color: var(--ink-muted);
+  font-size: 0.925rem;
+}
+
+.open-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.open-link {
+  display: inline-block;
+  padding: 0.45rem 0.95rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 6px;
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.open-link:hover {
+  background-color: var(--cloth-soft);
 }
 
 @media (prefers-reduced-motion: reduce) {
