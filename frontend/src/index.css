@@ -1,24 +1,410 @@
-/* 全体の最小スタイル。画面の設計が固まるまでは最低限だけ置く */
+/*
+ * 画面全体の見た目。題材は家族の写真アルバム：淡い紙の上で選び、
+ * できあがったプロンプトだけを「黒い台紙に白いペンで書いた 1 ページ」として目立たせる。
+ * Web フォントは読み込まない（外部への通信を 0 にして「写真が端末の外に出ない」を確かめやすくするため）
+ */
 :root {
-  font-family:
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto,
-    'Hiragino Sans',
-    'Noto Sans JP',
-    sans-serif;
-  line-height: 1.5;
-  color: #1f2937;
-  background-color: #fafafa;
+  --paper: #f3f4f1; /* 画面の紙 */
+  --ink: #1e2326; /* 本文の文字 */
+  --ink-muted: #5f6763; /* 補足の文字 */
+  --rule: #d5d9d4; /* 区切り線・枠 */
+  --album: #1f2420; /* アルバムの黒い台紙 */
+  --pen: #eeece4; /* 台紙に書く白いペン */
+  --cloth: #2e5e4e; /* アルバムの布表紙の緑。選択中の印に使う */
+  --cloth-soft: #e3ece7; /* 選択中の背景 */
+  --corner: #c9c3b3; /* 写真を留めるコーナー */
+
+  --font-ui:
+    system-ui, -apple-system, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP',
+    'Yu Gothic UI', sans-serif;
+  --font-pen: ui-serif, 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+  background-color: var(--paper);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #181b19;
+    --ink: #e6e8e4;
+    --ink-muted: #a3aaa5;
+    --rule: #343a36;
+    --album: #0f1210;
+    --cloth: #8cc3ad;
+    --cloth-soft: #22322b;
+    --corner: #6f6a5e;
+    color-scheme: dark;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  background-color: var(--paper);
 }
 
-main {
-  max-width: 56rem;
+:focus-visible {
+  outline: 3px solid var(--cloth);
+  outline-offset: 2px;
+}
+
+/* 画面には出さず、読み上げとキーボード操作には残す */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---- 全体の骨組み ---- */
+
+.app {
+  max-width: 76rem;
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: 1.5rem 1rem 3rem;
+}
+
+.app-header {
+  max-width: 40rem;
+  margin-bottom: 2rem;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.app-lead {
+  margin: 0.25rem 0 0;
+  color: var(--ink-muted);
+}
+
+.workspace {
+  display: grid;
+  gap: 2rem;
+}
+
+/* 広い画面では左に操作、右に台紙。台紙はスクロールしても残る */
+@media (min-width: 60rem) {
+  .workspace {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: start;
+  }
+
+  .output {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
+/* ---- 手順の見出し（写真 → スタイル → 条件は順を追う手順なので番号を付ける） ---- */
+
+.step {
+  margin: 0 0 2.25rem;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.step-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.step-number {
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.step-note {
+  margin: -0.25rem 0 1rem;
+  color: var(--ink-muted);
+  font-size: 0.925rem;
+}
+
+/* ---- 1. 写真 ---- */
+
+.file-button {
+  display: inline-block;
+  padding: 0.6rem 1.1rem;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.file-button:hover {
+  background-color: var(--cloth-soft);
+}
+
+/* ラベルの見た目のボタンに、隠した input のフォーカスを映す */
+.file-button:has(+ input[type='file']:focus-visible) {
+  outline: 3px solid var(--cloth);
+  outline-offset: 2px;
+}
+
+.photo-count {
+  margin: 0.75rem 0;
+  color: var(--ink-muted);
+  font-size: 0.925rem;
+}
+
+.photo-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 白い縁のプリント写真 */
+.photo-print {
+  width: 7.5rem;
+  padding: 0.4rem 0.4rem 1rem;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgb(30 35 38 / 18%);
+}
+
+.photo-print img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+/* ---- 2. スタイル ---- */
+
+.preset-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.75rem;
+}
+
+.preset-card {
+  position: relative;
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.9rem 1rem 0.9rem 2.6rem;
+  border: 1.5px solid var(--rule);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.preset-card:hover {
+  border-color: var(--ink-muted);
+}
+
+.preset-card:has(input:checked) {
+  border-color: var(--cloth);
+  background-color: var(--cloth-soft);
+  box-shadow: inset 4px 0 0 var(--cloth);
+}
+
+.preset-card input {
+  position: absolute;
+  top: 1.05rem;
+  left: 1rem;
+  margin: 0;
+  accent-color: var(--cloth);
+}
+
+.preset-name {
+  font-weight: 700;
+}
+
+.preset-description {
+  font-size: 0.925rem;
+}
+
+.preset-subject {
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+}
+
+/* ---- 3. 条件 ---- */
+
+.choice {
+  margin: 0 0 1.25rem;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.choice-label {
+  margin-bottom: 0.4rem;
+  padding: 0;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.segment {
+  position: relative;
+  cursor: pointer;
+}
+
+.segment input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.segment span {
+  display: block;
+  padding: 0.35rem 0.85rem;
+  border: 1.5px solid var(--rule);
+  border-radius: 999px;
+  font-size: 0.925rem;
+}
+
+.segment:hover span {
+  border-color: var(--ink-muted);
+}
+
+.segment input:checked + span {
+  border-color: var(--cloth);
+  background-color: var(--cloth);
+  color: var(--paper);
+  font-weight: 700;
+}
+
+.segment input:focus-visible + span {
+  outline: 3px solid var(--cloth);
+  outline-offset: 2px;
+}
+
+.toggle-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.5rem 1rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.toggle input {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0.25rem 0 0;
+  accent-color: var(--cloth);
+}
+
+/* ---- できあがったプロンプト（黒い台紙に白いペン） ---- */
+
+.album-page {
+  position: relative;
+  padding: 1.5rem 1.5rem 1.25rem;
+  background-color: var(--album);
+  color: var(--pen);
+  border-radius: 3px;
+}
+
+/* 台紙の四隅に写真のコーナーを留める */
+.album-page::before,
+.album-page::after {
+  content: '';
+  position: absolute;
+  width: 1.4rem;
+  height: 1.4rem;
+  background-color: var(--corner);
+}
+
+.album-page::before {
+  top: 0.6rem;
+  left: 0.6rem;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.album-page::after {
+  right: 0.6rem;
+  bottom: 0.6rem;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.album-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  margin: 0 0.5rem 0.75rem 1.25rem;
+}
+
+.album-heading {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.album-meta {
+  margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.album-text {
+  display: block;
+  width: 100%;
+  height: min(70vh, 42rem);
+  padding: 0.75rem 1.25rem 1rem;
+  border: 0;
+  resize: vertical;
+  background: transparent;
+  color: var(--pen);
+  font-family: var(--font-pen);
+  font-size: 0.98rem;
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+
+.album-text:focus-visible {
+  outline: 2px dashed var(--pen);
+  outline-offset: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
 }

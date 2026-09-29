@@ -1,11 +1,131 @@
-import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
+import { catalog } from './data/catalog'
 
-// テスト基盤（vitest + jsdom + testing-library）が動くことを確かめる最小のテスト
+// マスタデータから英文を引く（テストに英文を直書きしない）
+function toggleText(id: string): string {
+  const toggle = catalog.toggles.find((t) => t.id === id)
+  if (!toggle) throw new Error(`トグル ${id} がありません`)
+  return toggle.text
+}
+
+function optionText(choiceId: string, optionId: string): string {
+  const option = catalog.choices
+    .find((c) => c.id === choiceId)
+    ?.options.find((o) => o.id === optionId)
+  if (!option) throw new Error(`選択肢 ${choiceId}.${optionId} がありません`)
+  return option.text
+}
+
+function presetBase(id: string): string {
+  const preset = catalog.presets.find((p) => p.id === id)
+  if (!preset) throw new Error(`プリセット ${id} がありません`)
+  return preset.base
+}
+
+// 画面に出ている生成プロンプト
+function promptText(): string {
+  return (screen.getByRole('textbox', { name: 'できあがったプロンプト' }) as HTMLTextAreaElement)
+    .value
+}
+
 describe('App', () => {
   it('アプリ名の見出しを表示する', () => {
     render(<App />)
     expect(screen.getByRole('heading', { name: 'photo-prompt-builder' })).toBeInTheDocument()
+  })
+
+  it('起動時は先頭のプリセットのプロンプトが出ている', () => {
+    render(<App />)
+    const first = catalog.presets[0]
+    expect(first).toBeDefined()
+    expect(promptText()).toContain(first?.base)
+  })
+
+  it('スタイルを選び直すとプロンプトが即時に変わる', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('radio', { name: /Editorial Poster/ }))
+    expect(promptText()).toContain(presetBase('editorial-poster'))
+    expect(promptText()).not.toContain(presetBase('diorama'))
+  })
+
+  it('トグルを ON/OFF するとその英文が出入りする', () => {
+    render(<App />)
+    const checkbox = screen.getByRole('checkbox', { name: '柔らかい自然光にする' })
+    fireEvent.click(checkbox)
+    expect(promptText()).toContain(toggleText('soft-light'))
+    fireEvent.click(checkbox)
+    expect(promptText()).not.toContain(toggleText('soft-light'))
+  })
+
+  it('ラジオを選ぶとその英文が入り、既定に戻すと消える', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('radio', { name: 'モノクロ' }))
+    expect(promptText()).toContain(optionText('color-mood', 'mono'))
+    fireEvent.click(screen.getAllByRole('radio', { name: '元のまま' })[0] as HTMLElement)
+    expect(promptText()).not.toContain(optionText('color-mood', 'mono'))
+  })
+
+  it('スタイルを切り替えるとトグルはそのスタイルの既定に戻り、ラジオは引き継ぐ', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('radio', { name: 'モノクロ' }))
+    fireEvent.click(screen.getByRole('checkbox', { name: '柔らかい自然光にする' }))
+    fireEvent.click(screen.getByRole('radio', { name: /Editorial Poster/ }))
+    // editorial-poster は文字を許すので「文字を入れない」は既定で OFF
+    expect(screen.getByRole('checkbox', { name: '文字を入れない' })).not.toBeChecked()
+    expect(screen.getByRole('checkbox', { name: '柔らかい自然光にする' })).not.toBeChecked()
+    expect(screen.getByRole('radio', { name: 'モノクロ' })).toBeChecked()
+  })
+})
+
+describe('写真の選択', () => {
+  const originalCreate = URL.createObjectURL
+  const originalRevoke = URL.revokeObjectURL
+
+  beforeEach(() => {
+    // jsdom には一時 URL の仕組みが無いので差し替える
+    let n = 0
+    URL.createObjectURL = vi.fn(() => `blob:test/${++n}`)
+    URL.revokeObjectURL = vi.fn()
+    vi.stubGlobal('fetch', vi.fn())
+    localStorage.clear()
+  })
+
+  afterEach(() => {
+    URL.createObjectURL = originalCreate
+    URL.revokeObjectURL = originalRevoke
+    vi.unstubAllGlobals()
+  })
+
+  it('画像だけを並べ、画像でないファイルは数を知らせる。通信も保存もしない', () => {
+    const { container } = render(<App />)
+    const input = container.querySelector('input[type="file"]') as HTMLInputElement
+    const files = [
+      new File(['a'], 'a.png', { type: 'image/png' }),
+      new File(['b'], 'b.jpg', { type: 'image/jpeg' }),
+      new File(['c'], 'memo.txt', { type: 'text/plain' }),
+    ]
+    fireEvent.change(input, { target: { files } })
+
+    expect(screen.getByText(/2 枚を選んでいます/)).toHaveTextContent(
+      '画像ではないファイル 1 件は除きました',
+    )
+    expect(screen.getByRole('img', { name: 'a.png' })).toHaveAttribute('src', 'blob:test/1')
+    expect(screen.getByRole('img', { name: 'b.jpg' })).toBeInTheDocument()
+    expect(fetch).not.toHaveBeenCalled()
+    expect(localStorage.length).toBe(0)
+  })
+
+  it('選び直すと前の一時 URL を解放する', () => {
+    const { container } = render(<App />)
+    const input = container.querySelector('input[type="file"]') as HTMLInputElement
+    fireEvent.change(input, {
+      target: { files: [new File(['a'], 'a.png', { type: 'image/png' })] },
+    })
+    fireEvent.change(input, {
+      target: { files: [new File(['b'], 'b.png', { type: 'image/png' })] },
+    })
+    expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:test/1')
   })
 })
