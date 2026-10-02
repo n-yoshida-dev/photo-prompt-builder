@@ -11,7 +11,43 @@
   アプリ内とリポジトリの README に出典を載せれば使える。それ以外は利用条件の明記が無いので、採用時に再確認する
 - 確認日：2026-09-07（すべて）
 
-## 結論の要約
+## 2026-10-03 の選び直しの結果（いちばん新しい。下の 2026-09-07 の候補より優先する）
+
+ユーザーの依頼（2026-09-29「再度、新たなモデル（Opus5.5）で再検討してみて」）を受けて、Claude が候補を集め直し、
+3 つの観点の案を Claude のサブエージェント 3 人が採点して統合した。採った Web 原文は、出典を開いて利用条件を確かめ直した（2026-10-02）。
+採否はユーザーが 2026-10-03 に 2 段階で答えた：自作 2 枠は「自作で作る」、Claude が質問で前提に置いた 4 本は聞き直して「まあ、一旦採用でいいよ。
+このあたりは使いながらどんどんブラッシュアップしよう。」（`logs/decisions.md` 2026-10-03）。本文の全文は、data に入れるときに出典から取り直して `web-prompts.md` に置く。
+
+### 採用した Web 原文 3 本
+
+| id | 出典 | 利用条件と根拠 | 表示義務 | 書き換え |
+|---|---|---|---|---|
+| `painted-anime` | SeeAPI「nano-banana-prompts-for-image-editing」README 4.3 節（`prompts/ghibli-anime/prompt.txt`。確認時の main は `0f832f2`） https://github.com/SeeAPI/nano-banana-prompts-for-image-editing | CC BY 4.0。`LICENSE.md` の "SeeAPI’s original prompts and documentation in this repository are licensed under ... CC BY 4.0"、節末尾の "Prompt by SeeAPI"、`catalog.json` の P20 が `source.kind=original` | 名前「SeeAPI」、リポジトリとライセンスへのリンク、変更点の明示、SeeAPI が推薦していると受け取れる書き方をしない。推奨表記 "Source: SeeAPI — Nano Banana Prompts for Image Editing, CC BY 4.0." | 冒頭の "Studio Ghibli-inspired" を一般的な言い方へ（CC BY 4.0 は商標を許諾しない。`logs/decisions.md` 2026-10-03） |
+| `watercolor` | AlbertAZ1992「albert-imagebook」`styles/watercolor-light/prompt.md` の「## Prompt」節（確認時のコミット `277f38d`） https://github.com/AlbertAZ1992/albert-imagebook | MIT。`LICENSE` の "MIT License / Copyright (c) 2026 Albert's Imagebook contributors"。作者は `docs/sources.md` で第三者の原文をそのまま入れていないと書いている | 著作権表示と MIT の許諾文の全文を配布物に入れる | なし（色の一文 "Use sea blue, ochre and faint peach selectively" が服の色を引っ張るなら、外すかをユーザーに確認する） |
+| `instant-photo` | SeeAPI 同リポジトリ README 4.1 節（`cases/polaroid.md`、`catalog.json` の P18） | CC BY 4.0。根拠は `painted-anime` と同じ 3 つ | `painted-anime` と同じ | 商標 "Polaroid" を "instant-film" など一般的な言い方へ（`logs/decisions.md` 2026-10-03） |
+
+どれも作者自身が `tested: false` としているか、子どもの写真での作例が無い。「実績のある原文」とは書かない。
+
+### 自作する 3 本（雰囲気だけを参考に一から書く。下の原文は写さない）
+
+- `clay-animation`（粘土アニメ風、人物）：粘土の公開プロンプトによくある頭身を変える語（"chunky, rounded proportions" など）を入れず、場所や背景を差し替えない。
+  表示名にも本文にも "Claymation"・Aardman・Play-Doh を使わない。子どもの顔が不気味に寄りやすいので、`preserve.ts` と同じく複数案と反証を通して書く
+- `yarn-embroidery`（毛糸の刺しゅうワッペン、人物）：参考にした SeeAPI の 4.6 節（P28）は、@ai_suxiaole の X 投稿をもとに SeeAPI が書き直したもので、
+  CC BY が書き直し版まで覆うか確かめられなかった（2026-10-02）。上に元の写真・下に刺しゅうという型は `editorial-poster` と同じ並べ方になる点、
+  刺しゅう文字を入れるなら既定トグルの `no-text` との関係を決める点に注意
+- `travel-stamps`（旅のスタンプ）：参考にした AlbertAZ1992 の `styles/rubber-stamp-travel-journal` は、作者自身が「利用者から回収した第三者のプロンプトを
+  組み合わせて書き直した。元の作者・利用条件は記録していない」と書いており採れなかった（2026-10-02）。
+  人物を消すかは、ユーザーの「人物を消すかどうか、選択できるようにすればいいのでは？」を受けて、選べる形を確かめてから書く（`TODO.md`「確認待ち」）
+
+### 見送ったもの
+
+- `pixar-3d`・2026-09-07 版の `painted-anime`：出典 techpresso（Dupple）の購読規約 12 条が複製と配布を禁じている
+- `brick-minifig`：原作者（X の投稿）の利用条件が不明。収集者 YouMind の CC BY 表示は原作者の許諾ではない
+- `photo-booth`：利用条件（aimikoda、CC BY 4.0）は問題ないが、8 コマの別ポーズ・場面の差し替え・人物をプリントの中にだけ写す、が本質で保持文と根本的にぶつかる
+- 絵本風：写真を入力にする原文は X の投稿 4 本だけで、どれも利用条件の記載が無い。やわらかい手描きの役は透明水彩とアニメ風が受け持つ
+- 補欠の 1 番目：雪の夕暮れ（Apache-2.0）。季節を雪に固定するので思い出の中身が変わる
+
+## 2026-09-07 の結論の要約
 
 | テーマ | 結果 |
 |---|---|
