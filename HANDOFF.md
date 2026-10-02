@@ -25,6 +25,6 @@
 
 ## 次セッションで最初にやること
 
-1. 採用した Web 原文 3 本を `src/data/presets.ts` に足す（`TODO.md` フェーズ2 の先頭。候補と利用条件の確認結果は `logs/decisions.md` 2026-10-03）
+1. 採用した Web 原文 3 本を `src/data/presets.ts` に足す（`TODO.md` フェーズ2 の先頭。出典・利用条件の根拠・表示義務・書き換える箇所は `docs/prompt-candidates.md` 冒頭の「2026-10-03 の選び直しの結果」）
 
 `TODO.md` の先頭と一致させる。書くのは最初の一手だけで、一覧は `TODO.md` が持つ。
