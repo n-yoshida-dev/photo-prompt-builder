@@ -119,7 +119,7 @@ type Preset = {
   style: string // 見た目の指定（Style）
   negative: string[] // プリセット固有の「〜しない」（「Do not:」に続く小文字始まりの動詞句）
   defaultToggles: ToggleId[]
-  source: { label: string; url?: string; license?: string; checkedOn?: string; modified?: string } // 英文の出典（外部由来は URL・ライセンス・確認日、書き換えたら箇所）
+  source: { label: string; url?: string; license?: string; licenseUrl?: string; checkedOn?: string; modified?: string } // 英文の出典（外部由来は「作者 — 作品名」・URL・ライセンスとそのリンク・確認日、書き換えたら箇所）。url を持つものはカードに出典を出す
 }
 
 // 固定の保持文。subject ごとに 1 組。実験モード（MVP 後）以外では常に付く

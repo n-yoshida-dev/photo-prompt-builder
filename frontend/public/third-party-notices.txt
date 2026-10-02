@@ -1,0 +1,59 @@
+Third-party notices for photo-prompt-builder
+
+Some of the style prompts in this app are based on prompts published by
+the authors below. The records of the original text, the changes, and the
+sources are kept in docs/web-prompts.md of this app's repository.
+
+This app is not affiliated with or endorsed by any of these authors.
+
+
+------------------------------------------------------------------------
+1. SeeAPI - Nano Banana Prompts for Image Editing
+------------------------------------------------------------------------
+
+Source: SeeAPI - Nano Banana Prompts for Image Editing, CC BY 4.0.
+Repository: https://github.com/SeeAPI/nano-banana-prompts-for-image-editing
+License: https://creativecommons.org/licenses/by/4.0/
+Commit used: 0f832f28983d3c82bcc1b8862377d89cb1cef858
+
+Used in this app as:
+- "painted-anime": README section 4.3 (case P20).
+  Changes: the name of a real animation studio was replaced with a
+  generic description ("classic Japanese animated film-inspired").
+- "instant-photo": README section 4.1 (case P18).
+  Changes: a camera brand name was removed
+  ("vintage instant photograph").
+
+
+------------------------------------------------------------------------
+2. AlbertAZ1992 - Albert's Imagebook
+------------------------------------------------------------------------
+
+Repository: https://github.com/AlbertAZ1992/albert-imagebook
+Commit used: 277f38d1f12a90296d11b7dc4954155821a66e6e
+
+Used in this app as:
+- "watercolor": styles/watercolor-light/prompt.md, "Prompt" section.
+  Changes: line breaks inside paragraphs were joined with spaces.
+
+MIT License
+
+Copyright (c) 2026 Albert's Imagebook contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

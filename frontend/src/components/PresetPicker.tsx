@@ -1,4 +1,4 @@
-import type { Preset } from '../prompt/types'
+import type { Preset, PresetSource } from '../prompt/types'
 
 type Props = {
   presets: Preset[]
@@ -21,20 +21,51 @@ export function PresetPicker({ presets, selectedId, onSelect }: Props) {
       </legend>
       <div className="preset-list">
         {presets.map((preset) => (
-          <label key={preset.id} className="preset-card">
-            <input
-              type="radio"
-              name="preset"
-              value={preset.id}
-              checked={preset.id === selectedId}
-              onChange={() => onSelect(preset.id)}
-            />
-            <span className="preset-name">{preset.name}</span>
-            <span className="preset-description">{preset.descriptionJa}</span>
-            <span className="preset-subject">{SUBJECT_LABEL[preset.subject]}</span>
-          </label>
+          <div key={preset.id} className="preset-card">
+            <label className="preset-choice">
+              <input
+                type="radio"
+                name="preset"
+                value={preset.id}
+                checked={preset.id === selectedId}
+                onChange={() => onSelect(preset.id)}
+              />
+              <span className="preset-name">{preset.name}</span>
+              <span className="preset-description">{preset.descriptionJa}</span>
+              <span className="preset-subject">{SUBJECT_LABEL[preset.subject]}</span>
+            </label>
+            {/* 出典はラベルの外に置く（中に置くとリンクの文字までラジオの名前として読み上げられる） */}
+            {preset.source.url && <PresetCredit source={preset.source} url={preset.source.url} />}
+          </div>
         ))}
       </div>
     </fieldset>
+  )
+}
+
+// Web で公開された原文を種にしたプリセットの出典（作者・ライセンス・書き換えたこと）。
+// CC BY 4.0 と MIT の表示を、アプリを使う人の目に届く形で出す（logs/decisions.md 2026-10-03）
+function PresetCredit({ source, url }: { source: PresetSource; url: string }) {
+  return (
+    <p className="preset-credit">
+      出典：
+      <a href={url} target="_blank" rel="noreferrer">
+        {source.label}
+      </a>
+      {source.license && (
+        <>
+          （
+          {source.licenseUrl ? (
+            <a href={source.licenseUrl} target="_blank" rel="noreferrer">
+              {source.license}
+            </a>
+          ) : (
+            source.license
+          )}
+          ）
+        </>
+      )}
+      {source.modified && <span className="preset-credit-modified">変更：{source.modified}</span>}
+    </p>
   )
 }

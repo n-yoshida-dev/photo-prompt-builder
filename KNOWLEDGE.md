@@ -10,6 +10,22 @@
 
 ---
 
+### 2026-10-03：Web 原文のプリセットは「原文＋書き換え表＝presets.ts」をテストで確かめ、出典はカードのラベルの外に出す
+
+- **設計判断**：`docs/web-prompts.md` に原文（出典のファイルから取ったまま）と書き換えた箇所の表を置き、`catalog.test.ts` が
+  原文に表を当てた結果を `presets.ts` の `base + ' ' + style` と比べる。表に載せていない書き換えが 1 文字でもあれば落ちる
+  （2026-10-03 に 1 語変えて落ちることを確かめた）。書き換えの記録（CC BY 4.0 の「変更点の明示」）と実物がずれない。
+  表の 1・2 列目を `` ` `` で囲むのはテストが読むため。Markdown のソースの折り返し（watercolor の原文）は空白 1 つにして比べる
+- `base` と `style` の分け方：先頭の「何に変えるか・何を保つか」の文を `base`、残りを `style` にした。原文の段落の区切り（空行）は `style` の中に残す。
+  `base` の直後に「1 枚ずつ出力」のトグル文が入るので、段落の途中で改行が入るが、AI への指示としては害が無い
+- 書き換えの言葉は Claude が選んだ：`Studio Ghibli-inspired` → `classic Japanese animated film-inspired`（決定の例 "classic hand-drawn animated film-inspired" は
+  直後の "hand-drawn anime scene" と重なるので "Japanese" にした）。`Polaroid` は置き換えずに消した（直後が "instant photograph" で、決定の例 "instant-film" を足すと重なる）。
+  画風が弱まったら `logs/decisions.md` 2026-10-03 の見直す条件どおり実験して直す
+- 出典の行はカードの `<label>` の外に置いた。中に置くと、リンクの文字までラジオの名前として読み上げられる。カードの枠は外側の `<div>` が持つ
+- MIT の全文は `frontend/public/third-party-notices.txt` に 1 つだけ置き、README とカードのライセンスのリンクから指す（`public/` はビルドで `dist/` にそのまま入る）。
+  ファイルは ASCII だけで書いた（`.txt` を配信するサーバーが文字コードを付けないと、日本語や全角記号が文字化けするため）。
+  リンクは相対パス（`third-party-notices.txt`）なので、GitHub Pages で `base` の下に置いても開ける
+
 ### 2026-09-29：最近使った設定は、読み込み時に 1 件ずつ今のマスタデータで確かめる
 
 - **設計判断**：SPEC「保存」は「形が壊れていたら捨てて空にする」。それに加えて、形は正しくても今のマスタデータで復元できない記録
