@@ -1,6 +1,16 @@
 // プリセットのマスタデータ。英文は原文のまま置き、UI のコードに英文を書かない（CLAUDE.md「守ること」）
-// base と style を繋げると原文に戻ることを catalog.test.ts が docs/seed-prompts.md と照合して確かめる
+// base と style を半角スペースで繋げると原文に戻ることを catalog.test.ts が確かめる
+// （ユーザー提供の 2 本は docs/seed-prompts.md、Web 原文の 3 本は docs/web-prompts.md の書き換え版と照合する）
 import type { Preset } from '../prompt/types'
+
+// SeeAPI の 2 本に共通の出典。表示義務は名前・リポジトリとライセンスへのリンク・変更点の明示（docs/web-prompts.md）
+const SEEAPI_SOURCE = {
+  label: 'SeeAPI — Nano Banana Prompts for Image Editing',
+  url: 'https://github.com/SeeAPI/nano-banana-prompts-for-image-editing',
+  license: 'CC BY 4.0',
+  licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
+  checkedOn: '2026-10-03',
+} as const
 
 export const presets: Preset[] = [
   {
@@ -32,6 +42,55 @@ export const presets: Preset[] = [
     source: {
       label: 'ユーザー提供（検証済み。docs/seed-prompts.md 例②）',
       checkedOn: '2026-09-06',
+    },
+  },
+  {
+    id: 'painted-anime',
+    name: '手描きアニメ映画風',
+    descriptionJa: '繊細な線と水彩のような背景で、手描きのアニメ映画の一場面にする',
+    subject: 'people',
+    base: 'Reinterpret the uploaded image as a classic Japanese animated film-inspired hand-drawn anime scene. Preserve the recognizable identities, expressions, pose, composition, and relationships between the subjects.',
+    style:
+      'Use delicate expressive linework, softly painted watercolor-like backgrounds, gentle cel shading, warm natural colors, and atmospheric light.\n\nTranslate real details into a cohesive illustrated world with lush, carefully observed surroundings and a calm, heartfelt everyday mood. Keep the main facial features recognizable without making everyone look identical. Preserve the original setting rather than introducing existing film characters or replacing the scene. Output one complete illustration with no captions, logos, or borders.',
+    negative: [],
+    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
+    source: {
+      ...SEEAPI_SOURCE,
+      modified: '原文にある実在のアニメスタジオの名前を、一般的な言い方に置き換えた',
+    },
+  },
+  {
+    id: 'watercolor',
+    name: '透明水彩',
+    descriptionJa: '透明水彩と細い鉛筆の線で、紙の白さが透ける淡い絵にする',
+    subject: 'people',
+    base: 'Read the source photo for its defining subject, pose and relationships. Preserve those facts.',
+    style:
+      'Adapt the material and graphic language to the supplied scene; do not import motifs that do not belong to the source.\n\nUse transparent watercolor washes with delicate pencil structure, watery pigment and dry broken outer edges. Let paper shine through. Use sea blue, ochre and faint peach selectively, preserving the source subject and relationships. Avoid opaque digital paint, hard vector edges and a filled rectangular background.',
+    negative: [],
+    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
+    source: {
+      label: 'AlbertAZ1992 — Albert’s Imagebook',
+      url: 'https://github.com/AlbertAZ1992/albert-imagebook',
+      license: 'MIT',
+      // MIT は著作権表示と許諾文の全文を配布物に入れる義務があるので、同梱したファイルを指す（frontend/public/）
+      licenseUrl: 'third-party-notices.txt',
+      checkedOn: '2026-10-03',
+    },
+  },
+  {
+    id: 'instant-photo',
+    name: 'インスタント写真風',
+    descriptionJa: '白い縁のついた、少し色あせた昔のインスタント写真にする',
+    subject: 'people',
+    base: 'Transform the uploaded image into a believable vintage instant photograph. Preserve the identities, expressions, subject arrangement, and main scene.',
+    style:
+      'Apply soft direct-flash illumination, gently muted colors, warm highlights, slightly faded shadows, subtle film grain, mild lens softness, and natural instant-film imperfections without obscuring faces.\n\nPresent the image inside a clean off-white instant-photo border with a slightly deeper bottom margin. Fit the full main subject within the photo area; do not crop out important features. Keep the effect restrained and photographic. Do not add handwriting, dates, captions, extra people, or heavy damage.',
+    negative: [],
+    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
+    source: {
+      ...SEEAPI_SOURCE,
+      modified: '原文にある商標（インスタントカメラのブランド名）を消した',
     },
   },
 ]

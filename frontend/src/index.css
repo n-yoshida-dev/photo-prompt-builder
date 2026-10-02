@@ -222,12 +222,20 @@ body {
 
 .preset-card {
   position: relative;
+  border: 1.5px solid var(--rule);
+  border-radius: 6px;
+}
+
+/* 押すとラジオが選ばれる範囲。出典の行（.preset-credit）はリンクを含むのでこの外に置く */
+.preset-choice {
   display: grid;
   gap: 0.2rem;
   padding: 0.9rem 1rem 0.9rem 2.6rem;
-  border: 1.5px solid var(--rule);
-  border-radius: 6px;
   cursor: pointer;
+}
+
+.preset-choice:has(+ .preset-credit) {
+  padding-bottom: 0.4rem;
 }
 
 .preset-card:hover {
@@ -259,6 +267,22 @@ body {
 .preset-subject {
   color: var(--ink-muted);
   font-size: 0.85rem;
+}
+
+.preset-credit {
+  margin: 0;
+  padding: 0 1rem 0.9rem 2.6rem;
+  color: var(--ink-muted);
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+
+.preset-credit a {
+  color: inherit;
+}
+
+.preset-credit-modified {
+  display: block;
 }
 
 /* ---- 3. 条件 ---- */

@@ -51,6 +51,31 @@ describe('App', () => {
     expect(promptText()).not.toContain(presetBase('diorama'))
   })
 
+  it('Web の原文を種にしたスタイルのカードに、出典とライセンスのリンクと書き換えたことが出る', () => {
+    render(<App />)
+    const webPresets = catalog.presets.filter((p) => p.source.url !== undefined)
+    expect(webPresets.length).toBeGreaterThan(0)
+    for (const preset of webPresets) {
+      const { label, url, license, licenseUrl, modified } = preset.source
+      const sourceLinks = screen.getAllByRole('link', { name: label })
+      expect(sourceLinks.some((link) => link.getAttribute('href') === url)).toBe(true)
+      const licenseLinks = screen.getAllByRole('link', { name: license })
+      expect(licenseLinks.some((link) => link.getAttribute('href') === licenseUrl)).toBe(true)
+      if (modified) {
+        expect(screen.getByText(`変更：${modified}`)).toBeInTheDocument()
+      }
+      // 出典はラベルの外にあるので、ラジオの名前には入らない
+      expect(screen.getByRole('radio', { name: new RegExp(preset.name) })).not.toHaveAccessibleName(
+        /出典/,
+      )
+    }
+  })
+
+  it('ユーザー提供のスタイルのカードには出典の行が出ない', () => {
+    render(<App />)
+    expect(screen.queryByText(/docs\/seed-prompts\.md/)).not.toBeInTheDocument()
+  })
+
   it('トグルを ON/OFF するとその英文が出入りする', () => {
     render(<App />)
     const checkbox = screen.getByRole('checkbox', { name: '柔らかい自然光にする' })

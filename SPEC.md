@@ -17,7 +17,7 @@
 細部（最近使った設定 5 を左の列に置く、右の列をスクロールしても残す）は Claude が実装した形で、`TODO.md`「確認待ち」で確かめている。
 
 1. **スタイル**：プリセットをカードで選ぶ（1 つだけ）。外部由来のプリセットは、カードに出典（作者名・ライセンス・リンク）を出す
-   （`logs/decisions.md` 2026-10-03「出典をアプリの画面に出す」）
+   （`logs/decisions.md` 2026-10-03「出典をアプリの画面に出す」）。原文を書き換えたものは、書き換えたことも一行で出す（CC BY 4.0 の「変更点の明示」。Claude が足した要素）
 2. **条件**：仕上がりの調整だけ。3 つの選択（加工の強さ・色味・縦横比）と 6 つのトグル。
    人物・構図の保持はここには出さず、プリセットが固定で持つ（下の「保持は固定」）
 3. **生成プロンプト**：読み取り専用のテキスト欄。選択を変えると即時更新
@@ -38,7 +38,7 @@
 | `editorial-poster` | Editorial Poster（写真＋紙のイラスト） | `docs/seed-prompts.md` 例②（ユーザー提供、検証済み） | 人物 |
 | `painted-anime` | 手描きアニメ映画風 | SeeAPI「nano-banana-prompts-for-image-editing」README 4.3 節（CC BY 4.0）。実在のスタジオ名を一般的な言い方に置き換える | 人物 |
 | `watercolor` | 透明水彩 | AlbertAZ1992「albert-imagebook」styles/watercolor-light（MIT） | 人物 |
-| `instant-photo` | インスタント写真風 | SeeAPI 同リポジトリ README 4.1 節（CC BY 4.0）。商標 "Polaroid" を一般的な言い方に置き換える | 人物 |
+| `instant-photo` | インスタント写真風 | SeeAPI 同リポジトリ README 4.1 節（CC BY 4.0）。商標 "Polaroid" を消し、直後の一般的な言い方 "instant photograph" だけを残す | 人物 |
 | `clay-animation` | 粘土アニメ風 | Claude が自作（利用条件の明記された原文なし） | 人物 |
 | `yarn-embroidery` | 毛糸の刺しゅうワッペン | Claude が自作（Web の原文は利用条件が不明なので、雰囲気だけを参考に一から書く） | 人物 |
 | `travel-stamps` | 旅のスタンプ | Claude が自作（同上） | 未決：人物を消すかを選べるようにする案をユーザーが出した（`TODO.md`「確認待ち」） |
@@ -119,7 +119,7 @@ type Preset = {
   style: string // 見た目の指定（Style）
   negative: string[] // プリセット固有の「〜しない」（「Do not:」に続く小文字始まりの動詞句）
   defaultToggles: ToggleId[]
-  source: { label: string; url?: string; license?: string; checkedOn?: string; modified?: string } // 英文の出典（外部由来は URL・ライセンス・確認日、書き換えたら箇所）
+  source: { label: string; url?: string; license?: string; licenseUrl?: string; checkedOn?: string; modified?: string } // 英文の出典（外部由来は「作者 — 作品名」・URL・ライセンスとそのリンク・確認日、書き換えたら箇所）。url を持つものはカードに出典を出す
 }
 
 // 固定の保持文。subject ごとに 1 組。実験モード（MVP 後）以外では常に付く
