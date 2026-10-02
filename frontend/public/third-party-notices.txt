@@ -11,6 +11,7 @@ This app is not affiliated with or endorsed by any of these authors.
 1. SeeAPI - Nano Banana Prompts for Image Editing
 ------------------------------------------------------------------------
 
+Copyright (c) 2026 SeeAPI.
 Source: SeeAPI - Nano Banana Prompts for Image Editing, CC BY 4.0.
 Repository: https://github.com/SeeAPI/nano-banana-prompts-for-image-editing
 License: https://creativecommons.org/licenses/by/4.0/

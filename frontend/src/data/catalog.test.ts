@@ -139,6 +139,8 @@ describe('Web 原文のプリセットは、書き換えた箇所の表に載せ
       expect(readFileSync(new URL(licenseUrl, publicDir), 'utf-8'), preset.id).toBe(noticesText)
     }
     expect(noticesText).toContain('Copyright (c) 2026 Albert')
+    // CC BY 4.0 も、作者が付けた著作権表示を残す（3(a)(1)(A)(ii)）
+    expect(noticesText).toContain('Copyright (c) 2026 SeeAPI.')
     expect(noticesText).toContain('Permission is hereby granted, free of charge')
     expect(noticesText).toContain('The above copyright notice and this permission notice')
     expect(noticesText).toContain('THE SOFTWARE IS PROVIDED "AS IS"')

@@ -24,7 +24,7 @@ Web で公開されている原文を種にして `frontend/src/data/presets.ts`
 | ファイル | https://github.com/SeeAPI/nano-banana-prompts-for-image-editing/blob/0f832f28983d3c82bcc1b8862377d89cb1cef858/prompts/ghibli-anime/prompt.txt （README 4.3 節の本文と同じ） |
 | コミット | `0f832f28983d3c82bcc1b8862377d89cb1cef858`（2026-09-17） |
 | 利用条件 | CC BY 4.0。`LICENSE.md` の "SeeAPI’s original prompts and documentation in this repository are licensed under ... CC BY 4.0"、節末尾の "Prompt by SeeAPI"、`catalog.json` の P20 が `source.kind: original` |
-| 表示義務 | 名前「SeeAPI」、リポジトリとライセンスへのリンク、変更点の明示。SeeAPI が推薦していると受け取れる書き方をしない |
+| 表示義務 | 名前「SeeAPI」、リポジトリとライセンスへのリンク、変更点の明示。SeeAPI が推薦していると受け取れる書き方をしない。`LICENSE.md` の著作権表示 "Copyright © 2026 SeeAPI." も残す（CC BY 4.0 3(a)(1)(A)(ii)。`third-party-notices.txt` に ASCII で "Copyright (c) 2026 SeeAPI." と書いた） |
 | 作者の検証 | `catalog.json` の P20 が `tested: false` |
 
 ### 原文
