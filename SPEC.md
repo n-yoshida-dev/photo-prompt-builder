@@ -139,7 +139,7 @@ type Preset = {
 
 // 固定の保持文。subject ごとに 1 組。実験モード（MVP 後）以外では常に付く
 type PreserveSet = {
-  identity: string[] // Identity ブロック（people のみ）
+  identity: string[] // Identity ブロック（people と people-in-scene のみ）
   composition: string[] // Composition ブロック
 }
 

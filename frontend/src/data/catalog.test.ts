@@ -165,7 +165,7 @@ describe('出典の種類', () => {
 })
 
 describe('マスタデータの形', () => {
-  it('ラジオ 3 種・トグル 6 つ・保持文 2 組がある', () => {
+  it('ラジオ 3 種・トグル 6 つ・保持文 3 組がある', () => {
     expect(catalog.choices.map((c) => c.id)).toEqual([
       'style-strength',
       'color-mood',
