@@ -23,7 +23,7 @@
 | id | 出典 | 利用条件と根拠 | 表示義務 | 書き換え |
 |---|---|---|---|---|
 | `painted-anime` | SeeAPI「nano-banana-prompts-for-image-editing」README 4.3 節（`prompts/ghibli-anime/prompt.txt`。確認時の main は `0f832f2`） https://github.com/SeeAPI/nano-banana-prompts-for-image-editing | CC BY 4.0。`LICENSE.md` の "SeeAPI’s original prompts and documentation in this repository are licensed under ... CC BY 4.0"、節末尾の "Prompt by SeeAPI"、`catalog.json` の P20 が `source.kind=original` | 名前「SeeAPI」、リポジトリとライセンスへのリンク、変更点の明示、SeeAPI が推薦していると受け取れる書き方をしない。推奨表記 "Source: SeeAPI — Nano Banana Prompts for Image Editing, CC BY 4.0." | 冒頭の "Studio Ghibli-inspired" を一般的な言い方へ（CC BY 4.0 は商標を許諾しない。`logs/decisions.md` 2026-10-03） |
-| `watercolor` | AlbertAZ1992「albert-imagebook」`styles/watercolor-light/prompt.md` の「## Prompt」節（確認時のコミット `277f38d`） https://github.com/AlbertAZ1992/albert-imagebook | MIT。`LICENSE` の "MIT License / Copyright (c) 2026 Albert's Imagebook contributors"。作者は `docs/sources.md` で第三者の原文をそのまま入れていないと書いている | 著作権表示と MIT の許諾文の全文を配布物に入れる | なし（色の一文 "Use sea blue, ochre and faint peach selectively" が服の色を引っ張るなら、外すかをユーザーに確認する） |
+| `watercolor` | AlbertAZ1992「albert-imagebook」`styles/watercolor-light/prompt.md` の「## Prompt」節（確認時のコミット `277f38d`） https://github.com/AlbertAZ1992/albert-imagebook | MIT。`LICENSE` の "MIT License / Copyright (c) 2026 Albert's Imagebook contributors"。作者は `docs/sources.md` で第三者の原文をそのまま入れていないと書いている | 著作権表示と MIT の許諾文の全文を配布物に入れる | 色の一文 "Use sea blue, ochre and faint peach selectively, ..." を外した（2026-10-03 の試作で服の色を引っ張ったため。`logs/decisions.md` 2026-10-03、記録は `web-prompts.md`） |
 | `instant-photo` | SeeAPI 同リポジトリ README 4.1 節（`cases/polaroid.md`、`catalog.json` の P18） | CC BY 4.0。根拠は `painted-anime` と同じ 3 つ | `painted-anime` と同じ | 商標 "Polaroid" を "instant-film" など一般的な言い方へ（`logs/decisions.md` 2026-10-03） |
 
 どれも作者自身が `tested: false` としているか、子どもの写真での作例が無い。「実績のある原文」とは書かない。
@@ -37,7 +37,7 @@
   刺しゅう文字を入れるなら既定トグルの `no-text` との関係を決める点に注意
 - `travel-stamps`（旅のスタンプ）：参考にした AlbertAZ1992 の `styles/rubber-stamp-travel-journal` は、作者自身が「利用者から回収した第三者のプロンプトを
   組み合わせて書き直した。元の作者・利用条件は記録していない」と書いており採れなかった（2026-10-02）。
-  人物を消すかは、ユーザーの「人物を消すかどうか、選択できるようにすればいいのでは？」を受けて、選べる形を確かめてから書く（`TODO.md`「確認待ち」）
+  人物を消すかは、ユーザーの「人物を消すかどうか、選択できるようにすればいいのでは？」を受けて、「風景だけ」と「家族も」の 2 枚に分けると決めた（`logs/decisions.md` 2026-10-03）
 
 ### 見送ったもの
 
