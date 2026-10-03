@@ -26,7 +26,8 @@
   保持文が効いたかを目で確かめられる特徴を入れた）。風景用（`diorama`）は角地の小さな喫茶店の建物で、人は写さない。どちらの中身も Claude が決めた
 - 試作の画像・使った指示文・生成スクリプト（`run-all.sh`）・ログは、リポジトリの外の `~/.cache/photo-prompt-builder/samples-2026-10-03/` に置いた
   （`small/` は幅 900px の JPEG。載せる PR で選んで縮小し、`frontend/public/` に入れる）。画像処理のライブラリが無いので、縮小は Playwright の Chromium の canvas で行った
-- 2026-10-03 の試作で見えたこと（架空の写真 1 枚ずつ。子どもの実写真ではない）：5 本とも人数・服・前歯の抜けた笑顔・眼鏡が残った。
+- 2026-10-03 の試作で見えたこと（架空の写真 1 枚ずつ。子どもの実写真ではない）：人物用の 4 本とも人数・服・前歯の抜けた笑顔・眼鏡が残った。
+  `diorama` は建物の写真から台座付きの模型になった。
   `instant-photo` は "Polaroid" を消しても白い縁と色あせが出た。`watercolor` は父のグレーのパーカーに少し青みが入った（原文の "sea blue" の影響かもしれない。`docs/web-prompts.md` の注意書き）。
   `editorial-poster` は原文の TYPOGRAPHY の指定どおり "Autumn Days" の文字が入った
 - 実行時の「bubblewrap が無い」の警告は、同梱の bubblewrap が代わりに使われるので無視してよい
