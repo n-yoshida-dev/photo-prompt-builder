@@ -167,6 +167,57 @@ Do not:
 - add people, animals, objects, props, decorations, or effects such as sparkles or confetti that are not in the photo, other than a display base or backdrop that the style itself calls for"
 `;
 
+exports[`全プリセット × 既定の条件の出力全文 > travel-stamps 1`] = `
+"Turn this photo into one large rubber-stamp print of the same scene, stamped by hand onto a page of a travel journal as a keepsake of the trip.
+If more than one photo is uploaded, process each photo separately and output one image per photo, without combining photos into a collage or mixing content from different photos.
+
+Render the scene the way a hand-carved rubber stamp prints: bold, simplified shapes and lines, flat areas of ink with the slightly uneven coverage, tiny speckles, and soft edges of real ink pressed onto paper, in a small set of flat ink colors that follow the colors in the photo, slightly out of register where the colors overlap. Give the print a simple frame, such as a scalloped postage-stamp edge or a rounded rectangle, with no lettering, numbers, or emblems inside or around it. Keep the same viewpoint and layout of the scene inside the frame, simplified only as much as a carved stamp needs. Show the print on a slightly textured, warm off-white journal page, photographed flat from directly above in soft daylight, with the page filling the image.
+
+Composition:
+- The same layout of the place: where the buildings, structures, and objects that are kept sit relative to one another (left, right, front, and back)
+- The same proportions and scale: relative sizes, heights, and spacing, and the same number of floors, windows, doors, and steps
+- The same main subject as the focus of the image
+- Nothing invented beyond the photo's edges: no extra buildings, rooms, streets, or landmarks
+
+Do not:
+- include any of the people from the photo, even those in the foreground
+- add any new text, letters, numbers, captions, labels, logos, signatures, or watermarks that are not in the photo
+- add people, animals, objects, props, decorations, or effects such as sparkles or confetti that are not in the photo, other than a display base or backdrop that the style itself calls for"
+`;
+
+exports[`全プリセット × 既定の条件の出力全文 > travel-stamps-family 1`] = `
+"Turn this photo into one large rubber-stamp print of the same scene, stamped by hand onto a page of a travel journal as a keepsake of the trip.
+If more than one photo is uploaded, process each photo separately and output one image per photo, without combining photos into a collage or mixing content from different photos.
+
+Render the scene the way a hand-carved rubber stamp prints: bold, simplified shapes and lines, flat areas of ink with the slightly uneven coverage, tiny speckles, and soft edges of real ink pressed onto paper, in a small set of flat ink colors that follow the colors in the photo, slightly out of register where the colors overlap. Give the print a simple frame, such as a scalloped postage-stamp edge or a rounded rectangle, with no lettering, numbers, or emblems inside or around it. Keep the same viewpoint and layout of the scene inside the frame, simplified only as much as a carved stamp needs. Show the print on a slightly textured, warm off-white journal page, photographed flat from directly above in soft daylight, with the page filling the image.
+
+Preserve from the reference photo:
+- Every person's identity, recognizable at a glance as the same individual, with the style changing only how people are rendered, not who they are
+- Each person's facial features and skin tone as they are, including freckles, moles, and small marks, with no beautifying, skin smoothing, or makeup, and glasses if worn
+- Each person's hairstyle, hair length, bangs, and hair color
+- Each person's facial expression, including the shape of the smile, any visible teeth or tooth gaps, and where the eyes are looking
+- Each person's apparent age exactly as in the photo, with children not made to look older
+- Each person's build and height compared with the others, with no one made slimmer
+- Each person's clothing and accessories: the same garments, colors, patterns, and prints, and items such as hats, hair clips, and bags, with nothing swapped, added, or removed
+- The exact number of people and the mix of adults, children, and babies, with no one added, left out, or merged into someone else
+- Each person's pose, gestures, hand positions, and the direction they are facing, including anything they are holding
+- How the people are arranged: the same order from left to right and front to back, and who is holding hands with, hugging, or carrying whom
+
+Composition:
+- Each person's position relative to the others and to the surroundings, with no one cropped out
+- Every person kept in the scene at the same spot, at a true-to-life size compared with the place, and doing the same thing as in the photo (for example, still on the same playground equipment)
+- The same layout of the place: where the buildings, structures, and objects that are kept sit relative to one another (left, right, front, and back)
+- The same proportions and scale: relative sizes, heights, and spacing, and the same number of floors, windows, doors, and steps
+- The same main subject as the focus of the image
+- Nothing invented beyond the photo's edges: no extra buildings, rooms, streets, or landmarks
+
+Do not:
+- remove any of the people in the photo, since they are the main subject of this keepsake
+- carve anyone's face as a blank shape or a silhouette
+- add any new text, letters, numbers, captions, labels, logos, signatures, or watermarks that are not in the photo
+- add people, animals, objects, props, decorations, or effects such as sparkles or confetti that are not in the photo, other than a display base or backdrop that the style itself calls for"
+`;
+
 exports[`全プリセット × 既定の条件の出力全文 > watercolor 1`] = `
 "Read the source photo for its defining subject, pose and relationships. Preserve those facts.
 If more than one photo is uploaded, process each photo separately and output one image per photo, without combining photos into a collage or mixing content from different photos.
