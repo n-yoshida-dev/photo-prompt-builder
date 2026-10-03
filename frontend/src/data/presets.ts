@@ -1,10 +1,11 @@
 // プリセットのマスタデータ。英文は原文のまま置き、UI のコードに英文を書かない（CLAUDE.md「守ること」）
 // base と style を半角スペースで繋げると原文に戻ることを catalog.test.ts が確かめる
-// （ユーザー提供の 2 本は docs/seed-prompts.md、Web 原文の 3 本は docs/web-prompts.md の書き換え版と照合する）
+// （ユーザー提供の 2 本は docs/seed-prompts.md、Web 原文の 3 本は docs/web-prompts.md の書き換え版と照合する。Claude の自作には原文が無い）
 import type { Preset } from '../prompt/types'
 
 // SeeAPI の 2 本に共通の出典。表示義務は名前・リポジトリとライセンスへのリンク・変更点の明示（docs/web-prompts.md）
 const SEEAPI_SOURCE = {
+  kind: 'web',
   label: 'SeeAPI — Nano Banana Prompts for Image Editing',
   url: 'https://github.com/SeeAPI/nano-banana-prompts-for-image-editing',
   license: 'CC BY 4.0',
@@ -24,6 +25,7 @@ export const presets: Preset[] = [
     negative: [],
     defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
     source: {
+      kind: 'user',
       label: 'ユーザー提供（検証済み。docs/seed-prompts.md 例①）',
       checkedOn: '2026-09-06',
     },
@@ -40,6 +42,7 @@ export const presets: Preset[] = [
     // TYPOGRAPHY の指定があるため no-text は既定 OFF（docs/seed-prompts.md のメモ）
     defaultToggles: ['no-extra-objects', 'one-per-photo'],
     source: {
+      kind: 'user',
       label: 'ユーザー提供（検証済み。docs/seed-prompts.md 例②）',
       checkedOn: '2026-09-06',
     },
@@ -70,6 +73,7 @@ export const presets: Preset[] = [
     negative: [],
     defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
     source: {
+      kind: 'web',
       label: 'AlbertAZ1992 — Albert’s Imagebook',
       url: 'https://github.com/AlbertAZ1992/albert-imagebook',
       license: 'MIT',
@@ -94,5 +98,38 @@ export const presets: Preset[] = [
       ...SEEAPI_SOURCE,
       modified: '原文にある商標（インスタントカメラのブランド名）を消した',
     },
+  },
+  // ここから Claude の自作。利用条件の確認できる原文が無いテーマを、雰囲気だけを参考に一から書いた（docs/prompt-candidates.md「自作する 3 本」）
+  {
+    id: 'clay-animation',
+    name: '粘土アニメ風',
+    descriptionJa: '人物も場所も粘土でこねて作った、コマ撮りアニメの一場面にする',
+    subject: 'people',
+    base: 'Recreate this photo as a single still frame from a handmade stop-motion clay animation, as if the people and the place had been sculpted from modeling clay and photographed on a small, carefully built set.',
+    style:
+      "Sculpt every person, object, and surface from soft, matte modeling clay, with gently rounded edges, faint fingerprints and tool marks, and slightly uneven, hand-pressed surfaces. The whole image must clearly read as a photograph of handmade clay figures on a model set, not as a photograph of real people and not as a smooth computer-rendered image: faces, hands, and hair are made of the same matte clay as everything else, with simplified, sculpted shapes and hair formed from pressed clay strands. Keep each person's body proportions and head-to-body ratio as they are in the photo. Shape faces simply and warmly in clay, keeping each face's outline, eye shape, eyebrows, nose, and smile recognizable, with natural-sized, calm eyes. Build the background as a handmade miniature set of the same place, using clay, felt, card, and painted wood, simplified only as much as the material needs. Light it like a small animation set, with a soft key light, gentle fill, and a slightly shallow depth of field that keeps the people in sharp focus. Match the colors of the photo with solid, slightly muted clay colors.",
+    // 粘土の公開プロンプトによくある頭身の誇張と、子どもの顔が不気味に寄る原因（ガラス玉の目・人形の肌）を止める
+    negative: [
+      "make anyone's head bigger, body shorter, or arms and legs thicker than in the photo",
+      'give anyone glassy, staring, oversized, or doll-like eyes, glossy plastic skin, or realistic skin pores',
+    ],
+    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
+    source: { kind: 'claude', label: 'Claude の自作' },
+  },
+  {
+    id: 'yarn-embroidery',
+    name: '毛糸の刺しゅうワッペン',
+    descriptionJa: '写真全体を、毛糸で刺しゅうした 1 枚のワッペンにする',
+    subject: 'people',
+    base: 'Turn this photo into one hand-embroidered yarn patch that shows the whole scene, as if it had been stitched by hand and photographed lying flat.',
+    style:
+      "Stitch everything in soft wool yarn and cotton embroidery thread: satin stitch and long-and-short stitch for skin, clothing, and large areas, chain stitch and backstitch for outlines and hair, and small French knots for tiny details such as buttons and leaves. Keep the stitches visible, with the soft fuzz of the yarn and the slight unevenness of handwork. Follow the photo's colors with matching thread colors, using a limited palette. Simplify the background into fewer, larger stitched shapes while keeping the same place recognizable. Stitch faces simply but recognizably, following each person's eye shape, eyebrows, and smile. Finish the patch with a thick, raised merrow-stitched border that follows the outline of the photo with softly rounded corners, and lay it flat on a plain natural linen backdrop under soft, even light, with a gentle shadow along the patch edge.",
+    // 人物だけを切り抜いたワッペンは固定の保持文（同じ場所と背景）とぶつかる。ボタンの目は誰だか分からなくなる
+    negative: [
+      'give anyone button eyes, blank faces, or faces left unstitched',
+      'cut the people out as separate patches without their background',
+    ],
+    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
+    source: { kind: 'claude', label: 'Claude の自作' },
   },
 ]

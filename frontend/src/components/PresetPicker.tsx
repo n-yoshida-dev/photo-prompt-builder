@@ -35,7 +35,7 @@ export function PresetPicker({ presets, selectedId, onSelect }: Props) {
               <span className="preset-subject">{SUBJECT_LABEL[preset.subject]}</span>
             </label>
             {/* 出典はラベルの外に置く（中に置くとリンクの文字までラジオの名前として読み上げられる） */}
-            {preset.source.url && <PresetCredit source={preset.source} url={preset.source.url} />}
+            {preset.source.kind !== 'user' && <PresetCredit source={preset.source} />}
           </div>
         ))}
       </div>
@@ -43,13 +43,16 @@ export function PresetPicker({ presets, selectedId, onSelect }: Props) {
   )
 }
 
-// Web で公開された原文を種にしたプリセットの出典（作者・ライセンス・書き換えたこと）。
-// CC BY 4.0 と MIT の表示を、アプリを使う人の目に届く形で出す（logs/decisions.md 2026-10-03）
-function PresetCredit({ source, url }: { source: PresetSource; url: string }) {
+// Web 原文と Claude の自作のプリセットの出典。ユーザー提供のものには出さない
+// Web 原文は作者・ライセンス・書き換えたことを出し、CC BY 4.0 と MIT の表示を、アプリを使う人の目に届く形で満たす（logs/decisions.md 2026-10-03）
+function PresetCredit({ source }: { source: PresetSource }) {
+  if (source.kind !== 'web' || source.url === undefined) {
+    return <p className="preset-credit">出典：{source.label}</p>
+  }
   return (
     <p className="preset-credit">
       出典：
-      <a href={url} target="_blank" rel="noreferrer">
+      <a href={source.url} target="_blank" rel="noreferrer">
         {source.label}
       </a>
       {source.license && (

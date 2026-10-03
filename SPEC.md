@@ -16,7 +16,7 @@
 上から順に次の 5 つ。広い画面では左に操作、右に生成プロンプトの 2 列（`logs/decisions.md` 2026-10-03「2 列」）。スマホでは上から順に縦に並ぶ。
 細部（最近使った設定 5 を左の列に置く、右の列をスクロールしても残す）は Claude が実装した形で、`TODO.md`「確認待ち」で確かめている。
 
-1. **スタイル**：プリセットをカードで選ぶ（1 つだけ）。外部由来のプリセットは、カードに出典（作者名・ライセンス・リンク）を出す
+1. **スタイル**：プリセットをカードで選ぶ（1 つだけ）。外部由来のプリセットは、カードに出典（作者名・ライセンス・リンク）を出す。Claude の自作は「出典：Claude の自作」と出す（`TODO.md` の完了条件）
    （`logs/decisions.md` 2026-10-03「出典をアプリの画面に出す」）。原文を書き換えたものは、書き換えたことも一行で出す（CC BY 4.0 の「変更点の明示」。Claude が足した要素）
 2. **条件**：仕上がりの調整だけ。3 つの選択（加工の強さ・色味・縦横比）と 6 つのトグル。
    人物・構図の保持はここには出さず、プリセットが固定で持つ（下の「保持は固定」）
@@ -127,7 +127,7 @@ type Preset = {
   style: string // 見た目の指定（Style）
   negative: string[] // プリセット固有の「〜しない」（「Do not:」に続く小文字始まりの動詞句）
   defaultToggles: ToggleId[]
-  source: { label: string; url?: string; license?: string; licenseUrl?: string; checkedOn?: string; modified?: string } // 英文の出典（外部由来は「作者 — 作品名」・URL・ライセンスとそのリンク・確認日、書き換えたら箇所）。url を持つものはカードに出典を出す
+  source: { kind: 'user' | 'web' | 'claude'; label: string; url?: string; license?: string; licenseUrl?: string; checkedOn?: string; modified?: string } // 英文の出典。kind はユーザー提供・Web 原文・Claude の自作の区別。web は「作者 — 作品名」・URL・ライセンスとそのリンク・確認日、書き換えたら箇所を持つ。web と claude はカードに出典を出す
 }
 
 // 固定の保持文。subject ごとに 1 組。実験モード（MVP 後）以外では常に付く
