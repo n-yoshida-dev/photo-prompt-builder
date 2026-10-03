@@ -160,6 +160,7 @@ describe('人物を残す版と消す版のペア（logs/decisions.md 2026-10-03
     }
     expect(family.base).toBe(scene.base)
     expect(family.style).toBe(scene.style)
+    expect(family.defaultToggles).toEqual(scene.defaultToggles)
     expect(scene.subject).toBe('scene')
     expect(family.subject).toBe('people-in-scene')
     expect(scene.negative.join(' ')).toMatch(/include any of the people/)
