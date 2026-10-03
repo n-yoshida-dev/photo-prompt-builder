@@ -67,8 +67,8 @@ function unwrapParagraphs(text: string): string {
     .join('\n\n')
 }
 
-// Web で公開された原文を種にしたプリセット（出典の URL を持つもの）
-const webPresets = catalog.presets.filter((p) => p.source.url !== undefined)
+// Web で公開された原文を種にしたプリセット
+const webPresets = catalog.presets.filter((p) => p.source.kind === 'web')
 
 describe('確定 2 本のプリセットは原文のまま', () => {
   it.each(['diorama', 'editorial-poster'])(
@@ -144,6 +144,22 @@ describe('Web 原文のプリセットは、書き換えた箇所の表に載せ
     expect(noticesText).toContain('Permission is hereby granted, free of charge')
     expect(noticesText).toContain('The above copyright notice and this permission notice')
     expect(noticesText).toContain('THE SOFTWARE IS PROVIDED "AS IS"')
+  })
+})
+
+describe('出典の種類', () => {
+  it('Web 原文だけが出典の URL を持ち、ユーザー提供と自作は持たない', () => {
+    for (const preset of catalog.presets) {
+      expect(preset.source.url !== undefined, preset.id).toBe(preset.source.kind === 'web')
+    }
+  })
+
+  it('Claude の自作は、カードに出る出典名が「Claude の自作」', () => {
+    const selfMade = catalog.presets.filter((p) => p.source.kind === 'claude')
+    expect(selfMade.map((p) => p.id)).toEqual(['clay-animation', 'yarn-embroidery'])
+    for (const preset of selfMade) {
+      expect(preset.source.label, preset.id).toBe('Claude の自作')
+    }
   })
 })
 

@@ -29,12 +29,16 @@ export type Preset = {
   style: string // 見た目の指定（Style）
   negative: string[] // 「Do not:」に続く動詞句
   defaultToggles: ToggleId[]
-  source: PresetSource // 英文の出どころ。外部由来のものはスタイルのカードと README に出す（logs/decisions.md 2026-10-03）
+  source: PresetSource // 英文の出どころ。Web 原文はスタイルのカードに出す（logs/decisions.md 2026-10-03）。自作も出すのは Claude が書いた TODO の完了条件による
 }
+
+// 英文の出どころの種類。user＝ユーザー提供（docs/seed-prompts.md）、web＝Web で公開された原文、claude＝Claude の自作
+export type PresetSourceKind = 'user' | 'web' | 'claude'
 
 // 英文の出どころ。外部由来の文は出典と確認日を持つ（../CLAUDE.md のマスタデータの扱い）
 export type PresetSource = {
-  label: string // 出典の名前（外部由来なら「作者 — 作品名」。カードにそのまま出る）
+  kind: PresetSourceKind
+  label: string // 出典の名前（web なら「作者 — 作品名」、claude なら「Claude の自作」。カードにそのまま出る）
   url?: string // 公開されている出典の URL（ユーザー提供・自作なら無し）
   license?: string // 利用条件（例：CC BY 4.0）
   licenseUrl?: string // 利用条件の本文へのリンク。全文を同梱するものはアプリ内のファイルを指す

@@ -16,7 +16,7 @@ const fixture: Catalog = {
       style: 'STYLE-P.',
       negative: ['preset negative'],
       defaultToggles: ['no-text'],
-      source: { label: 'テスト' },
+      source: { kind: 'user', label: 'テスト' },
     },
     {
       id: 'scene-preset',
@@ -27,7 +27,7 @@ const fixture: Catalog = {
       style: 'STYLE-S.',
       negative: [],
       defaultToggles: [],
-      source: { label: 'テスト' },
+      source: { kind: 'user', label: 'テスト' },
     },
   ],
   preserve: {

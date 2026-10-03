@@ -53,7 +53,7 @@ describe('App', () => {
 
   it('Web の原文を種にしたスタイルのカードに、出典とライセンスのリンクと書き換えたことが出る', () => {
     render(<App />)
-    const webPresets = catalog.presets.filter((p) => p.source.url !== undefined)
+    const webPresets = catalog.presets.filter((p) => p.source.kind === 'web')
     expect(webPresets.length).toBeGreaterThan(0)
     for (const preset of webPresets) {
       const { label, url, license, licenseUrl, modified } = preset.source
@@ -69,6 +69,13 @@ describe('App', () => {
         /出典/,
       )
     }
+  })
+
+  it('Claude の自作のスタイルのカードには「出典：Claude の自作」が出る', () => {
+    render(<App />)
+    const selfMade = catalog.presets.filter((p) => p.source.kind === 'claude')
+    expect(selfMade.length).toBeGreaterThan(0)
+    expect(screen.getAllByText('出典：Claude の自作')).toHaveLength(selfMade.length)
   })
 
   it('ユーザー提供のスタイルのカードには出典の行が出ない', () => {
