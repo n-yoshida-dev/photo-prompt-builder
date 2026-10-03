@@ -29,7 +29,7 @@ export type Preset = {
   style: string // 見た目の指定（Style）
   negative: string[] // 「Do not:」に続く動詞句
   defaultToggles: ToggleId[]
-  source: PresetSource // 英文の出どころ。Web 原文と自作のものはスタイルのカードに出す（logs/decisions.md 2026-10-03）
+  source: PresetSource // 英文の出どころ。Web 原文はスタイルのカードに出す（logs/decisions.md 2026-10-03）。自作も出すのは Claude が書いた TODO の完了条件による
 }
 
 // 英文の出どころの種類。user＝ユーザー提供（docs/seed-prompts.md）、web＝Web で公開された原文、claude＝Claude の自作
