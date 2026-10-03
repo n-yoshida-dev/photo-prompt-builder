@@ -43,7 +43,7 @@ npm run format:check && npm run lint && npm run typecheck && npm run test && npm
 | スタイル | 出典 | ライセンス | 原文からの変更 |
 |---|---|---|---|
 | 手描きアニメ映画風 | [SeeAPI — Nano Banana Prompts for Image Editing](https://github.com/SeeAPI/nano-banana-prompts-for-image-editing)（README 4.3 節） | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | 実在のアニメスタジオの名前を、一般的な言い方に置き換えた |
-| 透明水彩 | [AlbertAZ1992 — Albert’s Imagebook](https://github.com/AlbertAZ1992/albert-imagebook)（`styles/watercolor-light`） | MIT。著作権表示と許諾文の全文は [`frontend/public/third-party-notices.txt`](frontend/public/third-party-notices.txt)（公開物にも同じファイルが入る） | 段落の途中の改行を空白にした |
+| 透明水彩 | [AlbertAZ1992 — Albert’s Imagebook](https://github.com/AlbertAZ1992/albert-imagebook)（`styles/watercolor-light`） | MIT。著作権表示と許諾文の全文は [`frontend/public/third-party-notices.txt`](frontend/public/third-party-notices.txt)（公開物にも同じファイルが入る） | 色の指定（青・黄土・淡い桃色を使う一文）を外した。段落の途中の改行を空白にした |
 | インスタント写真風 | [SeeAPI — Nano Banana Prompts for Image Editing](https://github.com/SeeAPI/nano-banana-prompts-for-image-editing)（README 4.1 節） | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | 商標（インスタントカメラのブランド名）を消した |
 
 ## ライセンス

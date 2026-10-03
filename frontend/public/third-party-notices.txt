@@ -35,7 +35,10 @@ Commit used: 277f38d1f12a90296d11b7dc4954155821a66e6e
 
 Used in this app as:
 - "watercolor": styles/watercolor-light/prompt.md, "Prompt" section.
-  Changes: line breaks inside paragraphs were joined with spaces.
+  Changes: line breaks inside paragraphs were joined with spaces, and
+  the sentence that sets a color palette ("Use sea blue, ochre and faint
+  peach selectively, ...") was removed so that clothing colors stay as
+  in the photo.
 
 MIT License
 
