@@ -10,6 +10,28 @@
 
 ---
 
+### 2026-10-03：スタイルの見本は、Claude が VS Code 拡張機能の中の codex を `codex exec` で動かして作る
+
+- **やり方**：codex は PATH に無いが、VS Code の拡張機能の中にある：
+  `~/.vscode-server/extensions/openai.chatgpt-<版>-linux-x64/bin/linux-x86_64/codex`（拡張機能の更新で `<版>` が変わる。`ls -d ... | sort -V | tail -1` で最新を選ぶ）。
+  `codex exec --skip-git-repo-check -s workspace-write -c 'model_reasoning_effort="low"'` で動かし、組み込みの `image_gen` ツールで作らせる。API キーは要らず、ユーザーの ChatGPT の利用枠を使う
+- **設計判断**：`~/.codex/config.toml` の既定は `model_reasoning_effort = "ultra"`。画像 1 枚の指示には過剰なので `low` に下げた
+  （1 枚あたり 1〜5.5 万トークン・1〜2 分。2026-10-03 の 7 枚で計約 17 万トークン。同じ指示でも回によって幅がある）
+- **ハマったこと**：加工する画像を渡す `-i` は複数のファイルを受け取るので、`-i base.png "指示文"` と書くと指示文までファイル名として飲み込まれ、
+  「No prompt provided via stdin.」で終わる。`-i base.png -- "指示文"` と `--` で区切る
+- 作った画像は `~/.codex/generated_images/<セッション id>/` に保存される。指示文で「作業フォルダに `sample-<id>.png` としてコピーする」と頼む
+- 見本はアプリが作るプロンプトそのものの結果にしたいので、`catalog.test.ts` のスナップショット（全プリセット × 既定の条件の出力全文）から取り出して渡し、
+  「BEGIN と END の間を一字も変えずに使う」と指示した
+- 元の写真は AI で作った架空の写真 2 枚（`logs/decisions.md` 2026-10-03）。人物用は家族 3 人（黄色いニット帽・ボーダーの服・前歯の抜けた笑顔・眼鏡など、
+  保持文が効いたかを目で確かめられる特徴を入れた）。風景用（`diorama`）は角地の小さな喫茶店の建物で、人は写さない。どちらの中身も Claude が決めた
+- 試作の画像・使った指示文・生成スクリプト（`run-all.sh`）・ログは、リポジトリの外の `~/.cache/photo-prompt-builder/samples-2026-10-03/` に置いた
+  （`small/` は幅 900px の JPEG。載せる PR で選んで縮小し、`frontend/public/` に入れる）。画像処理のライブラリが無いので、縮小は Playwright の Chromium の canvas で行った
+- 2026-10-03 の試作で見えたこと（架空の写真 1 枚ずつ。子どもの実写真ではない）：人物用の 4 本とも人数・服・前歯の抜けた笑顔・眼鏡が残った。
+  `diorama` は建物の写真から台座付きの模型になった。
+  `instant-photo` は "Polaroid" を消しても白い縁と色あせが出た。`watercolor` は父のグレーのパーカーに少し青みが入った（原文の "sea blue" の影響かもしれない。`docs/web-prompts.md` の注意書き）。
+  `editorial-poster` は原文の TYPOGRAPHY の指定どおり "Autumn Days" の文字が入った
+- 実行時の「bubblewrap が無い」の警告は、同梱の bubblewrap が代わりに使われるので無視してよい
+
 ### 2026-10-03：Web 原文のプリセットは「原文＋書き換え表＝presets.ts」をテストで確かめ、出典はカードのラベルの外に出す
 
 - **設計判断**：`docs/web-prompts.md` に原文（出典のファイルから取ったまま）と書き換えた箇所の表を置き、`catalog.test.ts` が
