@@ -66,7 +66,7 @@ export const presets: Preset[] = [
     subject: 'people',
     base: 'Read the source photo for its defining subject, pose and relationships. Preserve those facts.',
     style:
-      'Adapt the material and graphic language to the supplied scene; do not import motifs that do not belong to the source.\n\nUse transparent watercolor washes with delicate pencil structure, watery pigment and dry broken outer edges. Let paper shine through. Use sea blue, ochre and faint peach selectively, preserving the source subject and relationships. Avoid opaque digital paint, hard vector edges and a filled rectangular background.',
+      'Adapt the material and graphic language to the supplied scene; do not import motifs that do not belong to the source.\n\nUse transparent watercolor washes with delicate pencil structure, watery pigment and dry broken outer edges. Let paper shine through. Avoid opaque digital paint, hard vector edges and a filled rectangular background.',
     negative: [],
     defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
     source: {
@@ -76,6 +76,8 @@ export const presets: Preset[] = [
       // MIT は著作権表示と許諾文の全文を配布物に入れる義務があるので、同梱したファイルを指す（frontend/public/）
       licenseUrl: 'third-party-notices.txt',
       checkedOn: '2026-10-03',
+      modified:
+        '原文にある色の指定（青・黄土・淡い桃色を使う一文）を外した。子どもの服の色が変わらないように',
     },
   },
   {

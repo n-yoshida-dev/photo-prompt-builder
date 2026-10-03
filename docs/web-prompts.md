@@ -82,18 +82,16 @@ rectangular background.
 
 | 原文 | 書き換え後 | 理由 |
 |---|---|---|
+| `Let paper shine through. Use sea blue, ochre and faint peach selectively, preserving the source subject and relationships.` | `Let paper shine through.` | 色の指定（青・黄土・淡い桃色）が、固定の保持文の「服の色を変えない」と引っ張り合う。2026-10-03 の試作で父のグレーのパーカーに少し青みが入った。子どもの服の色が変わらないように一文ごと外した（`logs/decisions.md` 2026-10-03）。後半の "preserving the source subject and relationships" は `base` の "Preserve those facts." と固定の保持文が受け持つ |
 
-なし（段落の途中の折り返しを空白にしただけ）。
-
-色の一文 "Use sea blue, ochre and faint peach selectively" は、固定の保持文の「服の色を変えない」と引っ張り合うかもしれない。
-使ってみて服の色が変わるようなら、外すかをユーザーに確認する（`docs/prompt-candidates.md` 2026-10-03 の表）。
+ほかは段落の途中の折り返しを空白にしただけ。
 
 ### 書き換え版
 
 ```text
 Read the source photo for its defining subject, pose and relationships. Preserve those facts. Adapt the material and graphic language to the supplied scene; do not import motifs that do not belong to the source.
 
-Use transparent watercolor washes with delicate pencil structure, watery pigment and dry broken outer edges. Let paper shine through. Use sea blue, ochre and faint peach selectively, preserving the source subject and relationships. Avoid opaque digital paint, hard vector edges and a filled rectangular background.
+Use transparent watercolor washes with delicate pencil structure, watery pigment and dry broken outer edges. Let paper shine through. Avoid opaque digital paint, hard vector edges and a filled rectangular background.
 ```
 
 `base` は先頭の 2 文（写真から何を読み取り、何を保つか）、`style` はそれ以降。
