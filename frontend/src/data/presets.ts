@@ -21,6 +21,15 @@ const DIORAMA_BASE =
 const DIORAMA_STYLE =
   'Reconstruct the scene as a clean isometric architectural model, viewed from a slightly elevated 3/4 angle, like a physical scale model placed on a square plinth. Style: high-end architectural visualization, miniature maquette, soft realistic materials, simplified but accurate geometry, subtle bevels, crisp edges, restrained detail, no exaggerated stylization. Materials should closely match the source photo but be slightly softened and desaturated: matte brick, painted metal, concrete, ceramic tile, glass, vegetation. Lighting: soft studio daylight from upper left, diffuse shadows cast onto an off-white background, ambient occlusion in corners and joints, no dramatic contrast. Background: warm off-white / ivory paper texture, minimal editorial presentation. Camera: orthographic or near-orthographic isometric view, approximately 35–45° downward angle, no wide-angle distortion. Composition: isolate only the architecture and immediate surrounding elements visible in the photo. Remove unrelated background buildings, sky, people, cars, signage, clutter, and photographic noise unless they are important to the identity of the scene. The final result should feel like a carefully handcrafted architectural scale model rendered in Blender or Cinema 4D, not like a videogame, cartoon, voxel art, or photorealistic photograph. High geometric fidelity to the reference image. Preserve asymmetry and small imperfections from the real place rather than making the architecture generic. Square base slab under the entire reconstructed scene, with soft contact shadow beneath it. No text, no labels, no typography, no border.'
 
+// travel-stamps と travel-stamps-family に共通の文（Claude の自作。2026-10-03）
+// 型（スタンプを並べたコラージュ）にすると固定の保持文の「同じ配置」とぶつかるので、場面全体を 1 つの大きなスタンプにする。
+// スタンプによくある地名・日付の文字は入れない（既定の「文字を入れない」と合わせる）。インクの色は写真に合わせ、服の色が変わらないようにする
+const TRAVEL_STAMP_BASE =
+  'Turn this photo into one large rubber-stamp print of the same scene, stamped by hand onto a page of a travel journal as a keepsake of the trip.'
+
+const TRAVEL_STAMP_STYLE =
+  'Render the scene the way a hand-carved rubber stamp prints: bold, simplified shapes and lines, flat areas of ink with the slightly uneven coverage, tiny speckles, and soft edges of real ink pressed onto paper, in a small set of flat ink colors that follow the colors in the photo, slightly out of register where the colors overlap. Give the print a simple frame, such as a scalloped postage-stamp edge or a rounded rectangle, with no lettering, numbers, or emblems inside or around it. Keep the same viewpoint and layout of the scene inside the frame, simplified only as much as a carved stamp needs. Show the print on a slightly textured, warm off-white journal page, photographed flat from directly above in soft daylight, with the page filling the image.'
+
 export const presets: Preset[] = [
   {
     id: 'diorama',
@@ -154,6 +163,33 @@ export const presets: Preset[] = [
     negative: [
       'give anyone button eyes, blank faces, or faces left unstitched',
       'cut the people out as separate patches without their background',
+    ],
+    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
+    source: { kind: 'claude', label: 'Claude の自作' },
+  },
+  // 旅のスタンプは「風景だけ」と「家族も」で同じ文を使い、ジオラマと同じくアプリが足すブロックで人物の有無を分ける（logs/decisions.md 2026-10-03）
+  {
+    id: 'travel-stamps',
+    name: '旅のスタンプ（風景だけ）',
+    descriptionJa: '旅先の景色を、旅日記に押した大きなゴム印のスタンプにする。人物は入れない',
+    subject: 'scene',
+    base: TRAVEL_STAMP_BASE,
+    style: TRAVEL_STAMP_STYLE,
+    negative: ['include any of the people from the photo, even those in the foreground'],
+    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
+    source: { kind: 'claude', label: 'Claude の自作' },
+  },
+  {
+    id: 'travel-stamps-family',
+    name: '旅のスタンプ（家族も）',
+    descriptionJa: '旅先の景色と家族をいっしょに、旅日記に押した大きなゴム印のスタンプにする',
+    subject: 'people-in-scene',
+    base: TRAVEL_STAMP_BASE,
+    style: TRAVEL_STAMP_STYLE,
+    // スタンプは線が単純になるので、顔を塗りつぶしや影絵にしない（誰だか分からなくなる）
+    negative: [
+      'remove any of the people in the photo, since they are the main subject of this keepsake',
+      "carve anyone's face as a blank shape or a silhouette",
     ],
     defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
     source: { kind: 'claude', label: 'Claude の自作' },

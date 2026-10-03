@@ -148,6 +148,26 @@ describe('Web 原文のプリセットは、書き換えた箇所の表に載せ
   })
 })
 
+describe('人物を残す版と消す版のペア（logs/decisions.md 2026-10-03「カードを分ける」）', () => {
+  it.each([
+    ['diorama', 'diorama-family'],
+    ['travel-stamps', 'travel-stamps-family'],
+  ])('%s と %s は同じ文で、被写体と Do not だけが違う', (sceneId, familyId) => {
+    const scene = catalog.presets.find((p) => p.id === sceneId)
+    const family = catalog.presets.find((p) => p.id === familyId)
+    if (!scene || !family) {
+      throw new Error(`${sceneId} か ${familyId} がありません`)
+    }
+    expect(family.base).toBe(scene.base)
+    expect(family.style).toBe(scene.style)
+    expect(family.defaultToggles).toEqual(scene.defaultToggles)
+    expect(scene.subject).toBe('scene')
+    expect(family.subject).toBe('people-in-scene')
+    expect(scene.negative.join(' ')).toMatch(/include any of the people/)
+    expect(family.negative.join(' ')).toMatch(/remove any of the people/)
+  })
+})
+
 describe('出典の種類', () => {
   it('Web 原文だけが出典の URL を持ち、ユーザー提供と自作は持たない', () => {
     for (const preset of catalog.presets) {
@@ -157,7 +177,12 @@ describe('出典の種類', () => {
 
   it('Claude の自作は、カードに出る出典名が「Claude の自作」', () => {
     const selfMade = catalog.presets.filter((p) => p.source.kind === 'claude')
-    expect(selfMade.map((p) => p.id)).toEqual(['clay-animation', 'yarn-embroidery'])
+    expect(selfMade.map((p) => p.id)).toEqual([
+      'clay-animation',
+      'yarn-embroidery',
+      'travel-stamps',
+      'travel-stamps-family',
+    ])
     for (const preset of selfMade) {
       expect(preset.source.label, preset.id).toBe('Claude の自作')
     }
