@@ -43,6 +43,39 @@ Composition:
 - Nothing invented beyond the photo's edges: no extra buildings, rooms, streets, or landmarks
 
 Do not:
+- include any of the people from the photo, even those in the foreground
+- add any new text, letters, numbers, captions, labels, logos, signatures, or watermarks that are not in the photo
+- add people, animals, objects, props, decorations, or effects such as sparkles or confetti that are not in the photo, other than a display base or backdrop that the style itself calls for"
+`;
+
+exports[`全プリセット × 既定の条件の出力全文 > diorama-family 1`] = `
+"Transform this photo into a precise architectural 3D miniature diorama. Preserve the exact spatial layout, proportions, major architectural forms, facade materials, stairs, walls, pipes, street objects, vegetation, and distinctive landmarks from the reference image.
+If more than one photo is uploaded, process each photo separately and output one image per photo, without combining photos into a collage or mixing content from different photos.
+
+Reconstruct the scene as a clean isometric architectural model, viewed from a slightly elevated 3/4 angle, like a physical scale model placed on a square plinth. Style: high-end architectural visualization, miniature maquette, soft realistic materials, simplified but accurate geometry, subtle bevels, crisp edges, restrained detail, no exaggerated stylization. Materials should closely match the source photo but be slightly softened and desaturated: matte brick, painted metal, concrete, ceramic tile, glass, vegetation. Lighting: soft studio daylight from upper left, diffuse shadows cast onto an off-white background, ambient occlusion in corners and joints, no dramatic contrast. Background: warm off-white / ivory paper texture, minimal editorial presentation. Camera: orthographic or near-orthographic isometric view, approximately 35–45° downward angle, no wide-angle distortion. Composition: isolate only the architecture and immediate surrounding elements visible in the photo. Remove unrelated background buildings, sky, people, cars, signage, clutter, and photographic noise unless they are important to the identity of the scene. The final result should feel like a carefully handcrafted architectural scale model rendered in Blender or Cinema 4D, not like a videogame, cartoon, voxel art, or photorealistic photograph. High geometric fidelity to the reference image. Preserve asymmetry and small imperfections from the real place rather than making the architecture generic. Square base slab under the entire reconstructed scene, with soft contact shadow beneath it. No text, no labels, no typography, no border.
+
+Preserve from the reference photo:
+- Every person's identity, recognizable at a glance as the same individual, with the style changing only how people are rendered, not who they are
+- Each person's facial features and skin tone as they are, including freckles, moles, and small marks, with no beautifying, skin smoothing, or makeup, and glasses if worn
+- Each person's hairstyle, hair length, bangs, and hair color
+- Each person's facial expression, including the shape of the smile, any visible teeth or tooth gaps, and where the eyes are looking
+- Each person's apparent age exactly as in the photo, with children not made to look older
+- Each person's build and height compared with the others, with no one made slimmer
+- Each person's clothing and accessories: the same garments, colors, patterns, and prints, and items such as hats, hair clips, and bags, with nothing swapped, added, or removed
+- The exact number of people and the mix of adults, children, and babies, with no one added, left out, or merged into someone else
+- Each person's pose, gestures, hand positions, and the direction they are facing, including anything they are holding
+- How the people are arranged: the same order from left to right and front to back, and who is holding hands with, hugging, or carrying whom
+
+Composition:
+- Each person's position relative to the others and to the surroundings, with no one cropped out
+- Every person kept in the scene at the same spot, at a true-to-life size compared with the place, and doing the same thing as in the photo (for example, still on the same playground equipment)
+- The same layout of the place: where the buildings, structures, and objects that are kept sit relative to one another (left, right, front, and back)
+- The same proportions and scale: relative sizes, heights, and spacing, and the same number of floors, windows, doors, and steps
+- The same main subject as the focus of the image
+- Nothing invented beyond the photo's edges: no extra buildings, rooms, streets, or landmarks
+
+Do not:
+- remove any of the people in the photo, since they are important to the identity of this scene
 - add any new text, letters, numbers, captions, labels, logos, signatures, or watermarks that are not in the photo
 - add people, animals, objects, props, decorations, or effects such as sparkles or confetti that are not in the photo, other than a display base or backdrop that the style itself calls for"
 `;

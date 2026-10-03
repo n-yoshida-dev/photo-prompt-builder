@@ -70,8 +70,9 @@ function unwrapParagraphs(text: string): string {
 // Web で公開された原文を種にしたプリセット
 const webPresets = catalog.presets.filter((p) => p.source.kind === 'web')
 
-describe('確定 2 本のプリセットは原文のまま', () => {
-  it.each(['diorama', 'editorial-poster'])(
+describe('ユーザー提供の原文のプリセットは原文のまま', () => {
+  // diorama-family は diorama と同じ原文を使い、人物を残す指示はアプリが足すブロックで付ける（logs/decisions.md 2026-10-03）
+  it.each(['diorama', 'diorama-family', 'editorial-poster'])(
     '%s の base と style を繋ぐと原文と一字一句一致する',
     (id) => {
       const preset = catalog.presets.find((p) => p.id === id)
@@ -171,7 +172,7 @@ describe('マスタデータの形', () => {
       'aspect-ratio',
     ])
     expect(catalog.toggles).toHaveLength(6)
-    expect(Object.keys(catalog.preserve).sort()).toEqual(['people', 'scene'])
+    expect(Object.keys(catalog.preserve).sort()).toEqual(['people', 'people-in-scene', 'scene'])
   })
 
   it('ラジオは先頭（既定）の英文が空で、それ以外は空でない', () => {
@@ -208,6 +209,18 @@ describe('マスタデータの形', () => {
   it('people は identity を持ち、scene は identity を持たない', () => {
     expect(catalog.preserve.people.identity.length).toBeGreaterThan(0)
     expect(catalog.preserve.scene.identity).toEqual([])
+  })
+
+  it('people-in-scene は人物の保持文と場所の構図を併せ持ち、元のカメラの角度は求めない', () => {
+    const mixed = catalog.preserve['people-in-scene']
+    expect(mixed.identity).toEqual(catalog.preserve.people.identity)
+    for (const line of catalog.preserve.scene.composition) {
+      expect(mixed.composition).toContain(line)
+    }
+    // people の構図の 1 行目（元のカメラの角度）は、ジオラマの斜め上からの見せ方とぶつかる
+    const cameraLine = catalog.preserve.people.composition[0]
+    expect(cameraLine).toMatch(/camera angle/)
+    expect(mixed.composition).not.toContain(cameraLine)
   })
 
   it('英文の文法の約束を守る（Do not に続く句は小文字始まり、命令文はピリオドで終わる）', () => {

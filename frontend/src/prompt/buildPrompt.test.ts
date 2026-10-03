@@ -33,6 +33,7 @@ const fixture: Catalog = {
   preserve: {
     people: { identity: ['face', 'clothing'], composition: ['positions'] },
     scene: { identity: [], composition: ['layout'] },
+    'people-in-scene': { identity: ['face'], composition: ['layout with people'] },
   },
   toggles: [
     { id: 'no-text', label: '文字', block: 'negative', text: 'add text' },

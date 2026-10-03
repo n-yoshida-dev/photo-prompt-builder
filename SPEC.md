@@ -38,7 +38,7 @@
 | id | 表示名 | 種 | 被写体 |
 |---|---|---|---|
 | `diorama` | 3D Miniature Diorama（建物だけ） | `docs/seed-prompts.md` 例①（ユーザー提供、検証済み） | 風景 |
-| `diorama-family` | 3D Miniature Diorama（家族も） | 同じ例①の原文のまま。人物を残す指示はアプリが足すブロックで付ける（ユーザーは同じ原文で子どもと遊具のジオラマを作った） | 人物と場所（新設。ジオラマを分ける PR で足す） |
+| `diorama-family` | 3D Miniature Diorama（家族も） | 同じ例①の原文のまま。人物を残す指示はアプリが足すブロックで付ける（ユーザーは同じ原文で子どもと遊具のジオラマを作った） | 人物と場所 |
 | `editorial-poster` | Editorial Poster（写真＋紙のイラスト） | `docs/seed-prompts.md` 例②（ユーザー提供、検証済み） | 人物 |
 | `painted-anime` | 手描きアニメ映画風 | SeeAPI「nano-banana-prompts-for-image-editing」README 4.3 節（CC BY 4.0）。実在のスタジオ名を一般的な言い方に置き換える。ChatGPT の組み込みの「アニメ」と似るが残す（`logs/decisions.md` 2026-10-03） | 人物 |
 | `watercolor` | 透明水彩 | AlbertAZ1992「albert-imagebook」styles/watercolor-light（MIT）。服の色を引っ張る色の一文を外す（`logs/decisions.md` 2026-10-03） | 人物 |
@@ -54,11 +54,17 @@ Web 原文を書き換えるとき（保持文とぶつかる箇所、実在の�
 2026-09-29 の 2 本以外にも当てるのは Claude の推定で、当てるときは確認する。
 選び直しで見送った候補と理由は `logs/decisions.md` 2026-10-03 にある。
 
-「被写体」は、そのプリセットが人物を残すか（人物）、建物や風景を主役にして人物を消すか（風景）の区別。
+「被写体」は、そのプリセットが人物を残すか（人物）、建物や風景を主役にして人物を消すか（風景）、
+建物や遊具などの場所と人物の両方を模型やスタンプのように作り替えるか（人物と場所）の区別。
 下の「保持は固定」で、どの保持文を付けるかがこれで決まる。
-3 つ目の「人物と場所」（ジオラマ・旅のスタンプの「家族も」）に何の保持文を付けるかは、ジオラマを分ける PR で決める（Claude の案：人物の保持文に、
-模型やスタンプの見せ方とぶつからない構図の文を組み合わせる。今の「人物」の構図の文の「元のカメラの角度」はジオラマの斜め上からの見せ方とぶつかる）。
-`diorama`（建物だけ）に「写真の人物を入れない」をアプリのブロックで足すのも Claude の案で、同じ PR で確かめる
+「人物と場所」は 2026-10-03 にジオラマ・旅のスタンプの「家族も」のために Claude が足した（`logs/decisions.md` 2026-10-03 の「カードを分ける」を実現する作り）。
+
+`diorama` と `diorama-family` は同じ原文で、違いはアプリが足すブロックだけ（どちらも Claude の案。Codex で架空の写真に当てて確かめた。KNOWLEDGE.md 2026-10-03）：
+
+| | 被写体（保持文） | プリセット固有の「Do not:」 |
+|---|---|---|
+| `diorama`（建物だけ） | 風景 | 写真の人物を入れない（原文は「場面の特徴に大事でなければ人物を消す」なので、主役の人物は残ることがある） |
+| `diorama-family`（家族も） | 人物と場所 | 写真の人物を消さない（原文の「場面の特徴に大事なら残す」の例外に当たると明示する） |
 
 ## 保持は固定（トグルにしない）
 
@@ -73,6 +79,7 @@ Web 原文を書き換えるとき（保持文とぶつかる箇所、実在の�
 |---|---|
 | 人物 | 顔立ち・表情・体格・年齢の印象／服装／ポーズ／人数と並び（家族構成）／人物どうしの位置関係 |
 | 風景 | 建物や物の配置・比率／元の構図／写真に写っている範囲の外を勝手に足さない |
+| 人物と場所 | 人物の保持文すべて（上の「人物」と同じ）／人物どうしと周りとの位置関係／同じ場所で同じことをしている人物を本物どおりの大きさで残す／「風景」の構図の文すべて。「人物」の構図の「元のカメラの角度」「同じ背景」は、模型の斜め上からの見せ方や台座だけの背景とぶつかるので付けない |
 
 `editorial-poster` の原文は既に同じ趣旨の文（"Keep the main composition, subjects, identity, facial features … unchanged"）を含む。
 重複は害が少ないので MVP では許容し、実験で効果を見る（`docs/seed-prompts.md` のメモ）。
@@ -122,7 +129,7 @@ type Preset = {
   id: string
   name: string // 表示名
   descriptionJa: string // 日本語の一行説明
-  subject: 'people' | 'scene' // 被写体。どの固定保持文を付けるかが決まる
+  subject: 'people' | 'scene' | 'people-in-scene' // 被写体。どの固定保持文を付けるかが決まる
   base: string // 何をするか（Base Prompt）
   style: string // 見た目の指定（Style）
   negative: string[] // プリセット固有の「〜しない」（「Do not:」に続く小文字始まりの動詞句）
@@ -161,7 +168,7 @@ type Selection = {
 // buildPrompt が参照するマスタデータ一式（data/catalog.ts）
 type Catalog = {
   presets: Preset[]
-  preserve: Record<'people' | 'scene', PreserveSet>
+  preserve: Record<'people' | 'scene' | 'people-in-scene', PreserveSet>
   toggles: Toggle[]
   choices: Choice[]
 }

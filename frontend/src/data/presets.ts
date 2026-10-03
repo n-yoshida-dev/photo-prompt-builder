@@ -13,21 +13,47 @@ const SEEAPI_SOURCE = {
   checkedOn: '2026-10-03',
 } as const
 
+// diorama と diorama-family に共通の原文（docs/seed-prompts.md 例①。改変しない）。
+// 人物を残すかどうかは、原文ではなくアプリが足すブロック（negative と保持文）で分ける（logs/decisions.md 2026-10-03）
+const DIORAMA_BASE =
+  'Transform this photo into a precise architectural 3D miniature diorama. Preserve the exact spatial layout, proportions, major architectural forms, facade materials, stairs, walls, pipes, street objects, vegetation, and distinctive landmarks from the reference image.'
+
+const DIORAMA_STYLE =
+  'Reconstruct the scene as a clean isometric architectural model, viewed from a slightly elevated 3/4 angle, like a physical scale model placed on a square plinth. Style: high-end architectural visualization, miniature maquette, soft realistic materials, simplified but accurate geometry, subtle bevels, crisp edges, restrained detail, no exaggerated stylization. Materials should closely match the source photo but be slightly softened and desaturated: matte brick, painted metal, concrete, ceramic tile, glass, vegetation. Lighting: soft studio daylight from upper left, diffuse shadows cast onto an off-white background, ambient occlusion in corners and joints, no dramatic contrast. Background: warm off-white / ivory paper texture, minimal editorial presentation. Camera: orthographic or near-orthographic isometric view, approximately 35–45° downward angle, no wide-angle distortion. Composition: isolate only the architecture and immediate surrounding elements visible in the photo. Remove unrelated background buildings, sky, people, cars, signage, clutter, and photographic noise unless they are important to the identity of the scene. The final result should feel like a carefully handcrafted architectural scale model rendered in Blender or Cinema 4D, not like a videogame, cartoon, voxel art, or photorealistic photograph. High geometric fidelity to the reference image. Preserve asymmetry and small imperfections from the real place rather than making the architecture generic. Square base slab under the entire reconstructed scene, with soft contact shadow beneath it. No text, no labels, no typography, no border.'
+
 export const presets: Preset[] = [
   {
     id: 'diorama',
-    name: '3D Miniature Diorama',
-    descriptionJa: '写真の建物を、台座に載った精密な建築模型にする。人物は消える',
+    name: '3D Miniature Diorama（建物だけ）',
+    descriptionJa: '写真の建物や遊具を、台座に載った精密な模型にする。人物は入れない',
     subject: 'scene',
-    base: 'Transform this photo into a precise architectural 3D miniature diorama. Preserve the exact spatial layout, proportions, major architectural forms, facade materials, stairs, walls, pipes, street objects, vegetation, and distinctive landmarks from the reference image.',
-    style:
-      'Reconstruct the scene as a clean isometric architectural model, viewed from a slightly elevated 3/4 angle, like a physical scale model placed on a square plinth. Style: high-end architectural visualization, miniature maquette, soft realistic materials, simplified but accurate geometry, subtle bevels, crisp edges, restrained detail, no exaggerated stylization. Materials should closely match the source photo but be slightly softened and desaturated: matte brick, painted metal, concrete, ceramic tile, glass, vegetation. Lighting: soft studio daylight from upper left, diffuse shadows cast onto an off-white background, ambient occlusion in corners and joints, no dramatic contrast. Background: warm off-white / ivory paper texture, minimal editorial presentation. Camera: orthographic or near-orthographic isometric view, approximately 35–45° downward angle, no wide-angle distortion. Composition: isolate only the architecture and immediate surrounding elements visible in the photo. Remove unrelated background buildings, sky, people, cars, signage, clutter, and photographic noise unless they are important to the identity of the scene. The final result should feel like a carefully handcrafted architectural scale model rendered in Blender or Cinema 4D, not like a videogame, cartoon, voxel art, or photorealistic photograph. High geometric fidelity to the reference image. Preserve asymmetry and small imperfections from the real place rather than making the architecture generic. Square base slab under the entire reconstructed scene, with soft contact shadow beneath it. No text, no labels, no typography, no border.',
-    negative: [],
+    base: DIORAMA_BASE,
+    style: DIORAMA_STYLE,
+    // 原文は「場面の特徴に大事でなければ人物を消す」なので、主役の人物は残ることがある。建物だけの版では人物を入れないとはっきり足す（Claude の案）
+    negative: ['include any of the people from the photo, even those in the foreground'],
     defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
     source: {
       kind: 'user',
       label: 'ユーザー提供（検証済み。docs/seed-prompts.md 例①）',
       checkedOn: '2026-09-06',
+    },
+  },
+  {
+    id: 'diorama-family',
+    name: '3D Miniature Diorama（家族も）',
+    descriptionJa: '写真の建物や遊具と人物をいっしょに、台座に載った精密な模型にする',
+    subject: 'people-in-scene',
+    base: DIORAMA_BASE,
+    style: DIORAMA_STYLE,
+    // 原文の "Remove ... people ... unless they are important to the identity of the scene" の例外に当たると明示する（Claude の案）
+    negative: [
+      'remove any of the people in the photo, since they are important to the identity of this scene',
+    ],
+    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
+    source: {
+      kind: 'user',
+      label: 'ユーザー提供（検証済み。docs/seed-prompts.md 例①。人物を残す指示はアプリが足す）',
+      checkedOn: '2026-10-03',
     },
   },
   {
