@@ -13,8 +13,9 @@ export type ToggleId =
 // ラジオ（いくつかから 1 つ選ぶもの）の id
 export type ChoiceId = 'style-strength' | 'color-mood' | 'aspect-ratio'
 
-// 被写体。人物を残すプリセットか、建物や風景を主役にして人物を消すプリセットか
-export type Subject = 'people' | 'scene'
+// 被写体。人物を残すプリセットか、建物や風景を主役にして人物を消すプリセットか、
+// 建物や遊具などの場所と人物の両方を模型やスタンプのように作り替えるプリセットか（people-in-scene。logs/decisions.md 2026-10-03）
+export type Subject = 'people' | 'scene' | 'people-in-scene'
 
 // プロンプト上のブロック。トグル文をどこに差し込むかを決める
 export type ToggleBlock = 'base' | 'style' | 'negative'
