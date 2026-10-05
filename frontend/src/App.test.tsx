@@ -3,6 +3,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 import { aiSites } from './data/aiSites'
 import { catalog } from './data/catalog'
+import { defaultSelection } from './prompt/selection'
+import { RECENT_KEY } from './storage/recent'
 
 // マスタデータから英文を引く（テストに英文を直書きしない）
 function toggleText(id: string): string {
@@ -49,26 +51,6 @@ describe('App', () => {
     fireEvent.click(screen.getByRole('radio', { name: /Editorial Poster/ }))
     expect(promptText()).toContain(presetBase('editorial-poster'))
     expect(promptText()).not.toContain(presetBase('diorama'))
-  })
-
-  it('Web の原文を種にしたスタイルのカードに、出典とライセンスのリンクと書き換えたことが出る', () => {
-    render(<App />)
-    const webPresets = catalog.presets.filter((p) => p.source.kind === 'web')
-    expect(webPresets.length).toBeGreaterThan(0)
-    for (const preset of webPresets) {
-      const { label, url, license, licenseUrl, modified } = preset.source
-      const sourceLinks = screen.getAllByRole('link', { name: label })
-      expect(sourceLinks.some((link) => link.getAttribute('href') === url)).toBe(true)
-      const licenseLinks = screen.getAllByRole('link', { name: license })
-      expect(licenseLinks.some((link) => link.getAttribute('href') === licenseUrl)).toBe(true)
-      if (modified) {
-        expect(screen.getByText(`変更：${modified}`)).toBeInTheDocument()
-      }
-      // 出典はラベルの外にあるので、ラジオの名前には入らない
-      expect(screen.getByRole('radio', { name: new RegExp(preset.name) })).not.toHaveAccessibleName(
-        /出典/,
-      )
-    }
   })
 
   it('Claude の自作のスタイルのカードには「出典：Claude の自作」が出る', () => {
@@ -214,6 +196,30 @@ describe('最近使った設定', () => {
     fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
     await screen.findByText(/コピーできませんでした/)
     expect(screen.getByRole('button', { name: /3D Miniature Diorama/ })).toBeInTheDocument()
+  })
+
+  it('外したスタイルの記録が残っていても、その記録だけを捨てて画面は動く（logs/decisions.md 2026-10-04）', () => {
+    const removedIds = [
+      'painted-anime',
+      'watercolor',
+      'instant-photo',
+      'clay-animation',
+      'yarn-embroidery',
+    ]
+    const stored = [
+      ...removedIds.map((presetId, i) => ({
+        selection: { ...defaultSelection('diorama'), presetId },
+        savedAt: `2026-10-0${i + 1}T10:00:00.000Z`,
+      })),
+      { selection: defaultSelection('editorial-poster'), savedAt: '2026-10-04T10:00:00.000Z' },
+    ]
+    localStorage.setItem(RECENT_KEY, JSON.stringify(stored))
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(<App />)
+    expect(screen.getByRole('heading', { name: 'photo-prompt-builder' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /Editorial Poster/ }))
+    expect(promptText()).toContain(presetBase('editorial-poster'))
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('5 件'))
   })
 
   it('まだ何もコピーしていなければ案内を出す', () => {

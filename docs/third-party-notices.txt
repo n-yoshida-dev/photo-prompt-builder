@@ -1,8 +1,11 @@
 Third-party notices for photo-prompt-builder
 
-Some of the style prompts in this app are based on prompts published by
-the authors below. The records of the original text, the changes, and the
-sources are kept in docs/web-prompts.md of this app's repository.
+Some of the style prompts that this app used to offer were based on
+prompts published by the authors below. These styles were removed from
+the app on 2026-10-04, and this file is no longer included in the
+published app. The records of the original text, the changes, and the
+sources are kept in docs/web-prompts.md of this app's repository, so
+this file stays in the repository next to that record.
 
 This app is not affiliated with or endorsed by any of these authors.
 

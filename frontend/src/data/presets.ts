@@ -1,17 +1,8 @@
 // プリセットのマスタデータ。英文は原文のまま置き、UI のコードに英文を書かない（CLAUDE.md「守ること」）
 // base と style を半角スペースで繋げると原文に戻ることを catalog.test.ts が確かめる
-// （ユーザー提供の 2 本は docs/seed-prompts.md、Web 原文の 3 本は docs/web-prompts.md の書き換え版と照合する。Claude の自作には原文が無い）
+// （ユーザー提供の 2 本は docs/seed-prompts.md と照合する。Claude の自作には原文が無い。
+// Web 原文の 3 本は 2026-10-04 に外した（logs/decisions.md「パッとしない 5 本は外す」）。記録は docs/web-prompts.md に残っている）
 import type { Preset } from '../prompt/types'
-
-// SeeAPI の 2 本に共通の出典。表示義務は名前・リポジトリとライセンスへのリンク・変更点の明示（docs/web-prompts.md）
-const SEEAPI_SOURCE = {
-  kind: 'web',
-  label: 'SeeAPI — Nano Banana Prompts for Image Editing',
-  url: 'https://github.com/SeeAPI/nano-banana-prompts-for-image-editing',
-  license: 'CC BY 4.0',
-  licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
-  checkedOn: '2026-10-03',
-} as const
 
 // diorama と diorama-family に共通の原文（docs/seed-prompts.md 例①。改変しない）。
 // 人物を残すかどうかは、原文ではなくアプリが足すブロック（negative と保持文）で分ける（logs/decisions.md 2026-10-03）
@@ -81,91 +72,6 @@ export const presets: Preset[] = [
       label: 'ユーザー提供（検証済み。docs/seed-prompts.md 例②）',
       checkedOn: '2026-09-06',
     },
-  },
-  {
-    id: 'painted-anime',
-    name: '手描きアニメ映画風',
-    descriptionJa: '繊細な線と水彩のような背景で、手描きのアニメ映画の一場面にする',
-    subject: 'people',
-    base: 'Reinterpret the uploaded image as a classic Japanese animated film-inspired hand-drawn anime scene. Preserve the recognizable identities, expressions, pose, composition, and relationships between the subjects.',
-    style:
-      'Use delicate expressive linework, softly painted watercolor-like backgrounds, gentle cel shading, warm natural colors, and atmospheric light.\n\nTranslate real details into a cohesive illustrated world with lush, carefully observed surroundings and a calm, heartfelt everyday mood. Keep the main facial features recognizable without making everyone look identical. Preserve the original setting rather than introducing existing film characters or replacing the scene. Output one complete illustration with no captions, logos, or borders.',
-    negative: [],
-    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
-    source: {
-      ...SEEAPI_SOURCE,
-      modified: '原文にある実在のアニメスタジオの名前を、一般的な言い方に置き換えた',
-    },
-  },
-  {
-    id: 'watercolor',
-    name: '透明水彩',
-    descriptionJa: '透明水彩と細い鉛筆の線で、紙の白さが透ける淡い絵にする',
-    subject: 'people',
-    base: 'Read the source photo for its defining subject, pose and relationships. Preserve those facts.',
-    style:
-      'Adapt the material and graphic language to the supplied scene; do not import motifs that do not belong to the source.\n\nUse transparent watercolor washes with delicate pencil structure, watery pigment and dry broken outer edges. Let paper shine through. Avoid opaque digital paint, hard vector edges and a filled rectangular background.',
-    negative: [],
-    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
-    source: {
-      kind: 'web',
-      label: 'AlbertAZ1992 — Albert’s Imagebook',
-      url: 'https://github.com/AlbertAZ1992/albert-imagebook',
-      license: 'MIT',
-      // MIT は著作権表示と許諾文の全文を配布物に入れる義務があるので、同梱したファイルを指す（frontend/public/）
-      licenseUrl: 'third-party-notices.txt',
-      checkedOn: '2026-10-03',
-      modified:
-        '原文にある色の指定（青・黄土・淡い桃色を使う一文）を外した。子どもの服の色が変わらないように',
-    },
-  },
-  {
-    id: 'instant-photo',
-    name: 'インスタント写真風',
-    descriptionJa: '白い縁のついた、少し色あせた昔のインスタント写真にする',
-    subject: 'people',
-    base: 'Transform the uploaded image into a believable vintage instant photograph. Preserve the identities, expressions, subject arrangement, and main scene.',
-    style:
-      'Apply soft direct-flash illumination, gently muted colors, warm highlights, slightly faded shadows, subtle film grain, mild lens softness, and natural instant-film imperfections without obscuring faces.\n\nPresent the image inside a clean off-white instant-photo border with a slightly deeper bottom margin. Fit the full main subject within the photo area; do not crop out important features. Keep the effect restrained and photographic. Do not add handwriting, dates, captions, extra people, or heavy damage.',
-    negative: [],
-    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
-    source: {
-      ...SEEAPI_SOURCE,
-      modified: '原文にある商標（インスタントカメラのブランド名）を消した',
-    },
-  },
-  // ここから Claude の自作。利用条件の確認できる原文が無いテーマを、雰囲気だけを参考に一から書いた（docs/prompt-candidates.md「自作する 3 本」）
-  {
-    id: 'clay-animation',
-    name: '粘土アニメ風',
-    descriptionJa: '人物も場所も粘土でこねて作った、コマ撮りアニメの一場面にする',
-    subject: 'people',
-    base: 'Recreate this photo as a single still frame from a handmade stop-motion clay animation, as if the people and the place had been sculpted from modeling clay and photographed on a small, carefully built set.',
-    style:
-      "Sculpt every person, object, and surface from soft, matte modeling clay, with gently rounded edges, faint fingerprints and tool marks, and slightly uneven, hand-pressed surfaces. The whole image must clearly read as a photograph of handmade clay figures on a model set, not as a photograph of real people and not as a smooth computer-rendered image: faces, hands, and hair are made of the same matte clay as everything else, with simplified, sculpted shapes and hair formed from pressed clay strands. Keep each person's body proportions and head-to-body ratio as they are in the photo. Shape faces simply and warmly in clay, keeping each face's outline, eye shape, eyebrows, nose, and smile recognizable, with natural-sized, calm eyes. Build the background as a handmade miniature set of the same place, using clay, felt, card, and painted wood, simplified only as much as the material needs. Light it like a small animation set, with a soft key light, gentle fill, and a slightly shallow depth of field that keeps the people in sharp focus. Match the colors of the photo with solid, slightly muted clay colors.",
-    // 粘土の公開プロンプトによくある頭身の誇張と、子どもの顔が不気味に寄る原因（ガラス玉の目・人形の肌）を止める
-    negative: [
-      "make anyone's head bigger, body shorter, or arms and legs thicker than in the photo",
-      'give anyone glassy, staring, oversized, or doll-like eyes, glossy plastic skin, or realistic skin pores',
-    ],
-    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
-    source: { kind: 'claude', label: 'Claude の自作' },
-  },
-  {
-    id: 'yarn-embroidery',
-    name: '毛糸の刺しゅうワッペン',
-    descriptionJa: '写真全体を、毛糸で刺しゅうした 1 枚のワッペンにする',
-    subject: 'people',
-    base: 'Turn this photo into one hand-embroidered yarn patch that shows the whole scene, as if it had been stitched by hand and photographed lying flat.',
-    style:
-      "Stitch everything in soft wool yarn and cotton embroidery thread: satin stitch and long-and-short stitch for skin, clothing, and large areas, chain stitch and backstitch for outlines and hair, and small French knots for tiny details such as buttons and leaves. Keep the stitches visible, with the soft fuzz of the yarn and the slight unevenness of handwork. Follow the photo's colors with matching thread colors, using a limited palette. Simplify the background into fewer, larger stitched shapes while keeping the same place recognizable. Stitch faces simply but recognizably, following each person's eye shape, eyebrows, and smile. Finish the patch with a thick, raised merrow-stitched border that follows the outline of the photo with softly rounded corners, and lay it flat on a plain natural linen backdrop under soft, even light, with a gentle shadow along the patch edge.",
-    // 人物だけを切り抜いたワッペンは固定の保持文（同じ場所と背景）とぶつかる。ボタンの目は誰だか分からなくなる
-    negative: [
-      'give anyone button eyes, blank faces, or faces left unstitched',
-      'cut the people out as separate patches without their background',
-    ],
-    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
-    source: { kind: 'claude', label: 'Claude の自作' },
   },
   // 旅のスタンプは「風景だけ」と「家族も」で同じ文を使い、ジオラマと同じくアプリが足すブロックで人物の有無を分ける（logs/decisions.md 2026-10-03）
   {

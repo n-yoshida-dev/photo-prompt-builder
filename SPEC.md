@@ -26,7 +26,7 @@
 5. **最近使った設定**：直近 5 件。クリックで復元。あわせて、名前を付けたお気に入りとして保存・呼び出しできるようにする
    （`logs/decisions.md` 2026-10-03。形は実装時に案を出して確かめる）
 
-## プリセット（今は 10 本。見直し後は 5 本＋採った 6 案）
+## プリセット（今は 5 本。採った 6 案を足していく）
 
 届ける相手は子育て世帯のファミリー（`logs/decisions.md` 2026-10-03）。子どもの写真を加工する場面を基準に選ぶ・見直す。
 
@@ -40,24 +40,22 @@
 | `diorama` | 3D Miniature Diorama（建物だけ） | `docs/seed-prompts.md` 例①（ユーザー提供、検証済み） | 風景 |
 | `diorama-family` | 3D Miniature Diorama（家族も） | 同じ例①の原文のまま。人物を残す指示はアプリが足すブロックで付ける（ユーザーは同じ原文で子どもと遊具のジオラマを作った） | 人物と場所 |
 | `editorial-poster` | Editorial Poster（写真＋紙のイラスト） | `docs/seed-prompts.md` 例②（ユーザー提供、検証済み） | 人物 |
-| `painted-anime` | 手描きアニメ映画風 | SeeAPI「nano-banana-prompts-for-image-editing」README 4.3 節（CC BY 4.0）。実在のスタジオ名を一般的な言い方に置き換える。ChatGPT の組み込みの「アニメ」と似るが残す（`logs/decisions.md` 2026-10-03） | 人物 |
-| `watercolor` | 透明水彩 | AlbertAZ1992「albert-imagebook」styles/watercolor-light（MIT）。服の色を引っ張る色の一文を外す（`logs/decisions.md` 2026-10-03） | 人物 |
-| `instant-photo` | インスタント写真風 | SeeAPI 同リポジトリ README 4.1 節（CC BY 4.0）。商標 "Polaroid" を消し、直後の一般的な言い方 "instant photograph" だけを残す | 人物 |
-| `clay-animation` | 粘土アニメ風 | Claude が自作（利用条件の明記された原文なし） | 人物 |
-| `yarn-embroidery` | 毛糸の刺しゅうワッペン | Claude が自作（Web の原文は利用条件が不明なので、雰囲気だけを参考に一から書く） | 人物 |
-| `travel-stamps` | 旅のスタンプ（風景だけ） | Claude が自作（同上） | 風景 |
+| `travel-stamps` | 旅のスタンプ（風景だけ） | Claude が自作（利用条件の明記された原文なし） | 風景 |
 | `travel-stamps-family` | 旅のスタンプ（家族も） | Claude が自作（風景だけの版と同じ画風で、人物を残す） | 人物と場所 |
 
-2026-10-04〜05 のスタイルの見直しで、上の表は次のように変わる（どちらもまだコードには入れていない。`TODO.md` フェーズ2.5）：
+2026-10-04〜05 のスタイルの見直し（`TODO.md` フェーズ2.5）：
 
-- **外す 5 本**（`logs/decisions.md` 2026-10-04「パッとしない 5 本は外す」）：`painted-anime`・`watercolor`・`instant-photo`・`clay-animation`・`yarn-embroidery`
-- **足す 6 案**（`logs/decisions.md` 2026-10-05「推薦 9 案から 6 案を採る」。どれも Claude が一から書く。試作の文は `docs/style-trials-2026-10-04.md`）：
+- **外した 5 本**（`logs/decisions.md` 2026-10-04「パッとしない 5 本は外す」。コードからも外した）：
+  手描きアニメ映画風（`painted-anime`）・透明水彩（`watercolor`）・インスタント写真風（`instant-photo`）・粘土アニメ風（`clay-animation`）・毛糸の刺しゅうワッペン（`yarn-embroidery`）。
+  はじめの 3 本は Web 原文が種で、原文・書き換えた箇所・出典の記録は `docs/web-prompts.md` に残している。アプリで配布しなくなったので、公開物での出典の表示はやめた
+  （著作権表示と許諾文は、記録の原文と並べて `docs/third-party-notices.txt` に置いている）
+- **足す 6 案**（`logs/decisions.md` 2026-10-05「推薦 9 案から 6 案を採る」。まだコードには入れていない。どれも Claude が一から書く。試作の文は `docs/style-trials-2026-10-04.md`）：
   写真とらくがきの小人、写真の続きを描いたスケッチブック、飛び出す絵本、記念切手、すごろく盤、思い出の標本箱。
   id・表示名・被写体の種類は、作るタスクで決めて表に足す
 
 Web 原文を書き換えるとき（保持文とぶつかる箇所、実在のスタジオ名・商標）は、原文・書き換え版・書き換えた箇所・出典を
 `docs/web-prompts.md` に並べて記録する（`logs/decisions.md` 2026-09-29、2026-10-03）。ユーザー提供の 2 本は改変しない。
-スタジオ名・商標の置き換えは `painted-anime` と `instant-photo` について決まっている。保持文とぶつかる箇所の書き換えを
+スタジオ名・商標の置き換えは `painted-anime` と `instant-photo` について決まっていた（どちらも 2026-10-04 に外した）。保持文とぶつかる箇所の書き換えを
 2026-09-29 の 2 本以外にも当てるのは Claude の推定で、当てるときは確認する。
 選び直しで見送った候補と理由は `logs/decisions.md` 2026-10-03 にある。
 
