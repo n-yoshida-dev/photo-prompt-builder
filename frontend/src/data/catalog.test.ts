@@ -1,7 +1,7 @@
 // @vitest-environment node
 // 画面を使わないテストなので Node 環境で動かす（jsdom では import.meta.url が file: にならず原文を読めない）
 /// <reference types="node" />
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { buildPrompt } from '../prompt/buildPrompt'
 import { defaultSelection } from '../prompt/selection'
@@ -14,12 +14,17 @@ const seedMarkdown = readFileSync(
   'utf-8',
 )
 
-// Web 原文の記録（原文・書き換えた箇所・書き換え版）。presets.ts の英文と照合する
+// Web 原文の記録（原文・書き換えた箇所・書き換え版）。プリセットからは外したが、記録として残している
 const webMarkdown = readFileSync(new URL('../../../docs/web-prompts.md', import.meta.url), 'utf-8')
 
-// 公開物に入る第三者の表示（frontend/public/ はビルドで dist/ にそのまま入る）
+// 記録に残した原文の著作権表示と許諾文（リポジトリの中だけに置く。公開物には入れない）
+const noticesText = readFileSync(
+  new URL('../../../docs/third-party-notices.txt', import.meta.url),
+  'utf-8',
+)
+
+// frontend/public/ はビルドで dist/ にそのまま入る（公開物）
 const publicDir = new URL('../../public/', import.meta.url)
-const noticesText = readFileSync(new URL('third-party-notices.txt', publicDir), 'utf-8')
 
 // Markdown から、指定した書き出しで始まる段落を 1 つ取り出す
 function paragraphStartingWith(markdown: string, head: string): string {
@@ -85,29 +90,40 @@ describe('ユーザー提供の原文のプリセットは原文のまま', () =
   )
 })
 
-describe('Web 原文のプリセットは、書き換えた箇所の表に載せた語句以外は原文のまま', () => {
-  it('Web 原文のプリセットが 3 本ある', () => {
-    expect(webPresets.map((p) => p.id)).toEqual(['painted-anime', 'watercolor', 'instant-photo'])
+// Web 原文の 3 本（painted-anime・watercolor・instant-photo）は 2026-10-04 に外した（logs/decisions.md「パッとしない 5 本は外す」）。
+// Web 原文のプリセットを戻すときは、出典の表示と presets.ts との照合のテストを、外す前の版（git 履歴）から戻す
+describe('Web 原文の扱い', () => {
+  it('Web 原文のプリセットは今は無く、公開物に第三者の表示を入れていない', () => {
+    expect(webPresets).toEqual([])
+    expect(existsSync(new URL('third-party-notices.txt', publicDir))).toBe(false)
   })
 
-  it.each(webPresets.map((p) => p.id))(
-    '%s：原文に書き換え表を当てると書き換え版になり、presets.ts と一字一句一致する',
-    (id) => {
-      const preset = catalog.presets.find((p) => p.id === id)
-      if (!preset) {
-        throw new Error(`プリセット ${id} がありません`)
-      }
-      const section = webSection(id)
-      let expected = unwrapParagraphs(codeBlockAfter(section, '原文'))
-      for (const [from, to] of replacementsIn(section)) {
-        // 書き換える語句は原文にちょうど 1 回だけ出る（どこを書き換えたかが一意に決まる）
-        expect(expected.split(from).length - 1, `${id}: ${from}`).toBe(1)
-        expected = expected.replace(from, to)
-      }
-      expect(codeBlockAfter(section, '書き換え版')).toBe(expected)
-      expect(`${preset.base} ${preset.style}`).toBe(expected)
-    },
-  )
+  // web-prompts.md の「## {id}（…」の見出しから、記録に残っている id を読む
+  const recordedIds = [...webMarkdown.matchAll(/^## ([a-z-]+)（/gm)].map((m) => m[1] ?? '')
+
+  it('外した 3 本の記録が web-prompts.md に残っている', () => {
+    expect(recordedIds).toEqual(['painted-anime', 'watercolor', 'instant-photo'])
+  })
+
+  it.each(recordedIds)('%s：記録の原文に書き換え表を当てると書き換え版になる', (id) => {
+    const section = webSection(id)
+    let expected = unwrapParagraphs(codeBlockAfter(section, '原文'))
+    for (const [from, to] of replacementsIn(section)) {
+      // 書き換える語句は原文にちょうど 1 回だけ出る（どこを書き換えたかが一意に決まる）
+      expect(expected.split(from).length - 1, `${id}: ${from}`).toBe(1)
+      expected = expected.replace(from, to)
+    }
+    expect(codeBlockAfter(section, '書き換え版')).toBe(expected)
+  })
+
+  it('記録に残した原文の著作権表示と MIT の許諾文の全文が、リポジトリに残っている', () => {
+    expect(noticesText).toContain('Copyright (c) 2026 Albert')
+    // CC BY 4.0 も、作者が付けた著作権表示を残す（3(a)(1)(A)(ii)）
+    expect(noticesText).toContain('Copyright (c) 2026 SeeAPI.')
+    expect(noticesText).toContain('Permission is hereby granted, free of charge')
+    expect(noticesText).toContain('The above copyright notice and this permission notice')
+    expect(noticesText).toContain('THE SOFTWARE IS PROVIDED "AS IS"')
+  })
 
   it('実在のスタジオ名・商標がプロンプトに残っていない（logs/decisions.md 2026-10-03）', () => {
     for (const preset of catalog.presets) {
@@ -115,36 +131,6 @@ describe('Web 原文のプリセットは、書き換えた箇所の表に載せ
         expect(`${preset.base} ${preset.style}`, preset.id).not.toContain(name)
       }
     }
-  })
-
-  it.each(webPresets.map((p) => p.id))(
-    '%s：出典の表示に要るもの（作者・URL・ライセンスとそのリンク・確認日）が揃い、公開物の表示に載っている',
-    (id) => {
-      const source = catalog.presets.find((p) => p.id === id)?.source
-      expect(source?.label, id).toMatch(/ — /) // 「作者 — 作品名」
-      expect(source?.license, id).toBeTruthy()
-      expect(source?.licenseUrl, id).toBeTruthy()
-      expect(source?.checkedOn, id).toMatch(/^\d{4}-\d{2}-\d{2}$/)
-      expect(noticesText, id).toContain(source?.url)
-      expect(noticesText, id).toContain(`"${id}"`)
-    },
-  )
-
-  it('MIT のプリセットは、著作権表示と許諾文の全文を公開物に同梱し、ライセンスのリンクがそれを指す', () => {
-    const mitPresets = webPresets.filter((p) => p.source.license === 'MIT')
-    expect(mitPresets.length).toBeGreaterThan(0)
-    for (const preset of mitPresets) {
-      const licenseUrl = preset.source.licenseUrl ?? ''
-      // アプリ内のファイルを相対パスで指す（GitHub Pages の base の下でも開ける）
-      expect(licenseUrl, preset.id).not.toMatch(/^https?:/)
-      expect(readFileSync(new URL(licenseUrl, publicDir), 'utf-8'), preset.id).toBe(noticesText)
-    }
-    expect(noticesText).toContain('Copyright (c) 2026 Albert')
-    // CC BY 4.0 も、作者が付けた著作権表示を残す（3(a)(1)(A)(ii)）
-    expect(noticesText).toContain('Copyright (c) 2026 SeeAPI.')
-    expect(noticesText).toContain('Permission is hereby granted, free of charge')
-    expect(noticesText).toContain('The above copyright notice and this permission notice')
-    expect(noticesText).toContain('THE SOFTWARE IS PROVIDED "AS IS"')
   })
 })
 
@@ -177,12 +163,7 @@ describe('出典の種類', () => {
 
   it('Claude の自作は、カードに出る出典名が「Claude の自作」', () => {
     const selfMade = catalog.presets.filter((p) => p.source.kind === 'claude')
-    expect(selfMade.map((p) => p.id)).toEqual([
-      'clay-animation',
-      'yarn-embroidery',
-      'travel-stamps',
-      'travel-stamps-family',
-    ])
+    expect(selfMade.map((p) => p.id)).toEqual(['travel-stamps', 'travel-stamps-family'])
     for (const preset of selfMade) {
       expect(preset.source.label, preset.id).toBe('Claude の自作')
     }
