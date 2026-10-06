@@ -10,6 +10,19 @@
 
 ---
 
+### 2026-10-06：Codex の利用上限に当たると数日止まる。作業用スクリプトは `~/.cache/photo-prompt-builder/tools/` に置いた
+
+- **ハマったこと**：飛び出す絵本と記念切手の 1 枚目を頼んだところ、2 本とも「You've hit your usage limit. ... try again at Oct 10th, 2026 9:48 AM.」で止まった（モデルは gpt-6.1-sol、考える深さ low）。
+  今回の再開の時刻は 3 日半後（同じ日の昼に当たったときは、表示された時刻の 1 分後に通った）。モデルを変えても同じ利用枠なので、時刻まで待つしかない
+- 依頼書を作るスクリプト（`make-request.ts`）と連続 3 語の照合（`ngram-check.ts`）は、scratchpad ではなく `~/.cache/photo-prompt-builder/tools/` に置いた（セッションの再開で消えないように）。
+  どちらも `cd ~/.cache/photo-prompt-builder/tools && npx --yes tsx <スクリプト> ...` で動く。取ってきた着想元の原文は `~/.cache/photo-prompt-builder/sources/`。
+  Codex は `codex-run.sh -m gpt-6.1-sol -e low -s workspace-write --skip-git-repo-check -C <画像の置き場> -i <元の写真> -f <依頼書> -o <結果>` で呼ぶ
+  （画像を作るのは表の用途 design・screen・review・implement のどれでもないので、表のモデルを -m で明示し、考える深さだけ low にした）
+- 連続 3 語の照合は、大きな集め物の README（JimmyLv・YouMind・PicoTrex）に "in the photo" "of the image" "on a wooden" のような並びが多く、最初は飛び出す絵本で 38 個重なった。
+  "photo" を "snapshot" に言い換え、決まり文句を崩して 0 にした（らくがきの小人が "in the picture" と書いているのと同じやり方）。
+  "pop-up book" も 3 語に数えると "pop up book" で重なるので "pop-up storybook" にした。記念切手の着想元のうち lilachbullock.com は 403 で取れず、X の投稿も開けない（調査のときから同じ）。
+  note の 2 本は記事が日本語で、英文の並びは少ない
+
 ### 2026-10-06：スケッチブックは、AI が元の写真をページ全体に引き伸ばし、真ん中だけを写真で残す
 
 - **ハマったこと**：「写真の続きを描いたスケッチブック」の 1・2 回目は、プリントの中の写真が元より狭く切り取られ、絵の側には写真の切り落とした端が鉛筆画で描かれた

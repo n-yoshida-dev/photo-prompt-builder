@@ -114,6 +114,47 @@ export const presets: Preset[] = [
     defaultToggles: ['no-text', 'one-per-photo'],
     source: { kind: 'claude', label: 'Claude の自作' },
   },
+  // ここから 2 本は、写真の場面が紙の物・印刷物になる（Claude の自作。2026-10-06。試作は docs/style-trials-2026-10-04.md）。
+  // 場所と人物の両方を作り替えるので被写体は people-in-scene（ジオラマ・旅のスタンプの「家族も」と同じ。元のカメラの角度は求めない）
+  {
+    id: 'pop-up-book',
+    name: '飛び出す絵本',
+    descriptionJa:
+      '写真の場面を、机の上で開いた紙細工の飛び出す絵本にする。家族は写真から切り抜いた紙で立つ',
+    subject: 'people-in-scene',
+    base: "Rebuild this snapshot's scene as a handmade pop-up storybook spread open, with the place rising off its pages in cut and folded card.",
+    // 人物は写真を厚紙に刷って切り抜いた形にする。顔を紙の絵に描き直さないので、うちの子と分かる顔が残る（試作で確かめた形）
+    style:
+      "Show the opened storybook lying across an oak desk in soft daylight, viewed slightly from above and straight ahead, so the depth of its card layers is plain to see and the book nearly fills the picture. Build the place from stacked layers of colored cardstock with crisp cut edges, small folds, hinges, and pull tabs: ground and paths lie flat on the pages, trees, buildings, and play equipment stand up as cut-out layers at their real places, and the sky curves up behind them in one sheet of paper. Print every family member straight from the snapshot onto stiff card, trim each figure along its outline leaving a narrow white edge, and stand each one up in the layer matching where it stands in the snapshot, so faces remain exactly as photographed. Keep the book's central fold clear of every face. Match the paper colors to the snapshot's own colors, and cast soft shadows from one layer onto the next.",
+    negative: [
+      "redraw anyone's face as paper art or a drawing",
+      "let the central fold run across anyone's face",
+    ],
+    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
+    source: { kind: 'claude', label: 'Claude の自作' },
+  },
+  {
+    // 表示名は旅のスタンプと紛らわしくない案をユーザーに確かめる（TODO.md）。今は仮の名前
+    id: 'commemorative-stamp',
+    name: '封筒に貼った記念切手',
+    descriptionJa: '写真の場面を絵にした記念切手を、消印を押した封筒に貼る',
+    subject: 'people-in-scene',
+    base: 'Make this snapshot the artwork of one commemorative stamp, stuck on an envelope that has been through the post.',
+    // 試作では切手の絵が写真に近かった（docs/style-trials-2026-10-04.md）。保持文が顔を写実に引っ張ると Claude は推定し、
+    // 絵は「描いた挿絵を印刷したもの」とはっきり書く。細い線の版画調は子どもの顔が老けやすい（調査レポート）ので、平らな色面の挿絵にする
+    style:
+      "Paint the stamp's artwork as an illustration, never as a photograph: gouache-style painting with flat, softly shaded areas of color, clean simple outlines, and gently simplified shapes, printed with a fine dot screen as real stamps are. Paint faces in that same illustrated manner, with soft, simple features that still let each person be recognized at once. Everything listed below about people and place refers to the stamp's artwork. Give the stamp a white perforated border with evenly spaced round teeth. Its only marking is one small numeral for the value in one corner; no words, country names, personal names, or dates appear anywhere on the stamp, postmark, or envelope. Stick the stamp near the upper corner of a cream-colored envelope, with a round postmark of plain rings and wavy lines partly over its edge. Shoot it flat from directly above in soft daylight, framed close so the stamp fills the shot almost entirely and its faces are easy to see.",
+    negative: [
+      "render the stamp's artwork as a photograph or a filtered photo",
+      'draw faces with fine engraved lines or cross-hatching that make anyone look older',
+      'show more than one stamp',
+      'copy the emblem, logo, or postmark design of any real postal service',
+    ],
+    // 額面の数字だけは許すので「文字を入れない」は既定で OFF（editorial-poster と同じ考え方）。
+    // 数字を許すかはユーザーに確かめる（TODO.md）。ON にすると「Do not:」の文が数字も止める
+    defaultToggles: ['no-extra-objects', 'one-per-photo'],
+    source: { kind: 'claude', label: 'Claude の自作' },
+  },
   // 旅のスタンプは「風景だけ」と「家族も」で同じ文を使い、ジオラマと同じくアプリが足すブロックで人物の有無を分ける（logs/decisions.md 2026-10-03）
   {
     id: 'travel-stamps',
