@@ -250,47 +250,79 @@ body {
   font-size: 0.95rem;
 }
 
-.segmented {
-  display: flex;
-  flex-wrap: wrap;
+/* 選択肢のカード。上に名前（縦横比は形の図も）、その下に何が変わるかの一文（logs/decisions.md 2026-10-03）。
+   欄が広ければ 2 列、狭ければ 1 列に並ぶ */
+.option-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   gap: 0.4rem;
 }
 
-.segment {
-  position: relative;
-  cursor: pointer;
-}
-
-.segment input {
-  position: absolute;
-  opacity: 0;
-  inset: 0;
-  margin: 0;
-  cursor: pointer;
-}
-
-.segment span {
-  display: block;
-  padding: 0.35rem 0.85rem;
+.option-card {
   border: 1.5px solid var(--rule);
-  border-radius: 999px;
-  font-size: 0.925rem;
+  border-radius: 6px;
 }
 
-.segment:hover span {
+.option-card:hover {
   border-color: var(--ink-muted);
 }
 
-.segment input:checked + span {
+.option-card:has(input:checked) {
   border-color: var(--cloth);
-  background-color: var(--cloth);
-  color: var(--paper);
-  font-weight: 700;
+  background-color: var(--cloth-soft);
+  box-shadow: inset 4px 0 0 var(--cloth);
 }
 
-.segment input:focus-visible + span {
+.option-card:has(input:focus-visible) {
   outline: 3px solid var(--cloth);
   outline-offset: 2px;
+}
+
+/* 押すとラジオが選ばれる範囲。説明の一文（.option-note）はラジオの名前に入れないので、この外に置く */
+.option-choice {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.75rem 0.15rem;
+  cursor: pointer;
+}
+
+.option-choice input {
+  flex: none;
+  margin: 0;
+  accent-color: var(--cloth);
+}
+
+.option-name {
+  font-weight: 700;
+  font-size: 0.925rem;
+}
+
+.option-card:has(input:checked) .option-name {
+  color: var(--cloth);
+}
+
+/* 一文の書き出しは、ラジオの右の名前にそろえる */
+.option-note {
+  margin: 0;
+  padding: 0 0.75rem 0.5rem 2rem;
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+/* 縦横比の形の図。高さをそろえ、幅を比に合わせる */
+.option-shape {
+  flex: none;
+  height: 1.4rem;
+  border: 2px solid currentcolor;
+  border-radius: 2px;
+}
+
+/* 元のまま：決まった形が無いので点線の枠にする */
+.option-shape-free {
+  aspect-ratio: 4 / 3;
+  border-style: dashed;
 }
 
 .toggle-list {
