@@ -10,6 +10,25 @@
 
 ---
 
+### 2026-10-07：開くボタンはリンクのままにし、同じクリックの中でコピーを始める
+
+- **設計判断**：「開く」ボタンでコピーも行う（`logs/decisions.md` 2026-10-03）の作りは、`<a target="_blank">` のリンクのまま、`onClick` で `navigator.clipboard.writeText` を呼ぶ形にした。
+  新しいタブはリンクの既定の動きで開くので、ポップアップ（`window.open`）ではなく、ポップアップ制限に掛からない。書き込みは `handleCopy` の最初の `await` より前に始まるので、押した操作の中のコピーとして扱われる
+- 選ばなかった形：コピーを `await` で待ってから `window.open` する。Chrome は押してから数秒は許すが、Safari は待った後の `window.open` を押した操作の外とみなして止めることがある（Claude の知識。Safari では試していない）
+- **確かめ方**：Playwright の Chromium は既定でポップアップ制限を切って起動する（`--disable-popup-blocking`）。`ignoreDefaultArgs` でこれを外して起動し、
+  クリックの無いところ（読み込み時の script）で `window.open` を呼ぶと止められることを対照として確かめてから、ボタンを押した。
+  ChatGPT・Gemini とも新しいタブが開き、クリップボードは画面のプロンプトと一致した（画面あり・なしの両方。行き先のサイトへの通信はその場で差し替え、外へは出していない）
+- **ハマったこと**：対照に `page.evaluate(() => window.open(...))` を使うと止められない。Playwright は `evaluate` をクリック相当（user gesture）で動かすため。`addInitScript` で読み込み時に呼ぶと止められる
+- **ハマったこと**：Playwright はどのページも「フォーカスがある」扱いにする（`Emulation.setFocusEmulationEnabled`。受け入れレビューの指摘）。
+  クリップボードへの書き込みはフォーカスの無いページから拒否されるので、新しいタブが前に出る普段のブラウザでも通るかは、Playwright では確かめられない。
+  そこで Playwright を通さずに Chrome を普段どおり画面ありで起動し、調査用の口（CDP）から本物のマウスのクリックを送った（`check-open-copy-cdp.mjs`）。
+  押した後に元のタブの `document.hasFocus()` が false になる（新しいタブが前に出た）状態で、ChatGPT・Gemini を 3 回ずつ、6 回とも「コピーしました」が出てクリップボードが一致した。
+  開いた先は本物のトップページを読み込んだ（URL にプロンプトは載せていないので、送ったのはトップページの取得だけ）
+- 中クリックや、スマホの長押し「新しいタブで開く」では click が起きないので、コピーしないままタブが開く（受け入れレビューの指摘。ふつうに押す使い方の外なので直していない）
+- Safari（WebKit）は試せていない。Playwright の WebKit は WSL に足りないライブラリ（libgtk-4 など。入れるには管理者の権限が要る）があって起動できない。公開後に iPhone の Safari で一度押して確かめる
+- 確かめのスクリプトは `~/.cache/photo-prompt-builder/tools/check-open-copy.mjs`（対照は `control-popup.mjs`）。`vite preview` を起動してから `node check-open-copy.mjs http://localhost:4173/`（画面ありは `HEADED=1`）。
+  フォーカスが本当に移る確かめは `node check-open-copy-cdp.mjs http://localhost:4173/ ChatGPT`（サイト名は Gemini も可）
+
 ### 2026-10-06：スケッチブックは、AI が元の写真をページ全体に引き伸ばし、真ん中だけを写真で残す
 
 - **ハマったこと**：「写真の続きを描いたスケッチブック」の 1・2 回目は、プリントの中の写真が元より狭く切り取られ、絵の側には写真の切り落とした端が鉛筆画で描かれた

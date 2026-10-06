@@ -142,13 +142,48 @@ describe('コピーと開くボタン', () => {
     '%s を開くリンクは新しいタブで開き、URL にプロンプトを載せない',
     (name, url) => {
       render(<App />)
-      const link = screen.getByRole('link', { name: `${name} を開く` })
+      const link = screen.getByRole('link', { name: `コピーして ${name} を開く` })
       expect(link).toHaveAttribute('href', url)
       expect(link).toHaveAttribute('target', '_blank')
       expect(link).toHaveAttribute('rel', 'noopener noreferrer')
       expect(link.getAttribute('href')).not.toContain('?')
     },
   )
+
+  it('開くボタンは ChatGPT と Gemini の 2 つで、Claude は無い（logs/decisions.md 2026-10-03）', () => {
+    render(<App />)
+    expect(screen.getAllByRole('link', { name: /を開く$/ })).toHaveLength(2)
+    expect(screen.queryByRole('link', { name: /Claude/ })).not.toBeInTheDocument()
+  })
+
+  it.each(aiSites.map((site) => [site.name]))(
+    '%s を開くと、同じクリックの中でプロンプトもコピーし、そう知らせる',
+    async (name) => {
+      const writeText = vi.fn().mockResolvedValue(undefined)
+      stubClipboard(writeText)
+      render(<App />)
+      const link = screen.getByRole('link', { name: `コピーして ${name} を開く` })
+      // jsdom はリンク先へ移動できないので、既定の動き（新しいタブで開く）だけを止める。止めたのはテストで、アプリは止めない
+      link.addEventListener('click', (event) => event.preventDefault())
+      fireEvent.click(link)
+      // クリックの処理の中で書き込みが始まっている（待ってから開く作りではない）
+      expect(writeText).toHaveBeenCalledWith(promptText())
+      expect(await screen.findByText(/コピーしました/)).toBeInTheDocument()
+    },
+  )
+})
+
+describe('写真を扱わない（logs/decisions.md 2026-10-03「写真を選ぶ」を画面から外す）', () => {
+  it('写真を選ぶ欄もファイルの入力も無い', () => {
+    const { container } = render(<App />)
+    expect(container.querySelector('input[type="file"]')).toBeNull()
+    expect(screen.queryByText(/写真を選ぶ/)).not.toBeInTheDocument()
+  })
+
+  it('写真は開いた先の画面で添付すると案内する', () => {
+    render(<App />)
+    expect(screen.getByText(/写真は、開いた先の画面で自分で添付します/)).toBeInTheDocument()
+  })
 })
 
 describe('最近使った設定', () => {
@@ -225,56 +260,5 @@ describe('最近使った設定', () => {
   it('まだ何もコピーしていなければ案内を出す', () => {
     render(<App />)
     expect(screen.getByText(/コピーすると、そのときの選択がここに残ります/)).toBeInTheDocument()
-  })
-})
-
-describe('写真の選択', () => {
-  const originalCreate = URL.createObjectURL
-  const originalRevoke = URL.revokeObjectURL
-
-  beforeEach(() => {
-    // jsdom には一時 URL の仕組みが無いので差し替える
-    let n = 0
-    URL.createObjectURL = vi.fn(() => `blob:test/${++n}`)
-    URL.revokeObjectURL = vi.fn()
-    vi.stubGlobal('fetch', vi.fn())
-    localStorage.clear()
-  })
-
-  afterEach(() => {
-    URL.createObjectURL = originalCreate
-    URL.revokeObjectURL = originalRevoke
-    vi.unstubAllGlobals()
-  })
-
-  it('画像だけを並べ、画像でないファイルは数を知らせる。通信も保存もしない', () => {
-    const { container } = render(<App />)
-    const input = container.querySelector('input[type="file"]') as HTMLInputElement
-    const files = [
-      new File(['a'], 'a.png', { type: 'image/png' }),
-      new File(['b'], 'b.jpg', { type: 'image/jpeg' }),
-      new File(['c'], 'memo.txt', { type: 'text/plain' }),
-    ]
-    fireEvent.change(input, { target: { files } })
-
-    expect(screen.getByText(/2 枚を選んでいます/)).toHaveTextContent(
-      '画像ではないファイル 1 件は除きました',
-    )
-    expect(screen.getByRole('img', { name: 'a.png' })).toHaveAttribute('src', 'blob:test/1')
-    expect(screen.getByRole('img', { name: 'b.jpg' })).toBeInTheDocument()
-    expect(fetch).not.toHaveBeenCalled()
-    expect(localStorage.length).toBe(0)
-  })
-
-  it('選び直すと前の一時 URL を解放する', () => {
-    const { container } = render(<App />)
-    const input = container.querySelector('input[type="file"]') as HTMLInputElement
-    fireEvent.change(input, {
-      target: { files: [new File(['a'], 'a.png', { type: 'image/png' })] },
-    })
-    fireEvent.change(input, {
-      target: { files: [new File(['b'], 'b.png', { type: 'image/png' })] },
-    })
-    expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:test/1')
   })
 })
