@@ -206,6 +206,43 @@ describe('マスタデータの形', () => {
     }
   })
 
+  // 画面の言葉は SPEC.md「条件」の表（logs/decisions.md 2026-10-03「仕上がりを調整する」の言葉を直す）
+  it('ラジオの名前と選択肢の言葉が SPEC の表どおり', () => {
+    expect(catalog.choices.map((c) => [c.label, c.options.map((o) => o.label)])).toEqual([
+      ['加工の強さ', ['標準', '控えめ（写真に近い）', 'しっかり（イラストらしく）']],
+      ['色味', ['元のまま', '淡く', '鮮やかに', '白黒']],
+      ['縦横比', ['元のまま', '正方形 1:1', '縦 3:4', '横 16:9']],
+    ])
+  })
+
+  it('どの選択肢にも、何が変わるかの一文がある', () => {
+    for (const choice of catalog.choices) {
+      for (const option of choice.options) {
+        expect(option.note.trim(), `${choice.id}.${option.id}`).not.toBe('')
+      }
+    }
+  })
+
+  it('縦横比の形の図は、名前の比と同じ形を持つ（元のままは形を持たない）', () => {
+    const aspect = catalog.choices.find((c) => c.id === 'aspect-ratio')
+    expect(aspect).toBeDefined()
+    for (const option of aspect?.options ?? []) {
+      const ratio = /(\d+):(\d+)/.exec(option.label)
+      if (!ratio) {
+        expect(option.shape, option.id).toBeUndefined()
+        continue
+      }
+      expect(option.shape, option.id).toEqual({ width: Number(ratio[1]), height: Number(ratio[2]) })
+    }
+    // 形を持つのは縦横比だけ
+    for (const choice of catalog.choices.filter((c) => c.id !== 'aspect-ratio')) {
+      expect(
+        choice.options.some((o) => o.shape),
+        choice.id,
+      ).toBe(false)
+    }
+  })
+
   it('id に重複が無い', () => {
     const presetIds = catalog.presets.map((p) => p.id)
     expect(new Set(presetIds).size).toBe(presetIds.length)

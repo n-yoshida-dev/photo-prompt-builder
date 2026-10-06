@@ -10,6 +10,35 @@
 
 ---
 
+### 2026-10-07：お気に入りは最近使った設定と別のキーに置き、書き込めなかったことは画面でも知らせる
+
+- **設計判断**：お気に入り（`storage/favorites.ts`）は `photo-prompt-builder:favorites` に置き、最近使った設定とは分けた。件数の上限・同じ内容をまとめる規則が違い（お気に入りは名前で 1 件）、
+  片方が壊れてももう片方を巻き込まないため。復元できるかの確かめ（`parseSelection`）だけを `storage/recent.ts` から共有した
+- 最近使った設定は壊れていたらキーごと消すが、お気に入りは読み込んだときには消さない。利用者が自分で残したもので、消すと戻せないため（直せる余地を残す）。
+  ただし残るのは次に保存・削除するまでで、そのとき画面の一覧で上書きされる（受け入れレビューの指摘。読めなかったものを別のキーに退避する作りは、まだ要らないと見て入れていない）
+- 書き込めなかったとき、最近使った設定は console だけだが、お気に入りは画面にも出す（「画面を閉じると消えます」）。残そうとして押したのに黙って消えると、次に開いたときに気づくことになるため
+- 削除は `window.confirm` で確かめる。1 行の操作で戻せないので、元に戻すボタンを作るより簡単で確かな形を選んだ
+- 一覧の行を説明する言葉（スタイル名・既定から変えた点）は、最近使った設定と同じ関数（`components/selectionSummary.ts`）で作る
+
+### 2026-10-07：開くボタンはリンクのままにし、同じクリックの中でコピーを始める
+
+- **設計判断**：「開く」ボタンでコピーも行う（`logs/decisions.md` 2026-10-03）の作りは、`<a target="_blank">` のリンクのまま、`onClick` で `navigator.clipboard.writeText` を呼ぶ形にした。
+  新しいタブはリンクの既定の動きで開くので、ポップアップ（`window.open`）ではなく、ポップアップ制限に掛からない。書き込みは `handleCopy` の最初の `await` より前に始まるので、押した操作の中のコピーとして扱われる
+- 選ばなかった形：コピーを `await` で待ってから `window.open` する。Chrome は押してから数秒は許すが、Safari は待った後の `window.open` を押した操作の外とみなして止めることがある（Claude の知識。Safari では試していない）
+- **確かめ方**：Playwright の Chromium は既定でポップアップ制限を切って起動する（`--disable-popup-blocking`）。`ignoreDefaultArgs` でこれを外して起動し、
+  クリックの無いところ（読み込み時の script）で `window.open` を呼ぶと止められることを対照として確かめてから、ボタンを押した。
+  ChatGPT・Gemini とも新しいタブが開き、クリップボードは画面のプロンプトと一致した（画面あり・なしの両方。行き先のサイトへの通信はその場で差し替え、外へは出していない）
+- **ハマったこと**：対照に `page.evaluate(() => window.open(...))` を使うと止められない。Playwright は `evaluate` をクリック相当（user gesture）で動かすため。`addInitScript` で読み込み時に呼ぶと止められる
+- **ハマったこと**：Playwright はどのページも「フォーカスがある」扱いにする（`Emulation.setFocusEmulationEnabled`。受け入れレビューの指摘）。
+  クリップボードへの書き込みはフォーカスの無いページから拒否されるので、新しいタブが前に出る普段のブラウザでも通るかは、Playwright では確かめられない。
+  そこで Playwright を通さずに Chrome を普段どおり画面ありで起動し、調査用の口（CDP）から本物のマウスのクリックを送った（`check-open-copy-cdp.mjs`）。
+  押した後に元のタブの `document.hasFocus()` が false になる（新しいタブが前に出た）状態で、ChatGPT・Gemini を 3 回ずつ、6 回とも「コピーしました」が出てクリップボードが一致した。
+  開いた先は本物のトップページを読み込んだ（URL にプロンプトは載せていないので、送ったのはトップページの取得だけ）
+- 中クリックや、スマホの長押し「新しいタブで開く」では click が起きないので、コピーしないままタブが開く（受け入れレビューの指摘。ふつうに押す使い方の外なので直していない）
+- Safari（WebKit）は試せていない。Playwright の WebKit は WSL に足りないライブラリ（libgtk-4 など。入れるには管理者の権限が要る）があって起動できない。公開後に iPhone の Safari で一度押して確かめる
+- 確かめのスクリプトは `~/.cache/photo-prompt-builder/tools/check-open-copy.mjs`（対照は `control-popup.mjs`）。`vite preview` を起動してから `node check-open-copy.mjs http://localhost:4173/`（画面ありは `HEADED=1`）。
+  フォーカスが本当に移る確かめは `node check-open-copy-cdp.mjs http://localhost:4173/ ChatGPT`（サイト名は Gemini も可）
+
 ### 2026-10-06：Codex の利用上限に当たると数日止まる。作業用スクリプトは `~/.cache/photo-prompt-builder/tools/` に置いた
 
 - **ハマったこと**：飛び出す絵本と記念切手の 1 枚目を頼んだところ、2 本とも「You've hit your usage limit. ... try again at Oct 10th, 2026 9:48 AM.」で止まった（モデルは gpt-6.1-sol、考える深さ low）。

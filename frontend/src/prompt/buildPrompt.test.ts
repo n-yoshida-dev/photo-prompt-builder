@@ -49,24 +49,24 @@ const fixture: Catalog = {
       id: 'style-strength',
       label: '強度',
       options: [
-        { id: 'standard', label: '標準', text: '' },
-        { id: 'photo', label: '写真寄り', text: 'Closer to photo.' },
+        { id: 'standard', label: '標準', note: '', text: '' },
+        { id: 'photo', label: '写真寄り', note: '', text: 'Closer to photo.' },
       ],
     },
     {
       id: 'color-mood',
       label: '色味',
       options: [
-        { id: 'original', label: '元のまま', text: '' },
-        { id: 'muted', label: '落ち着いた', text: 'Muted.' },
+        { id: 'original', label: '元のまま', note: '', text: '' },
+        { id: 'muted', label: '落ち着いた', note: '', text: 'Muted.' },
       ],
     },
     {
       id: 'aspect-ratio',
       label: '縦横比',
       options: [
-        { id: 'original', label: '元のまま', text: '' },
-        { id: 'square', label: '1:1', text: 'Square.' },
+        { id: 'original', label: '元のまま', note: '', text: '' },
+        { id: 'square', label: '1:1', note: '', text: 'Square.' },
       ],
     },
   ],

@@ -66,6 +66,8 @@ export type Toggle = {
 export type ChoiceOption = {
   id: string
   label: string
+  note: string // 選択肢の下に出す、何が変わるかの一文（logs/decisions.md 2026-10-03「仕上がりを調整する」の言葉を直す）
+  shape?: { width: number; height: number } // 縦横比の選択肢だけが持つ形。画面の小さな図に使う
   text: string
 }
 

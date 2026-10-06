@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
 import { ConditionPanel } from './components/ConditionPanel'
-import { PhotoPicker } from './components/PhotoPicker'
+import { FavoriteList, type FavoriteSaveOutcome } from './components/FavoriteList'
 import { PresetPicker } from './components/PresetPicker'
 import { PromptActions } from './components/PromptActions'
 import { PromptView } from './components/PromptView'
@@ -10,6 +10,13 @@ import { catalog } from './data/catalog'
 import { buildPrompt } from './prompt/buildPrompt'
 import { defaultSelection, switchPreset } from './prompt/selection'
 import type { ChoiceId, Selection, ToggleId } from './prompt/types'
+import {
+  addFavorite,
+  loadFavorites,
+  removeFavorite,
+  writeFavorites,
+  type FavoriteEntry,
+} from './storage/favorites'
 import { loadRecent, saveRecent, type RecentEntry } from './storage/recent'
 
 // 起動時に選んでおくプリセット（マスタデータの先頭）。空なら設定の誤りなので起動時に止める
@@ -27,6 +34,22 @@ function App() {
   const prompt = useMemo(() => buildPrompt(selection), [selection])
   const promptRef = useRef<HTMLTextAreaElement>(null)
   const [recent, setRecent] = useState<RecentEntry[]>(() => loadRecent())
+  const [favorites, setFavorites] = useState<FavoriteEntry[]>(() => loadFavorites())
+
+  // 今の選択に名前を付けてお気に入りに残す。書き込めなくても画面の一覧には足し、そのことを結果で返す
+  function handleSaveFavorite(name: string): FavoriteSaveOutcome {
+    const result = addFavorite(favorites, name, selection, new Date().toISOString())
+    if (result.kind !== 'added' && result.kind !== 'replaced') return result
+    setFavorites(result.entries)
+    return { ...result, persisted: writeFavorites(result.entries) }
+  }
+
+  // お気に入りを 1 件消す。ブラウザに書き込めたら true
+  function handleDeleteFavorite(name: string): boolean {
+    const next = removeFavorite(favorites, name)
+    setFavorites(next)
+    return writeFavorites(next)
+  }
 
   // 「コピー」を押した時点の選択を「最近使った設定」に残す（SPEC.md「保存」。コピーの成否は問わない）
   function rememberSelection() {
@@ -68,7 +91,6 @@ function App() {
       </header>
       <main className="workspace">
         <div className="controls">
-          <PhotoPicker />
           <PresetPicker
             presets={catalog.presets}
             selectedId={selection.presetId}
@@ -92,6 +114,13 @@ function App() {
           />
         </div>
         <div className="history">
+          <FavoriteList
+            entries={favorites}
+            catalog={catalog}
+            onSave={handleSaveFavorite}
+            onRestore={setSelection}
+            onDelete={handleDeleteFavorite}
+          />
           <RecentList entries={recent} catalog={catalog} onRestore={setSelection} />
         </div>
       </main>

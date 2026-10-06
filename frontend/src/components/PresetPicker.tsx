@@ -19,7 +19,7 @@ export function PresetPicker({ presets, selectedId, onSelect }: Props) {
   return (
     <fieldset className="step">
       <legend className="step-heading">
-        <span className="step-number">2</span>スタイルを選ぶ
+        <span className="step-number">1</span>スタイルを選ぶ
       </legend>
       <div className="preset-list">
         {presets.map((preset) => (
