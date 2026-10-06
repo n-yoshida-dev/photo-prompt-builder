@@ -73,6 +73,47 @@ export const presets: Preset[] = [
       checkedOn: '2026-09-06',
     },
   },
+  // ここから 2 本は、写真を写真のまま残して手描きを足す（Claude の自作。2026-10-06。試作は docs/style-trials-2026-10-04.md）。
+  // 写真の人物はそのままなので被写体は people。試作で小人が小さすぎたので、大きさと数を言葉で決めた
+  {
+    id: 'doodle-friends',
+    name: '写真とらくがきの小人',
+    descriptionJa: '写真はそのままに、ペンで描いた小人たちが写真の中で遊んでいるようにする',
+    subject: 'people',
+    base: 'Keep this picture a real photograph and bring it to life with a crowd of little doodle characters drawn by hand, as if someone had drawn on the printed picture with markers.',
+    style:
+      "Draw five to eight doodle helpers: simple round-bodied characters with dot eyes, a tiny smile, and stick arms and legs, each roughly as tall as a person's head in the picture, so they are easy to spot at first glance. Give each helper a small job that plays with what is really there in the picture, such as carrying a leaf, peeking out from behind something, waving from the ground, or copying a person's pose right beside them. Draw them with confident black marker lines, add a white outline around them wherever the photo behind is dark so they stay visible, and fill them with one cheerful accent color that all helpers share. A few short motion marks around a helper may show what it is doing. Leave the people and the place untouched as a real photograph: nothing redrawn, nothing painted over, and nobody made older or younger.",
+    // 小人を足すスタイルなので「写っていない物を足さない」は既定で OFF（editorial-poster の no-text と同じ考え方）
+    negative: [
+      'turn the people or the place into a drawing or an illustration',
+      'let any doodle cover a face or a hand',
+      'add speech bubbles',
+    ],
+    defaultToggles: ['no-text', 'one-per-photo'],
+    source: { kind: 'claude', label: 'Claude の自作' },
+  },
+  {
+    id: 'sketchbook-extension',
+    name: '写真の続きを描いたスケッチブック',
+    descriptionJa: 'スケッチブックに貼った写真の外へ、景色の続きを鉛筆と色鉛筆で描き広げる',
+    subject: 'people',
+    // 保持文は写真のプリントの中に効かせる（スケッチブックを真上から撮る絵なので、画像全体のカメラの角度は変わる）
+    base: "Show this photo as a printed snapshot taped into an open sketchbook, with the scene carried on past the print's edges as a pencil sketch on the paper.",
+    style:
+      "Photograph the sketchbook from directly above, lying open on a wooden desk in soft daylight, with both pages taking up nearly the whole frame. Fix the print near the middle of the pages with two pieces of washi tape at its corners, small enough to leave plenty of paper around it. The print shows the whole photo, uncropped and with nothing moved, so its four edges are the photo's own edges; inside it nothing changes, it remains the real photo, and the lists below about the people and the place apply to the print. On the paper around the print, sketch new scenery that the camera never captured: the view beside, above, and below the frame that a much wider lens would have caught, such as more of the coastline, more sky, the far end of the street, or more of the park. Keep the print and the sketch at one shared scale, so a horizon, shoreline, road, or fence that meets the photo's border carries straight on into the sketch at the same height and angle, and finish any tree that an edge cuts through. Treat each building and landmark in the photo as one of a kind: the sketch may add plainer things such as rocks, trees, fences, hills, and clouds, but never another building, tower, or landmark like it. Use graphite pencil with light colored-pencil shading, and let the strokes get looser and lighter until they fade into blank paper near the page edges.",
+    // 2026-10-06 の試作で、プリントの写真が切り取られて狭まり、絵の側は写真の切り落とした端をなぞっただけになった（灯台が 2 本出たのも同じ原因と Claude は見た）。
+    // AI が元の写真をページ全体に引き伸ばし、真ん中だけを写真のまま残していた。そこで、プリントは写真を切らずに全部入れ、
+    // 絵の側には写真に写らなかった外側の景色を新しく描き、写真の一部を写したり拡大したりしないと書く
+    negative: [
+      'redraw, paint over, or restyle anything inside the printed photo',
+      'crop the photo inside the print or shift anything within it',
+      'copy, enlarge, or trace the photo or pieces of it into the sketched area, or draw a second copy of any building, landmark, tree, or object that already appears inside the print',
+      'draw any people or animals in the sketched area',
+    ],
+    // 続きの景色は写真に写っていない物なので、「写っていない物を足さない」は既定で OFF（doodle-friends と同じ考え方）
+    defaultToggles: ['no-text', 'one-per-photo'],
+    source: { kind: 'claude', label: 'Claude の自作' },
+  },
   // 旅のスタンプは「風景だけ」と「家族も」で同じ文を使い、ジオラマと同じくアプリが足すブロックで人物の有無を分ける（logs/decisions.md 2026-10-03）
   {
     id: 'travel-stamps',

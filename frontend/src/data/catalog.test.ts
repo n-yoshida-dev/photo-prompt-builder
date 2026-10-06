@@ -163,7 +163,12 @@ describe('出典の種類', () => {
 
   it('Claude の自作は、カードに出る出典名が「Claude の自作」', () => {
     const selfMade = catalog.presets.filter((p) => p.source.kind === 'claude')
-    expect(selfMade.map((p) => p.id)).toEqual(['travel-stamps', 'travel-stamps-family'])
+    expect(selfMade.map((p) => p.id)).toEqual([
+      'doodle-friends',
+      'sketchbook-extension',
+      'travel-stamps',
+      'travel-stamps-family',
+    ])
     for (const preset of selfMade) {
       expect(preset.source.label, preset.id).toBe('Claude の自作')
     }
