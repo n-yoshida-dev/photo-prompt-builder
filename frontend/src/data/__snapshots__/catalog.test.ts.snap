@@ -205,6 +205,46 @@ Do not:
 - add any new text, letters, numbers, captions, labels, logos, signatures, or watermarks that are not in the photo"
 `;
 
+exports[`全プリセット × 既定の条件の出力全文 > specimen-box 1`] = `
+"Collect the things visible in this snapshot into a wooden specimen box as mementos from that day, leaving the scene itself out.
+If more than one photo is uploaded, process each photo separately and output one image per photo, without combining photos into a collage or mixing content from different photos.
+
+Make the box shallow, with a glass lid and a grid of small square compartments lined with cream paper, set flat on a table and shown from directly above in soft daylight. Each compartment holds one real object, carefully set out: things such as hats, shoes, bags, toys, shells, stones, leaves, or a small model of a landmark, each matching its colors, patterns, and shape in the snapshot. Choose only things that anyone could point to in the snapshot; five to nine items are plenty, and leaving compartments empty is better than filling them when the snapshot shows only a few things.
+
+Preserve from the reference photo:
+- Each object exactly as it looks in the photo: the same colors, patterns, prints, materials, and shape, with nothing recolored or redesigned
+- Any signs of use visible in the photo, such as scuffs, creases, or faded spots, so each object is the very one from that day
+
+Composition:
+- Only objects that are clearly visible in the photo, each shown once at most, with nothing invented or merged from several things
+- Each object at its true size compared with the others, unless the style itself shrinks something large into a small model
+
+Do not:
+- make up an object from a pattern or print on someone's clothing
+- show any people, faces, or body parts
+- display real insects or other living creatures as specimens, or push pins through anything
+- add any new text, letters, numbers, captions, labels, logos, signatures, or watermarks that are not in the photo
+- add people, animals, objects, props, decorations, or effects such as sparkles or confetti that are not in the photo, other than a display base or backdrop that the style itself calls for"
+`;
+
+exports[`全プリセット × 既定の条件の出力全文 > sugoroku-board 1`] = `
+"Remake the place in this snapshot as a handmade family race game played with a die and counters, so that the real landscape itself becomes the board.
+If more than one photo is uploaded, process each photo separately and output one image per photo, without combining photos into a collage or mixing content from different photos.
+
+Paint the board on a sheet of thick card spread out on a living-room floor, shown from a little above in soft daylight with the whole board in view and a strip of floor around it. Ground, paths, water, buildings, and landmarks keep their real shapes and positions, painted in a cheerful, simplified gouache style, so anyone who was there knows the place at once. A winding track of round spaces starts in one corner, follows the real paths and shorelines, and ends at the most memorable landmark as the goal; a few spaces may be tinted differently, and every space stays plain, with no numbers or words. Set a few small wooden counters and one die on the board.
+
+Composition:
+- The same layout of the place: where the buildings, structures, and objects that are kept sit relative to one another (left, right, front, and back)
+- The same proportions and scale: relative sizes, heights, and spacing, and the same number of floors, windows, doors, and steps
+- The same main subject as the focus of the image
+- Nothing invented beyond the photo's edges: no extra buildings, rooms, streets, or landmarks
+
+Do not:
+- include any of the people from the photo, even those in the foreground
+- turn the place into a generic fantasy map that no longer looks like the real spot
+- add any new text, letters, numbers, captions, labels, logos, signatures, or watermarks that are not in the photo"
+`;
+
 exports[`全プリセット × 既定の条件の出力全文 > travel-stamps 1`] = `
 "Turn this photo into one large rubber-stamp print of the same scene, stamped by hand onto a page of a travel journal as a keepsake of the trip.
 If more than one photo is uploaded, process each photo separately and output one image per photo, without combining photos into a collage or mixing content from different photos.

@@ -155,6 +155,45 @@ export const presets: Preset[] = [
     defaultToggles: ['no-extra-objects', 'one-per-photo'],
     source: { kind: 'claude', label: 'Claude の自作' },
   },
+  // ここから 2 本は、写真の場所や持ち物が遊び道具・展示物になる（Claude の自作。2026-10-06。試作は docs/style-trials-2026-10-04.md）
+  {
+    // 家族を入れる版を作るかはユーザーに確かめる（TODO.md）。今は試作と同じく人物を入れない
+    id: 'sugoroku-board',
+    name: 'すごろく盤',
+    descriptionJa: '写真の場所の地形をそのまま盤面にした、手作りのすごろくにする。人物は入れない',
+    subject: 'scene',
+    base: 'Remake the place in this snapshot as a handmade family race game played with a die and counters, so that the real landscape itself becomes the board.',
+    // マスに数字や「スタート」の文字が入りやすい（調査レポート）ので、マスは無地と文の中で決める
+    style:
+      'Paint the board on a sheet of thick card spread out on a living-room floor, shown from a little above in soft daylight with the whole board in view and a strip of floor around it. Ground, paths, water, buildings, and landmarks keep their real shapes and positions, painted in a cheerful, simplified gouache style, so anyone who was there knows the place at once. A winding track of round spaces starts in one corner, follows the real paths and shorelines, and ends at the most memorable landmark as the goal; a few spaces may be tinted differently, and every space stays plain, with no numbers or words. Set a few small wooden counters and one die on the board.',
+    negative: [
+      'include any of the people from the photo, even those in the foreground',
+      'turn the place into a generic fantasy map that no longer looks like the real spot',
+    ],
+    // コマとサイコロはスタイルが求める小道具なので、「写っていない物を足さない」は既定で OFF（doodle-friends と同じ考え方）。
+    // 写真に無い建物や名所は、風景の保持文の "Nothing invented beyond the photo's edges" が止める
+    defaultToggles: ['no-text', 'one-per-photo'],
+    source: { kind: 'claude', label: 'Claude の自作' },
+  },
+  {
+    id: 'specimen-box',
+    name: '思い出の標本箱',
+    descriptionJa: '写真に写った帽子や靴などの持ち物だけを、木の標本箱の仕切りに 1 つずつ並べる',
+    // 場面の配置は保たずに物だけを取り出すので、風景の保持文（同じ配置）とぶつかる。持ち物の保持文を付ける
+    subject: 'objects',
+    base: 'Collect the things visible in this snapshot into a wooden specimen box as mementos from that day, leaving the scene itself out.',
+    // 試作では写真に無いシュシュが入った（女の子のワンピースの柄から作ったと Claude は推定）。数を少なくてよいと書き、服の柄から物を作らせない
+    style:
+      'Make the box shallow, with a glass lid and a grid of small square compartments lined with cream paper, set flat on a table and shown from directly above in soft daylight. Each compartment holds one real object, carefully set out: things such as hats, shoes, bags, toys, shells, stones, leaves, or a small model of a landmark, each matching its colors, patterns, and shape in the snapshot. Choose only things that anyone could point to in the snapshot; five to nine items are plenty, and leaving compartments empty is better than filling them when the snapshot shows only a few things.',
+    negative: [
+      "make up an object from a pattern or print on someone's clothing",
+      'show any people, faces, or body parts',
+      // 生き物を標本にする見せ方とピンを刺す見せ方は止める（調査レポート）。ぬいぐるみなどのおもちゃは残してよい
+      'display real insects or other living creatures as specimens, or push pins through anything',
+    ],
+    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
+    source: { kind: 'claude', label: 'Claude の自作' },
+  },
   // 旅のスタンプは「風景だけ」と「家族も」で同じ文を使い、ジオラマと同じくアプリが足すブロックで人物の有無を分ける（logs/decisions.md 2026-10-03）
   {
     id: 'travel-stamps',

@@ -22,6 +22,9 @@
   "photo" を "snapshot" に言い換え、決まり文句を崩して 0 にした（らくがきの小人が "in the picture" と書いているのと同じやり方）。
   "pop-up book" も 3 語に数えると "pop up book" で重なるので "pop-up storybook" にした。記念切手の着想元のうち lilachbullock.com は 403 で取れず、X の投稿も開けない（調査のときから同じ）。
   note の 2 本は記事が日本語で、英文の並びは少ない
+- すごろく盤と標本箱は、着想元（Google のブログ・notegpt）に加えて上の大きな README 3 本とも照らした。すごろく盤の「Do not:」の
+  "include any of the people from the photo, even those in the foreground" だけが README と重なる（"from the photo" "in the foreground" など）。
+  ジオラマ・旅のスタンプの風景の版と同じ文を使うためで、すごろく盤の着想元とは重ならないので残した
 
 ### 2026-10-06：スケッチブックは、AI が元の写真をページ全体に引き伸ばし、真ん中だけを写真で残す
 

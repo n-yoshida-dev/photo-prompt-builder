@@ -53,4 +53,16 @@ export const preserve: Record<Subject, PreserveSet> = {
       ...SCENE_COMPOSITION,
     ],
   },
+  // 場面の配置は保たずに、写っている持ち物だけを取り出す（思い出の標本箱）。2026-10-06 に Claude が作成
+  // 「Preserve from the reference photo:」の下には人物ではなく物の見た目を置く。人物は写さないので人物の保持文は付けない
+  objects: {
+    identity: [
+      'Each object exactly as it looks in the photo: the same colors, patterns, prints, materials, and shape, with nothing recolored or redesigned',
+      'Any signs of use visible in the photo, such as scuffs, creases, or faded spots, so each object is the very one from that day',
+    ],
+    composition: [
+      'Only objects that are clearly visible in the photo, each shown once at most, with nothing invented or merged from several things',
+      'Each object at its true size compared with the others, unless the style itself shrinks something large into a small model',
+    ],
+  },
 }

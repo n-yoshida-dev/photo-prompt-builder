@@ -168,6 +168,8 @@ describe('出典の種類', () => {
       'sketchbook-extension',
       'pop-up-book',
       'commemorative-stamp',
+      'sugoroku-board',
+      'specimen-box',
       'travel-stamps',
       'travel-stamps-family',
     ])
@@ -178,14 +180,19 @@ describe('出典の種類', () => {
 })
 
 describe('マスタデータの形', () => {
-  it('ラジオ 3 種・トグル 6 つ・保持文 3 組がある', () => {
+  it('ラジオ 3 種・トグル 6 つ・保持文 4 組がある', () => {
     expect(catalog.choices.map((c) => c.id)).toEqual([
       'style-strength',
       'color-mood',
       'aspect-ratio',
     ])
     expect(catalog.toggles).toHaveLength(6)
-    expect(Object.keys(catalog.preserve).sort()).toEqual(['people', 'people-in-scene', 'scene'])
+    expect(Object.keys(catalog.preserve).sort()).toEqual([
+      'objects',
+      'people',
+      'people-in-scene',
+      'scene',
+    ])
   })
 
   it('ラジオは先頭（既定）の英文が空で、それ以外は空でない', () => {
@@ -234,6 +241,19 @@ describe('マスタデータの形', () => {
     const cameraLine = catalog.preserve.people.composition[0]
     expect(cameraLine).toMatch(/camera angle/)
     expect(mixed.composition).not.toContain(cameraLine)
+  })
+
+  // 標本箱は物を仕切りに並べ直すので、場所の配置を保つ文とぶつかる。人物も写さない
+  it('objects は人物の保持文も場所の構図の文も持たない', () => {
+    const objects = catalog.preserve.objects
+    expect(objects.identity.length).toBeGreaterThan(0)
+    for (const line of [
+      ...catalog.preserve.people.identity,
+      ...catalog.preserve.scene.composition,
+    ]) {
+      expect(objects.identity).not.toContain(line)
+      expect(objects.composition).not.toContain(line)
+    }
   })
 
   it('英文の文法の約束を守る（Do not に続く句は小文字始まり、命令文はピリオドで終わる）', () => {
