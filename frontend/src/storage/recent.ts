@@ -32,12 +32,10 @@ export function addRecent(
   return [{ selection, savedAt }, ...rest].slice(0, RECENT_LIMIT)
 }
 
-// 1 件ぶんの値が、今のマスタデータで復元できる選択かを確かめる。できなければ null
-function toEntry(value: unknown, catalog: Catalog): RecentEntry | null {
-  if (typeof value !== 'object' || value === null) return null
-  const { selection, savedAt } = value as { selection?: unknown; savedAt?: unknown }
-  if (typeof savedAt !== 'string' || typeof selection !== 'object' || selection === null)
-    return null
+// 保存されていた選択が、今のマスタデータで復元できるかを確かめる。できなければ null
+// 最近使った設定とお気に入り（storage/favorites.ts）の両方が使う
+export function parseSelection(selection: unknown, catalog: Catalog): Selection | null {
+  if (typeof selection !== 'object' || selection === null) return null
   const { presetId, toggleIds, choices } = selection as {
     presetId?: unknown
     toggleIds?: unknown
@@ -54,15 +52,21 @@ function toEntry(value: unknown, catalog: Catalog): RecentEntry | null {
   )
   if (!validChoices) return null
   return {
-    savedAt,
-    selection: {
-      presetId,
-      toggleIds: toggleIds as ToggleId[],
-      choices: Object.fromEntries(
-        catalog.choices.map((choice) => [choice.id, picked[choice.id] as string]),
-      ) as Record<ChoiceId, string>,
-    },
+    presetId,
+    toggleIds: toggleIds as ToggleId[],
+    choices: Object.fromEntries(
+      catalog.choices.map((choice) => [choice.id, picked[choice.id] as string]),
+    ) as Record<ChoiceId, string>,
   }
+}
+
+// 1 件ぶんの値が、今のマスタデータで復元できる記録かを確かめる。できなければ null
+function toEntry(value: unknown, catalog: Catalog): RecentEntry | null {
+  if (typeof value !== 'object' || value === null) return null
+  const { selection, savedAt } = value as { selection?: unknown; savedAt?: unknown }
+  if (typeof savedAt !== 'string') return null
+  const parsed = parseSelection(selection, catalog)
+  return parsed ? { savedAt, selection: parsed } : null
 }
 
 // 保存された JSON 文字列を読み、復元できる記録と、捨てた件数を返す（純粋関数）

@@ -4,6 +4,7 @@ import App from './App'
 import { aiSites } from './data/aiSites'
 import { catalog } from './data/catalog'
 import { defaultSelection } from './prompt/selection'
+import { FAVORITES_KEY } from './storage/favorites'
 import { RECENT_KEY } from './storage/recent'
 
 // マスタデータから英文を引く（テストに英文を直書きしない）
@@ -76,21 +77,35 @@ describe('App', () => {
 
   it('ラジオを選ぶとその英文が入り、既定に戻すと消える', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('radio', { name: 'モノクロ' }))
+    fireEvent.click(screen.getByRole('radio', { name: '白黒' }))
     expect(promptText()).toContain(optionText('color-mood', 'mono'))
     fireEvent.click(screen.getAllByRole('radio', { name: '元のまま' })[0] as HTMLElement)
     expect(promptText()).not.toContain(optionText('color-mood', 'mono'))
   })
 
+  it('選択肢の下の一文は、ラジオの説明として読まれる（名前は短いまま）', () => {
+    render(<App />)
+    const radio = screen.getByRole('radio', { name: '控えめ（写真に近い）' })
+    expect(radio).toHaveAccessibleDescription('元の写真の質感や顔つきを多く残す')
+  })
+
+  it('形の図は縦横比の選択肢にだけ付く', () => {
+    render(<App />)
+    const aspect = screen.getByRole('group', { name: '縦横比' })
+    expect(aspect.querySelectorAll('.option-shape')).toHaveLength(4)
+    const color = screen.getByRole('group', { name: '色味' })
+    expect(color.querySelectorAll('.option-shape')).toHaveLength(0)
+  })
+
   it('スタイルを切り替えるとトグルはそのスタイルの既定に戻り、ラジオは引き継ぐ', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('radio', { name: 'モノクロ' }))
+    fireEvent.click(screen.getByRole('radio', { name: '白黒' }))
     fireEvent.click(screen.getByRole('checkbox', { name: '柔らかい自然光にする' }))
     fireEvent.click(screen.getByRole('radio', { name: /Editorial Poster/ }))
     // editorial-poster は文字を許すので「文字を入れない」は既定で OFF
     expect(screen.getByRole('checkbox', { name: '文字を入れない' })).not.toBeChecked()
     expect(screen.getByRole('checkbox', { name: '柔らかい自然光にする' })).not.toBeChecked()
-    expect(screen.getByRole('radio', { name: 'モノクロ' })).toBeChecked()
+    expect(screen.getByRole('radio', { name: '白黒' })).toBeChecked()
   })
 })
 
@@ -119,7 +134,7 @@ describe('コピーと開くボタン', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
     expect(await screen.findByText(/コピーしました/)).toBeInTheDocument()
-    fireEvent.click(screen.getByRole('radio', { name: 'モノクロ' }))
+    fireEvent.click(screen.getByRole('radio', { name: '白黒' }))
     expect(screen.queryByText(/コピーしました/)).not.toBeInTheDocument()
   })
 
@@ -142,13 +157,48 @@ describe('コピーと開くボタン', () => {
     '%s を開くリンクは新しいタブで開き、URL にプロンプトを載せない',
     (name, url) => {
       render(<App />)
-      const link = screen.getByRole('link', { name: `${name} を開く` })
+      const link = screen.getByRole('link', { name: `コピーして ${name} を開く` })
       expect(link).toHaveAttribute('href', url)
       expect(link).toHaveAttribute('target', '_blank')
       expect(link).toHaveAttribute('rel', 'noopener noreferrer')
       expect(link.getAttribute('href')).not.toContain('?')
     },
   )
+
+  it('開くボタンは ChatGPT と Gemini の 2 つで、Claude は無い（logs/decisions.md 2026-10-03）', () => {
+    render(<App />)
+    expect(screen.getAllByRole('link', { name: /を開く$/ })).toHaveLength(2)
+    expect(screen.queryByRole('link', { name: /Claude/ })).not.toBeInTheDocument()
+  })
+
+  it.each(aiSites.map((site) => [site.name]))(
+    '%s を開くと、同じクリックの中でプロンプトもコピーし、そう知らせる',
+    async (name) => {
+      const writeText = vi.fn().mockResolvedValue(undefined)
+      stubClipboard(writeText)
+      render(<App />)
+      const link = screen.getByRole('link', { name: `コピーして ${name} を開く` })
+      // jsdom はリンク先へ移動できないので、既定の動き（新しいタブで開く）だけを止める。止めたのはテストで、アプリは止めない
+      link.addEventListener('click', (event) => event.preventDefault())
+      fireEvent.click(link)
+      // クリックの処理の中で書き込みが始まっている（待ってから開く作りではない）
+      expect(writeText).toHaveBeenCalledWith(promptText())
+      expect(await screen.findByText(/コピーしました/)).toBeInTheDocument()
+    },
+  )
+})
+
+describe('写真を扱わない（logs/decisions.md 2026-10-03「写真を選ぶ」を画面から外す）', () => {
+  it('写真を選ぶ欄もファイルの入力も無い', () => {
+    const { container } = render(<App />)
+    expect(container.querySelector('input[type="file"]')).toBeNull()
+    expect(screen.queryByText(/写真を選ぶ/)).not.toBeInTheDocument()
+  })
+
+  it('写真は開いた先の画面で添付すると案内する', () => {
+    render(<App />)
+    expect(screen.getByText(/写真は、開いた先の画面で自分で添付します/)).toBeInTheDocument()
+  })
 })
 
 describe('最近使った設定', () => {
@@ -166,7 +216,7 @@ describe('最近使った設定', () => {
   it('コピー → リロード → 復元で同じプロンプトが出る', async () => {
     const first = render(<App />)
     fireEvent.click(screen.getByRole('radio', { name: /Editorial Poster/ }))
-    fireEvent.click(screen.getByRole('radio', { name: 'モノクロ' }))
+    fireEvent.click(screen.getByRole('radio', { name: '白黒' }))
     fireEvent.click(screen.getByRole('checkbox', { name: '柔らかい自然光にする' }))
     const copied = promptText()
     fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
@@ -182,11 +232,11 @@ describe('最近使った設定', () => {
 
   it('一覧は既定から変えた点で見分けられる', async () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('radio', { name: 'モノクロ' }))
+    fireEvent.click(screen.getByRole('radio', { name: '白黒' }))
     fireEvent.click(screen.getByRole('checkbox', { name: '文字を入れない' }))
     fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
     const item = await screen.findByRole('button', { name: /3D Miniature Diorama/ })
-    expect(item).toHaveTextContent('モノクロ・−文字を入れない')
+    expect(item).toHaveTextContent('白黒・−文字を入れない')
   })
 
   it('コピーに失敗しても、押した時点の選択は残す（SPEC「コピーボタンを押した時点で保存」）', async () => {
@@ -228,53 +278,94 @@ describe('最近使った設定', () => {
   })
 })
 
-describe('写真の選択', () => {
-  const originalCreate = URL.createObjectURL
-  const originalRevoke = URL.revokeObjectURL
-
+describe('お気に入り（logs/decisions.md 2026-10-03「名前を付けて保存」）', () => {
   beforeEach(() => {
-    // jsdom には一時 URL の仕組みが無いので差し替える
-    let n = 0
-    URL.createObjectURL = vi.fn(() => `blob:test/${++n}`)
-    URL.revokeObjectURL = vi.fn()
-    vi.stubGlobal('fetch', vi.fn())
     localStorage.clear()
   })
 
   afterEach(() => {
-    URL.createObjectURL = originalCreate
-    URL.revokeObjectURL = originalRevoke
-    vi.unstubAllGlobals()
+    localStorage.clear()
+    vi.restoreAllMocks()
   })
 
-  it('画像だけを並べ、画像でないファイルは数を知らせる。通信も保存もしない', () => {
-    const { container } = render(<App />)
-    const input = container.querySelector('input[type="file"]') as HTMLInputElement
-    const files = [
-      new File(['a'], 'a.png', { type: 'image/png' }),
-      new File(['b'], 'b.jpg', { type: 'image/jpeg' }),
-      new File(['c'], 'memo.txt', { type: 'text/plain' }),
-    ]
-    fireEvent.change(input, { target: { files } })
+  // 今の設定に名前を付けて保存する
+  function saveAs(name: string) {
+    fireEvent.change(screen.getByRole('textbox', { name: '今の設定に名前を付けて保存' }), {
+      target: { value: name },
+    })
+    fireEvent.click(screen.getByRole('button', { name: '保存' }))
+  }
 
-    expect(screen.getByText(/2 枚を選んでいます/)).toHaveTextContent(
-      '画像ではないファイル 1 件は除きました',
-    )
-    expect(screen.getByRole('img', { name: 'a.png' })).toHaveAttribute('src', 'blob:test/1')
-    expect(screen.getByRole('img', { name: 'b.jpg' })).toBeInTheDocument()
-    expect(fetch).not.toHaveBeenCalled()
-    expect(localStorage.length).toBe(0)
+  it('名前を付けて保存 → 開き直す → 一覧から呼び出すと、同じプロンプトが出る', () => {
+    const first = render(<App />)
+    fireEvent.click(screen.getByRole('radio', { name: /Editorial Poster/ }))
+    fireEvent.click(screen.getByRole('radio', { name: '淡く' }))
+    fireEvent.click(screen.getByRole('radio', { name: '縦 3:4' }))
+    fireEvent.click(screen.getByRole('checkbox', { name: '柔らかい自然光にする' }))
+    const saved = promptText()
+    saveAs('七五三用')
+    expect(screen.getByText('「七五三用」を保存しました。')).toBeInTheDocument()
+    first.unmount()
+
+    render(<App />)
+    expect(promptText()).not.toBe(saved)
+    fireEvent.click(screen.getByRole('button', { name: /^七五三用/ }))
+    expect(promptText()).toBe(saved)
   })
 
-  it('選び直すと前の一時 URL を解放する', () => {
-    const { container } = render(<App />)
-    const input = container.querySelector('input[type="file"]') as HTMLInputElement
-    fireEvent.change(input, {
-      target: { files: [new File(['a'], 'a.png', { type: 'image/png' })] },
+  it('保存されるのは名前と選択と時刻だけで、写真やプロンプトの文は残らない', () => {
+    render(<App />)
+    saveAs('いつもの')
+    const stored = JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? '[]') as Record<
+      string,
+      unknown
+    >[]
+    expect(stored).toHaveLength(1)
+    expect(Object.keys(stored[0] ?? {}).sort()).toEqual(['name', 'savedAt', 'selection'])
+    expect(localStorage.getItem(FAVORITES_KEY)).not.toContain(presetBase('diorama'))
+  })
+
+  it('名前が空のうちは保存ボタンを押せない', () => {
+    render(<App />)
+    expect(screen.getByRole('button', { name: '保存' })).toBeDisabled()
+    fireEvent.change(screen.getByRole('textbox', { name: '今の設定に名前を付けて保存' }), {
+      target: { value: '   ' },
     })
-    fireEvent.change(input, {
-      target: { files: [new File(['b'], 'b.png', { type: 'image/png' })] },
+    expect(screen.getByRole('button', { name: '保存' })).toBeDisabled()
+  })
+
+  it('同じ名前で保存すると、今の設定で上書きしたと知らせる', () => {
+    render(<App />)
+    saveAs('いつもの')
+    fireEvent.click(screen.getByRole('radio', { name: '白黒' }))
+    saveAs('いつもの')
+    expect(screen.getByText('「いつもの」を今の設定で上書きしました。')).toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: /^いつもの/ })).toHaveLength(1)
+    expect(screen.getByRole('button', { name: /^いつもの/ })).toHaveTextContent('白黒')
+  })
+
+  it('削除は確かめてから行い、やめれば残す', () => {
+    render(<App />)
+    saveAs('いつもの')
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValueOnce(false)
+    fireEvent.click(screen.getByRole('button', { name: '「いつもの」を削除' }))
+    expect(confirm).toHaveBeenCalledWith('お気に入り「いつもの」を削除しますか？')
+    expect(screen.getByRole('button', { name: /^いつもの/ })).toBeInTheDocument()
+
+    confirm.mockReturnValueOnce(true)
+    fireEvent.click(screen.getByRole('button', { name: '「いつもの」を削除' }))
+    expect(screen.queryByRole('button', { name: /^いつもの/ })).not.toBeInTheDocument()
+    expect(JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? '[]')).toEqual([])
+  })
+
+  it('ブラウザに書き込めないときは、画面を閉じると消えると知らせる', () => {
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('QuotaExceededError')
     })
-    expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:test/1')
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    render(<App />)
+    saveAs('いつもの')
+    expect(screen.getByText(/このブラウザに保存できませんでした/)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^いつもの/ })).toBeInTheDocument()
   })
 })

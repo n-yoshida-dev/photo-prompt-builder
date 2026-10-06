@@ -161,58 +161,7 @@ body {
   font-size: 0.925rem;
 }
 
-/* ---- 1. 写真 ---- */
-
-.file-button {
-  display: inline-block;
-  padding: 0.6rem 1.1rem;
-  border: 2px solid var(--ink);
-  border-radius: 6px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.file-button:hover {
-  background-color: var(--cloth-soft);
-}
-
-/* ラベルの見た目のボタンに、隠した input のフォーカスを映す */
-.file-button:has(+ input[type='file']:focus-visible) {
-  outline: 3px solid var(--cloth);
-  outline-offset: 2px;
-}
-
-.photo-count {
-  margin: 0.75rem 0;
-  color: var(--ink-muted);
-  font-size: 0.925rem;
-}
-
-.photo-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-/* 白い縁のプリント写真 */
-.photo-print {
-  width: 7.5rem;
-  padding: 0.4rem 0.4rem 1rem;
-  background-color: #fff;
-  box-shadow: 0 1px 2px rgb(30 35 38 / 18%);
-}
-
-.photo-print img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
-}
-
-/* ---- 2. スタイル ---- */
+/* ---- 1. スタイル ---- */
 
 .preset-list {
   display: grid;
@@ -285,7 +234,7 @@ body {
   display: block;
 }
 
-/* ---- 3. 条件 ---- */
+/* ---- 2. 条件 ---- */
 
 .choice {
   margin: 0 0 1.25rem;
@@ -301,47 +250,79 @@ body {
   font-size: 0.95rem;
 }
 
-.segmented {
-  display: flex;
-  flex-wrap: wrap;
+/* 選択肢のカード。上に名前（縦横比は形の図も）、その下に何が変わるかの一文（logs/decisions.md 2026-10-03）。
+   欄が広ければ 2 列、狭ければ 1 列に並ぶ */
+.option-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   gap: 0.4rem;
 }
 
-.segment {
-  position: relative;
-  cursor: pointer;
-}
-
-.segment input {
-  position: absolute;
-  opacity: 0;
-  inset: 0;
-  margin: 0;
-  cursor: pointer;
-}
-
-.segment span {
-  display: block;
-  padding: 0.35rem 0.85rem;
+.option-card {
   border: 1.5px solid var(--rule);
-  border-radius: 999px;
-  font-size: 0.925rem;
+  border-radius: 6px;
 }
 
-.segment:hover span {
+.option-card:hover {
   border-color: var(--ink-muted);
 }
 
-.segment input:checked + span {
+.option-card:has(input:checked) {
   border-color: var(--cloth);
-  background-color: var(--cloth);
-  color: var(--paper);
-  font-weight: 700;
+  background-color: var(--cloth-soft);
+  box-shadow: inset 4px 0 0 var(--cloth);
 }
 
-.segment input:focus-visible + span {
+.option-card:has(input:focus-visible) {
   outline: 3px solid var(--cloth);
   outline-offset: 2px;
+}
+
+/* 押すとラジオが選ばれる範囲。説明の一文（.option-note）はラジオの名前に入れないので、この外に置く */
+.option-choice {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.75rem 0.15rem;
+  cursor: pointer;
+}
+
+.option-choice input {
+  flex: none;
+  margin: 0;
+  accent-color: var(--cloth);
+}
+
+.option-name {
+  font-weight: 700;
+  font-size: 0.925rem;
+}
+
+.option-card:has(input:checked) .option-name {
+  color: var(--cloth);
+}
+
+/* 一文の書き出しは、ラジオの右の名前にそろえる */
+.option-note {
+  margin: 0;
+  padding: 0 0.75rem 0.5rem 2rem;
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+/* 縦横比の形の図。高さをそろえ、幅を比に合わせる */
+.option-shape {
+  flex: none;
+  height: 1.4rem;
+  border: 2px solid currentcolor;
+  border-radius: 2px;
+}
+
+/* 元のまま：決まった形が無いので点線の枠にする */
+.option-shape-free {
+  aspect-ratio: 4 / 3;
+  border-style: dashed;
 }
 
 .toggle-list {
@@ -559,6 +540,94 @@ body {
   color: var(--ink-muted);
   font-size: 0.85rem;
   font-variant-numeric: tabular-nums;
+}
+
+/* ---- お気に入り（最近使った設定の上） ---- */
+
+.favorites {
+  margin-bottom: 1.75rem;
+}
+
+.favorite-form {
+  margin-bottom: 0.75rem;
+}
+
+.favorite-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.925rem;
+}
+
+.favorite-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.favorite-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid var(--rule);
+  border-radius: 6px;
+  background-color: transparent;
+  color: var(--ink);
+  font: inherit;
+}
+
+.favorite-input:focus-visible {
+  border-color: var(--cloth);
+  outline: 3px solid var(--cloth-soft);
+}
+
+.favorite-save {
+  flex: none;
+  padding: 0.5rem 1.1rem;
+  border: 0;
+  border-radius: 6px;
+  background-color: var(--cloth);
+  color: var(--paper);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.favorite-save:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.favorite-status {
+  min-height: 1.4em;
+  margin: 0.4rem 0 0;
+  font-size: 0.9rem;
+}
+
+/* 押すと呼び出す行と、その右の削除ボタン */
+.favorite-entry {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.favorite-entry .recent-item {
+  flex: 1;
+  min-width: 0;
+}
+
+.favorite-delete {
+  flex: none;
+  padding: 0 0.75rem;
+  border: 1.5px solid var(--rule);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-muted);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.favorite-delete:hover {
+  border-color: var(--ink-muted);
+  color: var(--ink);
 }
 
 @media (prefers-reduced-motion: reduce) {
