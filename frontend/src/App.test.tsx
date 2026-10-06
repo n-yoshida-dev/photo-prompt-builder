@@ -4,6 +4,7 @@ import App from './App'
 import { aiSites } from './data/aiSites'
 import { catalog } from './data/catalog'
 import { defaultSelection } from './prompt/selection'
+import { FAVORITES_KEY } from './storage/favorites'
 import { RECENT_KEY } from './storage/recent'
 
 // マスタデータから英文を引く（テストに英文を直書きしない）
@@ -274,5 +275,97 @@ describe('最近使った設定', () => {
   it('まだ何もコピーしていなければ案内を出す', () => {
     render(<App />)
     expect(screen.getByText(/コピーすると、そのときの選択がここに残ります/)).toBeInTheDocument()
+  })
+})
+
+describe('お気に入り（logs/decisions.md 2026-10-03「名前を付けて保存」）', () => {
+  beforeEach(() => {
+    localStorage.clear()
+  })
+
+  afterEach(() => {
+    localStorage.clear()
+    vi.restoreAllMocks()
+  })
+
+  // 今の設定に名前を付けて保存する
+  function saveAs(name: string) {
+    fireEvent.change(screen.getByRole('textbox', { name: '今の設定に名前を付けて保存' }), {
+      target: { value: name },
+    })
+    fireEvent.click(screen.getByRole('button', { name: '保存' }))
+  }
+
+  it('名前を付けて保存 → 開き直す → 一覧から呼び出すと、同じプロンプトが出る', () => {
+    const first = render(<App />)
+    fireEvent.click(screen.getByRole('radio', { name: /Editorial Poster/ }))
+    fireEvent.click(screen.getByRole('radio', { name: '淡く' }))
+    fireEvent.click(screen.getByRole('radio', { name: '縦 3:4' }))
+    fireEvent.click(screen.getByRole('checkbox', { name: '柔らかい自然光にする' }))
+    const saved = promptText()
+    saveAs('七五三用')
+    expect(screen.getByText('「七五三用」を保存しました。')).toBeInTheDocument()
+    first.unmount()
+
+    render(<App />)
+    expect(promptText()).not.toBe(saved)
+    fireEvent.click(screen.getByRole('button', { name: /^七五三用/ }))
+    expect(promptText()).toBe(saved)
+  })
+
+  it('保存されるのは名前と選択と時刻だけで、写真やプロンプトの文は残らない', () => {
+    render(<App />)
+    saveAs('いつもの')
+    const stored = JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? '[]') as Record<
+      string,
+      unknown
+    >[]
+    expect(stored).toHaveLength(1)
+    expect(Object.keys(stored[0] ?? {}).sort()).toEqual(['name', 'savedAt', 'selection'])
+    expect(localStorage.getItem(FAVORITES_KEY)).not.toContain(presetBase('diorama'))
+  })
+
+  it('名前が空のうちは保存ボタンを押せない', () => {
+    render(<App />)
+    expect(screen.getByRole('button', { name: '保存' })).toBeDisabled()
+    fireEvent.change(screen.getByRole('textbox', { name: '今の設定に名前を付けて保存' }), {
+      target: { value: '   ' },
+    })
+    expect(screen.getByRole('button', { name: '保存' })).toBeDisabled()
+  })
+
+  it('同じ名前で保存すると、今の設定で上書きしたと知らせる', () => {
+    render(<App />)
+    saveAs('いつもの')
+    fireEvent.click(screen.getByRole('radio', { name: '白黒' }))
+    saveAs('いつもの')
+    expect(screen.getByText('「いつもの」を今の設定で上書きしました。')).toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: /^いつもの/ })).toHaveLength(1)
+    expect(screen.getByRole('button', { name: /^いつもの/ })).toHaveTextContent('白黒')
+  })
+
+  it('削除は確かめてから行い、やめれば残す', () => {
+    render(<App />)
+    saveAs('いつもの')
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValueOnce(false)
+    fireEvent.click(screen.getByRole('button', { name: '「いつもの」を削除' }))
+    expect(confirm).toHaveBeenCalledWith('お気に入り「いつもの」を削除しますか？')
+    expect(screen.getByRole('button', { name: /^いつもの/ })).toBeInTheDocument()
+
+    confirm.mockReturnValueOnce(true)
+    fireEvent.click(screen.getByRole('button', { name: '「いつもの」を削除' }))
+    expect(screen.queryByRole('button', { name: /^いつもの/ })).not.toBeInTheDocument()
+    expect(JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? '[]')).toEqual([])
+  })
+
+  it('ブラウザに書き込めないときは、画面を閉じると消えると知らせる', () => {
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('QuotaExceededError')
+    })
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    render(<App />)
+    saveAs('いつもの')
+    expect(screen.getByText(/このブラウザに保存できませんでした/)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^いつもの/ })).toBeInTheDocument()
   })
 })

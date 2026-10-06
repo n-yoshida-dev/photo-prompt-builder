@@ -542,6 +542,94 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* ---- お気に入り（最近使った設定の上） ---- */
+
+.favorites {
+  margin-bottom: 1.75rem;
+}
+
+.favorite-form {
+  margin-bottom: 0.75rem;
+}
+
+.favorite-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.925rem;
+}
+
+.favorite-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.favorite-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid var(--rule);
+  border-radius: 6px;
+  background-color: transparent;
+  color: var(--ink);
+  font: inherit;
+}
+
+.favorite-input:focus-visible {
+  border-color: var(--cloth);
+  outline: 3px solid var(--cloth-soft);
+}
+
+.favorite-save {
+  flex: none;
+  padding: 0.5rem 1.1rem;
+  border: 0;
+  border-radius: 6px;
+  background-color: var(--cloth);
+  color: var(--paper);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.favorite-save:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.favorite-status {
+  min-height: 1.4em;
+  margin: 0.4rem 0 0;
+  font-size: 0.9rem;
+}
+
+/* 押すと呼び出す行と、その右の削除ボタン */
+.favorite-entry {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.favorite-entry .recent-item {
+  flex: 1;
+  min-width: 0;
+}
+
+.favorite-delete {
+  flex: none;
+  padding: 0 0.75rem;
+  border: 1.5px solid var(--rule);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-muted);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.favorite-delete:hover {
+  border-color: var(--ink-muted);
+  color: var(--ink);
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;
