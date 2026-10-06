@@ -76,21 +76,35 @@ describe('App', () => {
 
   it('ラジオを選ぶとその英文が入り、既定に戻すと消える', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('radio', { name: 'モノクロ' }))
+    fireEvent.click(screen.getByRole('radio', { name: '白黒' }))
     expect(promptText()).toContain(optionText('color-mood', 'mono'))
     fireEvent.click(screen.getAllByRole('radio', { name: '元のまま' })[0] as HTMLElement)
     expect(promptText()).not.toContain(optionText('color-mood', 'mono'))
   })
 
+  it('選択肢の下の一文は、ラジオの説明として読まれる（名前は短いまま）', () => {
+    render(<App />)
+    const radio = screen.getByRole('radio', { name: '控えめ（写真に近い）' })
+    expect(radio).toHaveAccessibleDescription('元の写真の質感や顔つきを多く残す')
+  })
+
+  it('形の図は縦横比の選択肢にだけ付く', () => {
+    render(<App />)
+    const aspect = screen.getByRole('group', { name: '縦横比' })
+    expect(aspect.querySelectorAll('.option-shape')).toHaveLength(4)
+    const color = screen.getByRole('group', { name: '色味' })
+    expect(color.querySelectorAll('.option-shape')).toHaveLength(0)
+  })
+
   it('スタイルを切り替えるとトグルはそのスタイルの既定に戻り、ラジオは引き継ぐ', () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('radio', { name: 'モノクロ' }))
+    fireEvent.click(screen.getByRole('radio', { name: '白黒' }))
     fireEvent.click(screen.getByRole('checkbox', { name: '柔らかい自然光にする' }))
     fireEvent.click(screen.getByRole('radio', { name: /Editorial Poster/ }))
     // editorial-poster は文字を許すので「文字を入れない」は既定で OFF
     expect(screen.getByRole('checkbox', { name: '文字を入れない' })).not.toBeChecked()
     expect(screen.getByRole('checkbox', { name: '柔らかい自然光にする' })).not.toBeChecked()
-    expect(screen.getByRole('radio', { name: 'モノクロ' })).toBeChecked()
+    expect(screen.getByRole('radio', { name: '白黒' })).toBeChecked()
   })
 })
 
@@ -119,7 +133,7 @@ describe('コピーと開くボタン', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
     expect(await screen.findByText(/コピーしました/)).toBeInTheDocument()
-    fireEvent.click(screen.getByRole('radio', { name: 'モノクロ' }))
+    fireEvent.click(screen.getByRole('radio', { name: '白黒' }))
     expect(screen.queryByText(/コピーしました/)).not.toBeInTheDocument()
   })
 
@@ -201,7 +215,7 @@ describe('最近使った設定', () => {
   it('コピー → リロード → 復元で同じプロンプトが出る', async () => {
     const first = render(<App />)
     fireEvent.click(screen.getByRole('radio', { name: /Editorial Poster/ }))
-    fireEvent.click(screen.getByRole('radio', { name: 'モノクロ' }))
+    fireEvent.click(screen.getByRole('radio', { name: '白黒' }))
     fireEvent.click(screen.getByRole('checkbox', { name: '柔らかい自然光にする' }))
     const copied = promptText()
     fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
@@ -217,11 +231,11 @@ describe('最近使った設定', () => {
 
   it('一覧は既定から変えた点で見分けられる', async () => {
     render(<App />)
-    fireEvent.click(screen.getByRole('radio', { name: 'モノクロ' }))
+    fireEvent.click(screen.getByRole('radio', { name: '白黒' }))
     fireEvent.click(screen.getByRole('checkbox', { name: '文字を入れない' }))
     fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
     const item = await screen.findByRole('button', { name: /3D Miniature Diorama/ })
-    expect(item).toHaveTextContent('モノクロ・−文字を入れない')
+    expect(item).toHaveTextContent('白黒・−文字を入れない')
   })
 
   it('コピーに失敗しても、押した時点の選択は残す（SPEC「コピーボタンを押した時点で保存」）', async () => {
