@@ -1,6 +1,5 @@
 import { useMemo, useRef, useState } from 'react'
 import { ConditionPanel } from './components/ConditionPanel'
-import { PhotoPicker } from './components/PhotoPicker'
 import { PresetPicker } from './components/PresetPicker'
 import { PromptActions } from './components/PromptActions'
 import { PromptView } from './components/PromptView'
@@ -68,7 +67,6 @@ function App() {
       </header>
       <main className="workspace">
         <div className="controls">
-          <PhotoPicker />
           <PresetPicker
             presets={catalog.presets}
             selectedId={selection.presetId}

@@ -19,7 +19,7 @@ export function ConditionPanel({
   return (
     <fieldset className="step">
       <legend className="step-heading">
-        <span className="step-number">3</span>仕上がりを調整する
+        <span className="step-number">2</span>仕上がりを調整する
       </legend>
       <p className="step-note">顔・服装・ポーズ・人数を変えない指示は、いつも自動で入ります。</p>
 
