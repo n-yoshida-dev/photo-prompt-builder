@@ -24,6 +24,16 @@
 - 着想元との連続 3 語の照合は、各スタイルの着想元のリポジトリ（小人：albert-imagebook の該当ファイル・SeeAPI と JimmyLv の README、スケッチブック：aimikoda と ZeroLu の README）の全文に対して行い、0 にした。
   「the rest of」のようなありふれた並びも数えている
 
+### 2026-10-06：スタイルを足すときの作業用スクリプトは scratchpad に置くと、セッションの再開で消える
+
+- **ハマったこと**：セッションを再開したら scratchpad（`/tmp/claude-1000/...`）が空になり、照合用のスクリプト・取ってきた原文・比較ページの元ファイルが消えていた
+- 作り直す中身（どちらも `npx tsx` で、frontend の外から `presets.ts` などを絶対パスで import して動く）：
+  - 連続 3 語の照合：プリセットの `base`・`style`・`negative` と着想元の原文を小文字の英単語列にし、3 語ずつの並びの集合を比べて重なりを出す。
+    原文は GitHub の raw から `curl` で取る（着想元の URL は `docs/style-research-2026-10-04.md` の付録 B）
+  - Codex の依頼書：`buildPrompt(defaultSelection(id))` の全文を「BEGIN PROMPT / END PROMPT」で挟み、「一字も変えずに使い、作業フォルダに <名前>.png でコピーする」と頼む文にする。
+    `codex exec -m gpt-6-astra -c model_reasoning_effort=low --skip-git-repo-check -s workspace-write -i <元の写真> -- - < 依頼書.md`
+- 比較ページは Artifact の `files` で画像を添付して載せた（1 枚 3MB 弱の PNG をそのまま）。同じ URL への更新では、新しい画像だけ渡せば前の画像は残る
+
 ### 2026-10-06：写真を写真のまま残す 2 案は、被写体「人物」と今の保持文をそのまま使う
 
 - **設計判断**：らくがきの小人とスケッチブックは、写真の人物を描き直さないので、人物の保持文とぶつからない。新しい被写体（調査レポートの「写真のまま残す人物」）は作らなかった。
