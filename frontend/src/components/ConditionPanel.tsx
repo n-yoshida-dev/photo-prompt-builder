@@ -9,7 +9,7 @@ type Props = {
   onToggleChange: (toggleId: ToggleId, on: boolean) => void
 }
 
-// 縦横比の選択肢に付ける小さな形の図。形を持たない選択肢（元のまま）は、点線の枠で「写真の形のまま」を表す
+// 縦横比の選択肢に付ける小さな形の図。形を持たない選択肢（元のまま）は、決まった形が無いことを点線の枠で表す
 function ShapeIcon({ shape }: { shape: ChoiceOption['shape'] }) {
   if (!shape) {
     return <span className="option-shape option-shape-free" aria-hidden="true" />
