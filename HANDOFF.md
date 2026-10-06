@@ -36,12 +36,13 @@
 
 - フェーズ：フェーズ2.5（触ってみた意見の反映）。パッとしない 5 本は外した（PR #23）
 - 作業中のブランチ：`feat/doodle-sketchbook`（push 済み、PR はまだ）。「写真とらくがきの小人」と「写真の続きを描いたスケッチブック」を足し、型とテストは通っている
-- ユーザーの返事待ち：比較ページ https://claude.ai/artifact/UrGHFBJBSaWGJEotQ1ppLN の画像を見た返事。そのあと、スケッチブックの参考元（aimikoda）を表示するかを聞く
-- Codex を動かす了承は、このタスクについて取れている。画像は `~/.cache/photo-prompt-builder/samples-2026-10-06/`
+- らくがきの小人はユーザーの返事が「気になる点なし」。スケッチブックは「続きになっていない」と言われ、文を直した。直した文の画像（3 回目）は Codex の利用上限で未作成
+- 比較ページ：https://claude.ai/artifact/UrGHFBJBSaWGJEotQ1ppLN （3 回目を足して見せる）。そのあと、スケッチブックの参考元（aimikoda）を表示するかを聞く
+- Codex は了承を取らずに動かしてよい（2026-10-06 に `../CLAUDE.md` が変わった）。画像と依頼書は `~/.cache/photo-prompt-builder/samples-2026-10-06/`（`request-sketchbook-extension.md` が 3 回目の依頼書）
 - Claude が案を出す番のもの：フェーズ2.5 のお気に入り保存の画面の形
 
 ## 次セッションで最初にやること
 
-1. `feat/doodle-sketchbook` に切り替え、ユーザーの返事を受けて仕上げる（`TODO.md` フェーズ2.5 の先頭の未完。残りの問いは参考元の表示）
+1. `feat/doodle-sketchbook` に切り替え、スケッチブックの 3 回目を Codex で作ってユーザーに見せる（`TODO.md` フェーズ2.5 の先頭の未完。残りの問いは参考元の表示）
 
 `TODO.md` の先頭と一致させる。書くのは最初の一手だけで、一覧は `TODO.md` が持つ。

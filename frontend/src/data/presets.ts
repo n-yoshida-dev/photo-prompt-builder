@@ -100,16 +100,18 @@ export const presets: Preset[] = [
     // 保持文は写真のプリントの中に効かせる（スケッチブックを真上から撮る絵なので、画像全体のカメラの角度は変わる）
     base: "Show this photo as a printed snapshot taped into an open sketchbook, with the scene carried on past the print's edges as a pencil sketch on the paper.",
     style:
-      "Photograph the sketchbook from directly above, lying open on a wooden desk in soft daylight, with both pages taking up nearly the whole frame. Fix the print near the middle of the pages with two pieces of washi tape at its corners, small enough to leave plenty of paper around it. The print shows the whole photo, uncropped and with nothing moved, so its four edges are the photo's own edges; inside it nothing changes, it remains the real photo, and the lists below about the people and the place apply to the print. On the paper around the print, draw only what would lie just outside the photo's frame, treating the print like a window set into a larger drawing of that view: carry on the sky, ground, water, or path that reaches each edge, and finish any tree or building that an edge cuts through, in graphite pencil with light colored-pencil shading. Line up each sketched line with the spot where it leaves the photo so the drawing flows on from the print without a jump, and let the strokes get looser and lighter until they fade into blank paper near the page edges.",
-    // 試作で灯台がプリントの中と絵の中に 2 本出た。プリントの写真を切り取って狭め、絵の側に元の写真全体を描いたのが原因と Claude は見た。
-    // そこで、プリントは写真を切らずに全部入れ、絵の側には写真に写っている物を繰り返さないと書く
+      "Photograph the sketchbook from directly above, lying open on a wooden desk in soft daylight, with both pages taking up nearly the whole frame. Fix the print near the middle of the pages with two pieces of washi tape at its corners, small enough to leave plenty of paper around it. The print shows the whole photo, uncropped and with nothing moved, so its four edges are the photo's own edges; inside it nothing changes, it remains the real photo, and the lists below about the people and the place apply to the print. On the paper around the print, sketch new scenery that the camera never captured: the view beside, above, and below the frame that a much wider lens would have caught, such as more of the coastline, more sky, the far end of the street, or more of the park. Keep the print and the sketch at one shared scale, so a horizon, shoreline, road, or fence that meets the photo's border carries straight on into the sketch at the same height and angle, and finish any tree or building that an edge cuts through. Use graphite pencil with light colored-pencil shading, and let the strokes get looser and lighter until they fade into blank paper near the page edges.",
+    // 2026-10-06 の試作で、プリントの写真が切り取られて狭まり、絵の側は写真の切り落とした端をなぞっただけになった（灯台が 2 本出たのも同じ原因と Claude は見た）。
+    // AI が元の写真をページ全体に引き伸ばし、真ん中だけを写真のまま残していた。そこで、プリントは写真を切らずに全部入れ、
+    // 絵の側には写真に写らなかった外側の景色を新しく描き、写真の一部を写したり拡大したりしないと書く
     negative: [
       'redraw, paint over, or restyle anything inside the printed photo',
       'crop the photo inside the print or shift anything within it',
-      'draw a second copy of any building, landmark, tree, or object that already appears inside the print, since each one appears only once in the whole image',
+      'copy, enlarge, or trace the photo or pieces of it into the sketched area, or draw a second copy of any building, landmark, tree, or object that already appears inside the print',
       'draw any people or animals in the sketched area',
     ],
-    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
+    // 続きの景色は写真に写っていない物なので、「写っていない物を足さない」は既定で OFF（doodle-friends と同じ考え方）
+    defaultToggles: ['no-text', 'one-per-photo'],
     source: { kind: 'claude', label: 'Claude の自作' },
   },
   // 旅のスタンプは「風景だけ」と「家族も」で同じ文を使い、ジオラマと同じくアプリが足すブロックで人物の有無を分ける（logs/decisions.md 2026-10-03）
