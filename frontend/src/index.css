@@ -319,12 +319,6 @@ body {
   border-radius: 2px;
 }
 
-/* 元のまま：決まった形が無いので点線の枠にする */
-.option-shape-free {
-  aspect-ratio: 4 / 3;
-  border-style: dashed;
-}
-
 .toggle-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
