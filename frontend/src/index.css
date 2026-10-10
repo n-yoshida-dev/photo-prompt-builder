@@ -1,41 +1,49 @@
 /*
- * 画面全体の見た目。題材は家族の写真アルバム：淡い紙の上で選び、
+ * 画面全体の見た目。方向は「写真帳の 1 ページ」（logs/decisions.md 2026-10-11。決まりの一覧は DESIGN.md）。
+ * 題材は家族の写真アルバム：罫線と余白だけで区切った紙の上で選び、
  * できあがったプロンプトだけを「黒い台紙に白いペンで書いた 1 ページ」として目立たせる。
+ * 箱（枠線の角丸）は使わず、選択中の印は写真を留めるコーナーにする。見出しは明朝（OS の書体）。
  * Web フォントは読み込まない（外部への通信を 0 にして「写真が端末の外に出ない」を確かめやすくするため）
  */
 :root {
-  --paper: #f3f4f1; /* 画面の紙 */
-  --ink: #1e2326; /* 本文の文字 */
-  --ink-muted: #5f6763; /* 補足の文字 */
-  --rule: #d5d9d4; /* 区切り線・枠 */
-  --album: #1f2420; /* アルバムの黒い台紙 */
-  --pen: #eeece4; /* 台紙に書く白いペン */
-  --cloth: #2e5e4e; /* アルバムの布表紙の緑。選択中の印に使う */
-  --cloth-soft: #e3ece7; /* 選択中の背景 */
-  --corner: #c9c3b3; /* 写真を留めるコーナー */
+  --paper: #f3f4f1; /* 画面の紙（緑の布表紙に寄せた、やや緑がかった白。クリーム色にしない） */
+  --ink: #23272a; /* 本文の文字 */
+  --ink-muted: #5f6460; /* 補足の文字 */
+  --rule: #d3d2ca; /* 罫線 */
+  --album: #1d211e; /* アルバムの黒い台紙 */
+  --pen: #ece9df; /* 台紙に書く白いペン */
+  --cloth: #2f5d4b; /* アルバムの布表紙の緑。選択中の印と主ボタンに使う */
+  --cloth-soft: #e6ede8; /* 選択中の行の背景 */
+  --corner: #c6bfa9; /* 写真を留めるコーナー */
 
   --font-ui:
     system-ui, -apple-system, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP',
     'Yu Gothic UI', sans-serif;
+  /* 見出しの明朝。Mac・iPhone はヒラギノ明朝、Windows は BIZ UD 明朝か游明朝。無ければ端末の明朝 */
+  --font-heading:
+    'Hiragino Mincho ProN', 'BIZ UDPMincho', 'Yu Mincho', 'Noto Serif JP', 'Noto Serif CJK JP',
+    serif;
+  /* 台紙に書く英文のペンの字 */
   --font-pen: ui-serif, 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
 
   font-family: var(--font-ui);
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.65;
   color: var(--ink);
   background-color: var(--paper);
   color-scheme: light;
 }
 
+/* 暗い画面では紙を暗くし、台紙はそれより一段暗くする。緑は明るくして、暗い地の上でも選択中が分かるようにする */
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #181b19;
-    --ink: #e6e8e4;
-    --ink-muted: #a3aaa5;
-    --rule: #343a36;
-    --album: #0f1210;
+    --paper: #171a18;
+    --ink: #e4e5df;
+    --ink-muted: #a3a9a4;
+    --rule: #3a3f3b;
+    --album: #0d100e;
     --cloth: #8cc3ad;
-    --cloth-soft: #22322b;
+    --cloth-soft: #22302a;
     --corner: #6f6a5e;
     color-scheme: dark;
   }
@@ -72,29 +80,33 @@ body {
 .app {
   max-width: 76rem;
   margin: 0 auto;
-  padding: 1.5rem 1rem 3rem;
+  padding: 2rem 1.25rem 2rem;
 }
 
+/* 題名と説明。下に墨の線を 1 本引いて、写真帳の表題のページに見せる */
 .app-header {
-  max-width: 40rem;
-  margin-bottom: 2rem;
+  max-width: 44rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--ink);
 }
 
 .app-title {
   margin: 0;
-  font-size: 1.75rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 4vw + 0.5rem, 2.1rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .app-lead {
-  margin: 0.25rem 0 0;
+  margin: 0.5rem 0 0;
   color: var(--ink-muted);
 }
 
 .workspace {
   display: grid;
-  gap: 2rem;
+  gap: 2.5rem;
 }
 
 /*
@@ -103,10 +115,11 @@ body {
  */
 @media (min-width: 60rem) {
   .workspace {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
     grid-template-areas:
       'controls output'
       'history output';
+    column-gap: 3.5rem;
     align-items: start;
   }
 
@@ -125,10 +138,10 @@ body {
   }
 }
 
-/* ---- 手順の見出し（写真 → スタイル → 条件は順を追う手順なので番号を付ける） ---- */
+/* ---- 手順の見出し（スタイル → 仕上がりは順を追う手順なので番号を付ける） ---- */
 
 .step {
-  margin: 0 0 2.25rem;
+  margin: 0 0 2.75rem;
   padding: 0;
   border: 0;
   min-width: 0;
@@ -137,76 +150,113 @@ body {
 .step-heading {
   display: flex;
   align-items: baseline;
-  gap: 0.6rem;
-  margin: 0 0 0.75rem;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
   padding: 0;
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  font-weight: 600;
 }
 
+/* 番号はペンの字で、写真帳のページ番号のように控えめに */
 .step-number {
-  display: inline-grid;
-  place-items: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border: 2px solid var(--ink);
-  border-radius: 50%;
-  font-size: 0.95rem;
-  line-height: 1;
+  font-family: var(--font-pen);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--ink-muted);
 }
 
 .step-note {
-  margin: -0.25rem 0 1rem;
+  margin: -0.5rem 0 1.25rem;
   color: var(--ink-muted);
   font-size: 0.925rem;
 }
 
-/* ---- 1. スタイル ---- */
+/* ---- 1. スタイル（箱にせず、罫線で区切った行） ---- */
 
 .preset-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-  gap: 0.75rem;
+  column-gap: 2rem;
+  border-top: 1px solid var(--rule);
 }
 
 .preset-card {
   position: relative;
-  border: 1.5px solid var(--rule);
-  border-radius: 6px;
+  border-bottom: 1px solid var(--rule);
 }
 
 /* 押すとラジオが選ばれる範囲。出典の行（.preset-credit）はリンクを含むのでこの外に置く */
 .preset-choice {
   display: grid;
-  gap: 0.2rem;
-  padding: 0.9rem 1rem 0.9rem 2.6rem;
+  gap: 0.15rem;
+  padding: 0.95rem 0.5rem 0.75rem 2rem;
   cursor: pointer;
 }
 
-.preset-choice:has(+ .preset-credit) {
-  padding-bottom: 0.4rem;
+/* 押せる範囲を行全体（出典の帯も含む）に広げる。出典のリンクとラジオは、この覆いの上に出す */
+.preset-choice::after {
+  content: '';
+  position: absolute;
+  inset: 0;
 }
 
-.preset-card:hover {
-  border-color: var(--ink-muted);
+.preset-choice:has(+ .preset-credit) {
+  padding-bottom: 0.3rem;
+}
+
+/* マウスを乗せたときだけ薄く色を付ける（スマホでは触ったあとに色が残るので付けない） */
+@media (hover: hover) {
+  .preset-card:hover {
+    background-color: color-mix(in srgb, var(--cloth-soft) 50%, transparent);
+  }
 }
 
 .preset-card:has(input:checked) {
-  border-color: var(--cloth);
   background-color: var(--cloth-soft);
-  box-shadow: inset 4px 0 0 var(--cloth);
+}
+
+/* 選択中の印：左上に写真を留めるコーナー（AI がよく作る「左の色帯」は使わない。DESIGN.md「避ける形」） */
+.preset-card:has(input:checked)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--cloth);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+/* キーボードで選んでいる行は、行ごと枠で示す（ラジオ自体の枠は出さず、二重にしない） */
+.preset-card:has(input:focus-visible) {
+  outline: 3px solid var(--cloth);
+  outline-offset: -3px;
 }
 
 .preset-card input {
   position: absolute;
-  top: 1.05rem;
-  left: 1rem;
+  z-index: 1;
+  top: 1.15rem;
+  left: 0.5rem;
   margin: 0;
   accent-color: var(--cloth);
 }
 
+/* 行の枠は :has() で出すので、:has() が使えるブラウザでだけラジオ自体の枠を消す（使えないブラウザではラジオの枠が残る） */
+@supports selector(:has(*)) {
+  .preset-card input:focus-visible,
+  .option-choice input:focus-visible {
+    outline: none;
+  }
+}
+
 .preset-name {
   font-weight: 700;
+}
+
+.preset-card:has(input:checked) .preset-name {
+  color: var(--cloth);
 }
 
 .preset-description {
@@ -220,13 +270,15 @@ body {
 
 .preset-credit {
   margin: 0;
-  padding: 0 1rem 0.9rem 2.6rem;
+  padding: 0 0.5rem 0.8rem 2rem;
   color: var(--ink-muted);
   font-size: 0.8rem;
   overflow-wrap: anywhere;
 }
 
 .preset-credit a {
+  position: relative;
+  z-index: 1;
   color: inherit;
 }
 
@@ -234,61 +286,86 @@ body {
   display: block;
 }
 
-/* ---- 2. 条件 ---- */
+/* ---- 2. 仕上がりの調整（選択肢は 1 行ずつ。名前の右に何が変わるかの一文） ---- */
 
 .choice {
-  margin: 0 0 1.25rem;
+  margin: 0 0 1.5rem;
   padding: 0;
   border: 0;
   min-width: 0;
 }
 
 .choice-label {
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
   padding: 0;
-  font-weight: 700;
-  font-size: 0.95rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.05rem;
 }
 
-/* 選択肢のカード。上に名前（縦横比は形の図も）、その下に何が変わるかの一文（logs/decisions.md 2026-10-03）。
-   欄が広ければ 2 列、狭ければ 1 列に並ぶ */
+/*
+ * 1 つの選択（加工の強さ・色味・縦横比）の中で、一文の書き出しを縦にそろえる。
+ * 列の幅は一覧が決め、各行は subgrid でその列を借りる。欄の幅で行の形を切り替えるため、一覧を container にする
+ */
 .option-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-  gap: 0.4rem;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: 0.9rem;
+  border-top: 1px solid var(--rule);
+  container-type: inline-size;
 }
 
 .option-card {
-  border: 1.5px solid var(--rule);
-  border-radius: 6px;
+  position: relative;
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: baseline;
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer;
 }
 
-.option-card:hover {
-  border-color: var(--ink-muted);
+@media (hover: hover) {
+  .option-card:hover {
+    background-color: color-mix(in srgb, var(--cloth-soft) 50%, transparent);
+  }
 }
 
 .option-card:has(input:checked) {
-  border-color: var(--cloth);
   background-color: var(--cloth-soft);
-  box-shadow: inset 4px 0 0 var(--cloth);
 }
 
 .option-card:has(input:focus-visible) {
   outline: 3px solid var(--cloth);
-  outline-offset: 2px;
+  outline-offset: -3px;
 }
 
-/* 押すとラジオが選ばれる範囲。説明の一文（.option-note）はラジオの名前に入れないので、この外に置く */
+/*
+ * 押すとラジオが選ばれる範囲。説明の一文（.option-note）はラジオの名前に入れないので、この外に置く。
+ * 行は字の基準線で一文とそろえるので、ここも名前の基準線でそろえ、ラジオと形の図だけ上下の真ん中に置く
+ */
 .option-choice {
   display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.5rem 0.75rem 0.15rem;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.5rem 0 0.5rem 0.5rem;
   cursor: pointer;
+  white-space: nowrap;
 }
 
+/* 押せる範囲を行全体に広げる（一文の上を押しても選べる。一文はラベルの外のままなので、ラジオの名前は短いまま） */
+.option-choice::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+/* ラジオは覆いの上に出す（直接押しても、自動の操作で選んでも、ラジオそのものに届くように） */
 .option-choice input {
+  position: relative;
+  z-index: 1;
   flex: none;
+  align-self: center;
   margin: 0;
   accent-color: var(--cloth);
 }
@@ -302,36 +379,55 @@ body {
   color: var(--cloth);
 }
 
-/* 一文の書き出しは、ラジオの右の名前にそろえる */
 .option-note {
   margin: 0;
-  padding: 0 0.75rem 0.5rem 2rem;
+  padding: 0.5rem 0.5rem 0.5rem 0;
   color: var(--ink-muted);
   font-size: 0.85rem;
   line-height: 1.45;
+  text-wrap: pretty; /* 最後の 1〜2 字だけが次の行に落ちるのを減らす */
+}
+
+/* 欄が狭い（スマホなど）ときは、一文を名前の下に回す。書き出しはラジオの右の名前にそろえる */
+@container (max-width: 26rem) {
+  .option-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .option-choice {
+    padding-bottom: 0.1rem;
+    white-space: normal;
+  }
+
+  .option-note {
+    padding: 0 0.5rem 0.55rem 2.05rem;
+  }
 }
 
 /* 縦横比の形の図。高さをそろえ、幅を比に合わせる */
 .option-shape {
   flex: none;
-  height: 1.4rem;
-  border: 2px solid currentcolor;
-  border-radius: 2px;
+  align-self: center;
+  height: 1.1rem;
+  border: 1.5px solid currentcolor;
+  border-radius: 1px;
 }
 
 .toggle-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-  gap: 0.5rem 1rem;
+  gap: 0 1.5rem;
   margin: 1.5rem 0 0;
   padding: 0;
   list-style: none;
 }
 
+/* 文字まで含めた行全体が押せる。上下に余白を足して、押せる高さを 40px 近くにする */
 .toggle {
   display: flex;
   align-items: flex-start;
-  gap: 0.5rem;
+  gap: 0.55rem;
+  padding: 0.4rem 0;
   cursor: pointer;
 }
 
@@ -345,34 +441,50 @@ body {
 
 /* ---- できあがったプロンプト（黒い台紙に白いペン） ---- */
 
+/* 台紙の縁にペンの色をごく薄く引く。暗い画面では台紙と紙の明るさが近く、これが無いと台紙が紙に溶ける */
 .album-page {
   position: relative;
-  padding: 1.5rem 1.5rem 1.25rem;
+  padding: 2rem 2rem 1.5rem;
   background-color: var(--album);
   color: var(--pen);
-  border-radius: 3px;
+  border: 1px solid color-mix(in srgb, var(--pen) 16%, var(--album));
+  border-radius: 2px;
 }
 
-/* 台紙の四隅に写真のコーナーを留める */
+/* 台紙の四隅に写真のコーナーを留める（台紙で左上・右下、見出しの欄で右上・左下） */
 .album-page::before,
-.album-page::after {
+.album-page::after,
+.album-head::before,
+.album-head::after {
   content: '';
   position: absolute;
-  width: 1.4rem;
-  height: 1.4rem;
+  width: 1.3rem;
+  height: 1.3rem;
   background-color: var(--corner);
 }
 
 .album-page::before {
-  top: 0.6rem;
-  left: 0.6rem;
+  top: 0.7rem;
+  left: 0.7rem;
   clip-path: polygon(0 0, 100% 0, 0 100%);
 }
 
 .album-page::after {
-  right: 0.6rem;
-  bottom: 0.6rem;
+  right: 0.7rem;
+  bottom: 0.7rem;
   clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.album-head::before {
+  top: 0.7rem;
+  right: 0.7rem;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+.album-head::after {
+  bottom: 0.7rem;
+  left: 0.7rem;
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
 }
 
 .album-head {
@@ -381,17 +493,23 @@ body {
   align-items: baseline;
   justify-content: space-between;
   gap: 0.25rem 1rem;
-  margin: 0 0.5rem 0.75rem 1.25rem;
+  margin: 0 0.75rem 0.5rem 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--pen) 30%, transparent);
 }
 
+/* 見出しは明朝。日本語の斜体は端末が字を傾けて作るので使わない */
 .album-heading {
   margin: 0;
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .album-meta {
   margin: 0;
+  font-family: var(--font-pen);
   font-size: 0.85rem;
   opacity: 0.75;
 }
@@ -400,15 +518,15 @@ body {
   display: block;
   width: 100%;
   /* 右の列（台紙＋ボタン）が画面の高さに収まるよう、ボタンの分を引く。収まらないと sticky で台紙の上端が隠れる */
-  height: clamp(16rem, calc(100vh - 21rem), 40rem);
-  padding: 0.75rem 1.25rem 1rem;
+  height: clamp(16rem, calc(100vh - 26rem), 40rem);
+  padding: 0.75rem 1rem 1rem;
   border: 0;
   resize: vertical;
   background: transparent;
   color: var(--pen);
   font-family: var(--font-pen);
-  font-size: 0.98rem;
-  line-height: 1.75;
+  font-size: 1rem;
+  line-height: 1.8;
   white-space: pre-wrap;
 }
 
@@ -420,14 +538,14 @@ body {
 /* ---- コピーと開くボタン（台紙のすぐ下） ---- */
 
 .actions {
-  margin-top: 1rem;
+  margin-top: 1.25rem;
 }
 
 .copy-button {
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.85rem 1rem;
   border: 0;
-  border-radius: 6px;
+  border-radius: 2px;
   background-color: var(--cloth);
   color: var(--paper);
   font: inherit;
@@ -435,8 +553,10 @@ body {
   cursor: pointer;
 }
 
-.copy-button:hover {
-  filter: brightness(1.1);
+@media (hover: hover) {
+  .copy-button:hover {
+    filter: brightness(1.1);
+  }
 }
 
 .copy-status {
@@ -446,9 +566,10 @@ body {
 }
 
 .open-note {
-  margin: 0.75rem 0 0.4rem;
+  margin: 0.75rem 0 0.5rem;
   color: var(--ink-muted);
   font-size: 0.925rem;
+  text-wrap: pretty;
 }
 
 .open-list {
@@ -462,24 +583,31 @@ body {
 
 .open-link {
   display: inline-block;
-  padding: 0.45rem 0.95rem;
-  border: 1.5px solid var(--ink);
-  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
   color: var(--ink);
   font-weight: 700;
   text-decoration: none;
 }
 
-.open-link:hover {
-  background-color: var(--cloth-soft);
+@media (hover: hover) {
+  .open-link:hover {
+    background-color: var(--cloth-soft);
+  }
 }
 
-/* ---- 最近使った設定 ---- */
+/* ---- お気に入りと最近使った設定（罫線の行） ---- */
+
+.favorites {
+  margin-bottom: 2rem;
+}
 
 .recent-heading {
   margin: 0 0 0.75rem;
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .recent-empty {
@@ -490,10 +618,14 @@ body {
 
 .recent-list {
   display: grid;
-  gap: 0.5rem;
   margin: 0;
   padding: 0;
+  border-top: 1px solid var(--rule);
   list-style: none;
+}
+
+.recent-list > li {
+  border-bottom: 1px solid var(--rule);
 }
 
 /* 写真の裏に鉛筆でメモしたような 1 行。押すとその選択に戻る */
@@ -503,9 +635,8 @@ body {
   align-items: baseline;
   gap: 0.75rem;
   width: 100%;
-  padding: 0.6rem 0.9rem;
-  border: 1.5px solid var(--rule);
-  border-radius: 6px;
+  padding: 0.65rem 0.5rem;
+  border: 0;
   background: transparent;
   color: var(--ink);
   font: inherit;
@@ -513,9 +644,15 @@ body {
   cursor: pointer;
 }
 
-.recent-item:hover {
-  border-color: var(--cloth);
-  background-color: var(--cloth-soft);
+/* hover は、ほかの押せる行と同じく選択中の背景を半分に薄めたもの（選択中と見分けるため） */
+@media (hover: hover) {
+  .recent-item:hover {
+    background-color: color-mix(in srgb, var(--cloth-soft) 50%, transparent);
+  }
+}
+
+.recent-item:focus-visible {
+  outline-offset: -3px;
 }
 
 .recent-name {
@@ -525,7 +662,7 @@ body {
 .recent-changes {
   overflow: hidden;
   color: var(--ink-muted);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -534,12 +671,6 @@ body {
   color: var(--ink-muted);
   font-size: 0.85rem;
   font-variant-numeric: tabular-nums;
-}
-
-/* ---- お気に入り（最近使った設定の上） ---- */
-
-.favorites {
-  margin-bottom: 1.75rem;
 }
 
 .favorite-form {
@@ -557,27 +688,34 @@ body {
   gap: 0.5rem;
 }
 
+/* 名前の欄は、記入欄のように下線だけにする */
 .favorite-input {
   flex: 1;
   min-width: 0;
-  padding: 0.5rem 0.75rem;
-  border: 1.5px solid var(--rule);
-  border-radius: 6px;
+  padding: 0.5rem 0.25rem;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  border-radius: 0;
   background-color: transparent;
   color: var(--ink);
   font: inherit;
 }
 
+/* 例文の文字は補足の文字の色にする（ブラウザの既定の灰色は濃さの差が 4.5 に届かない。Firefox は既定で薄めるので opacity も戻す） */
+.favorite-input::placeholder {
+  color: var(--ink-muted);
+  opacity: 1;
+}
+
 .favorite-input:focus-visible {
-  border-color: var(--cloth);
-  outline: 3px solid var(--cloth-soft);
+  border-bottom-color: var(--cloth);
 }
 
 .favorite-save {
   flex: none;
   padding: 0.5rem 1.1rem;
   border: 0;
-  border-radius: 6px;
+  border-radius: 2px;
   background-color: var(--cloth);
   color: var(--paper);
   font: inherit;
@@ -593,7 +731,7 @@ body {
 .favorite-status {
   min-height: 1.4em;
   margin: 0.4rem 0 0;
-  font-size: 0.9rem;
+  font-size: 0.925rem;
 }
 
 /* 押すと呼び出す行と、その右の削除ボタン */
@@ -609,19 +747,21 @@ body {
 
 .favorite-delete {
   flex: none;
-  padding: 0 0.75rem;
-  border: 1.5px solid var(--rule);
-  border-radius: 6px;
+  min-width: 2.75rem;
+  padding: 0 0.5rem;
+  border: 0;
   background: transparent;
   color: var(--ink-muted);
   font: inherit;
   font-size: 0.85rem;
+  text-decoration: underline;
   cursor: pointer;
 }
 
-.favorite-delete:hover {
-  border-color: var(--ink-muted);
-  color: var(--ink);
+@media (hover: hover) {
+  .favorite-delete:hover {
+    color: var(--ink);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

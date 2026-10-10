@@ -21,9 +21,11 @@ export function PromptView({ prompt, textareaRef }: Props) {
         </h2>
         <p className="album-meta">英語 {countWords(prompt).toLocaleString('ja-JP')} 語</p>
       </div>
+      {/* 中身は英文なので lang="en" を付ける（読み上げソフトが英語の声で読むように） */}
       <textarea
         ref={textareaRef}
         className="album-text"
+        lang="en"
         aria-labelledby={headingId}
         value={prompt}
         readOnly

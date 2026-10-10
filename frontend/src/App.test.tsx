@@ -47,6 +47,14 @@ describe('App', () => {
     expect(promptText()).toContain(first?.base)
   })
 
+  it('プロンプトの欄は英文として読み上げられるよう lang="en" を持つ', () => {
+    render(<App />)
+    expect(screen.getByRole('textbox', { name: 'できあがったプロンプト' })).toHaveAttribute(
+      'lang',
+      'en',
+    )
+  })
+
   it('スタイルを選び直すとプロンプトが即時に変わる', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('radio', { name: /Editorial Poster/ }))
