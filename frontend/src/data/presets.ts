@@ -152,8 +152,9 @@ export const presets: Preset[] = [
       'copy the emblem, logo, or postmark design of any real postal service',
     ],
     // 額面の数字と短い英語の題名を入れるので「文字を入れない」は既定で OFF（editorial-poster と同じ考え方）。
-    // ユーザーの答え「数字入れていいよ。あとは、画像に沿った英文を入れるとか？」（logs/decisions.md 2026-10-10）。ON にすると「Do not:」の文が数字も題名も止める
-    defaultToggles: ['no-extra-objects', 'one-per-photo'],
+    // ユーザーの答え「数字入れていいよ。あとは、画像に沿った英文を入れるとか？」（logs/decisions.md 2026-10-10）。ON にすると「Do not:」の文が数字も題名も止める。
+    // 消印はスタイルが足す物で、「写っていない物を足さない」の例外（台や背景）に当たらないので、こちらも既定で OFF（doodle-friends と同じ考え方。PR #25 の Codex の指摘）
+    defaultToggles: ['one-per-photo'],
     source: { kind: 'claude', label: 'Claude の自作' },
   },
   // 旅のスタンプは「風景だけ」と「家族も」で同じ文を使い、ジオラマと同じくアプリが足すブロックで人物の有無を分ける（logs/decisions.md 2026-10-03）
