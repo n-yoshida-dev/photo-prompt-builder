@@ -137,21 +137,22 @@ export const presets: Preset[] = [
     // 表示名は旅のスタンプと紛らわしくない案をユーザーに確かめる（TODO.md）。今は仮の名前
     id: 'commemorative-stamp',
     name: '封筒に貼った記念切手',
-    descriptionJa: '写真の場面を絵にした記念切手を、消印を押した封筒に貼る',
+    descriptionJa:
+      '写真の場面を絵にした記念切手を、消印を押した封筒に貼る。額面の数字と、場面に合った短い英語の題名が入る',
     subject: 'people-in-scene',
     base: 'Make this snapshot the artwork of one commemorative stamp, stuck on an envelope that has been through the post.',
     // 試作では切手の絵が写真に近かった（docs/style-trials-2026-10-04.md）。保持文が顔を写実に引っ張ると Claude は推定し、
     // 絵は「描いた挿絵を印刷したもの」とはっきり書く。細い線の版画調は子どもの顔が老けやすい（調査レポート）ので、平らな色面の挿絵にする
     style:
-      "Paint the stamp's artwork as an illustration, never as a photograph: gouache-style painting with flat, softly shaded areas of color, clean simple outlines, and gently simplified shapes, printed with a fine dot screen as real stamps are. Paint faces in that same illustrated manner, with soft, simple features that still let each person be recognized at once. Everything listed below about people and place refers to the stamp's artwork. Give the stamp a white perforated border with evenly spaced round teeth. Its only marking is one small numeral for the value in one corner; no words, country names, personal names, or dates appear anywhere on the stamp, postmark, or envelope. Stick the stamp near the upper corner of a cream-colored envelope, with a round postmark of plain rings and wavy lines partly over its edge. Shoot it flat from directly above in soft daylight, framed close so the stamp fills the shot almost entirely and its faces are easy to see.",
+      "Paint the stamp's artwork as an illustration, never as a photograph: gouache-style painting with flat, softly shaded areas of color, clean simple outlines, and gently simplified shapes, printed with a fine dot screen as real stamps are. Paint faces in that same illustrated manner, with soft, simple features that still let each person be recognized at once. Everything listed below about people and place refers to the stamp's artwork. Give the stamp a white perforated border with evenly spaced round teeth. Print two things on the stamp besides the artwork: one small numeral for the value in one corner, and along the bottom edge a short English title of two to four words naming what the artwork shows, for example the season, the place, or what the family is doing, printed in neat capital letters. Nothing else is written anywhere: no country names, personal names, dates, or other words on the stamp, postmark, or envelope. Stick the stamp near the upper corner of a cream-colored envelope, with a round postmark of plain rings and wavy lines partly over its edge. Shoot it flat from directly above in soft daylight, framed close so the stamp fills the shot almost entirely and its faces are easy to see.",
     negative: [
       "render the stamp's artwork as a photograph or a filtered photo",
       'draw faces with fine engraved lines or cross-hatching that make anyone look older',
       'show more than one stamp',
       'copy the emblem, logo, or postmark design of any real postal service',
     ],
-    // 額面の数字だけは許すので「文字を入れない」は既定で OFF（editorial-poster と同じ考え方）。
-    // 数字を許すかはユーザーに確かめる（TODO.md）。ON にすると「Do not:」の文が数字も止める
+    // 額面の数字と短い英語の題名を入れるので「文字を入れない」は既定で OFF（editorial-poster と同じ考え方）。
+    // ユーザーの答え「数字入れていいよ。あとは、画像に沿った英文を入れるとか？」（logs/decisions.md 2026-10-10）。ON にすると「Do not:」の文が数字も題名も止める
     defaultToggles: ['no-extra-objects', 'one-per-photo'],
     source: { kind: 'claude', label: 'Claude の自作' },
   },
