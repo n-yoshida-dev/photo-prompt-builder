@@ -157,6 +157,58 @@ export const presets: Preset[] = [
     defaultToggles: ['one-per-photo'],
     source: { kind: 'claude', label: 'Claude の自作' },
   },
+  // ここから 2 本は、写真の場所や持ち物が遊び道具・展示物になる（Claude の自作。2026-10-06。試作は docs/style-trials-2026-10-04.md）
+  {
+    // 家族は盤に描かず、一人ひとりをコマにして盤に置く（ユーザーの言葉「盤に家族を書くんじゃなくて、コマとして家族を置くイメージ。
+    // 家族が実際に双六をやっているみたいな。」。logs/decisions.md 2026-10-10）。景色だけの版は作らない（同じ日の「Aで」）
+    id: 'sugoroku-board',
+    name: 'すごろく盤',
+    descriptionJa:
+      '写真の場所の地形をそのまま盤面にした、手作りのすごろくにする。家族は一人ひとりがコマになって盤の上に立つ',
+    // コマは写真の位置に置かないので、人物の保持文と場所の構図の文だけを付ける被写体（people-as-pieces）
+    subject: 'people-as-pieces',
+    base: 'Remake the place in this snapshot as a handmade family race game played with a die, so that the real landscape itself becomes the board and the family members themselves become the playing pieces.',
+    // マスに数字や「スタート」の文字が入りやすい（調査レポート）ので、マスは無地と文の中で決める。
+    // コマは写真を厚紙に刷って切り抜いた形にし、顔を描き直さない（飛び出す絵本と同じ考え方）。
+    // 「1 人 1 コマ」と「肩車は 1 つのコマ」がぶつからないよう、コマの単位を「1 人、または抱えている人と抱えられている人」と書く（PR #26 の Codex の指摘）。
+    // 手をつないでいるだけの人は別々のコマにする（全員が手をつないだ写真で 1 つのコマにまとまらないように。PR #26 の受け入れレビュー）。
+    // 子どもと身体接触の語を同じ文に置かない（安全フィルタ対策。KNOWLEDGE.md 2026-09-29）ので、child とは書かない
+    style:
+      "Paint the board on a sheet of thick card spread out on a living-room floor, shown from a little above in soft daylight with the whole board in view and a strip of floor around it. Ground, paths, water, buildings, and landmarks keep their real shapes and positions, painted in a cheerful, simplified gouache style, so anyone who was there knows the place at once; no people are painted into the landscape. A winding track of round spaces starts in one corner, follows the real paths and shorelines, and ends at the most memorable landmark as the goal; a few spaces may be tinted differently, and every space stays plain, with no numbers or words. Make a stand-up game piece for each family member, except that anyone being carried in the snapshot, whether up on someone's shoulders or in someone's arms, stays on one shared piece together with whoever carries them; people only holding hands get pieces of their own. Each piece is cut from the snapshot itself: printed onto stiff card, trimmed along the outline with a narrow white edge, and slotted into a little round stand, keeping their poses and clothes from the snapshot. Stand the pieces on different spaces along the track as though the family were partway through a game, with one die resting beside them, and make each piece tall enough that every face on it is easy to recognize.",
+    negative: [
+      'paint any family member into the landscape of the board instead of making them a piece',
+      'leave any family member off the pieces',
+      'add extra counters or pieces that do not stand for someone in the snapshot',
+      'turn the place into a generic fantasy map that no longer looks like the real spot',
+    ],
+    // 家族のコマとサイコロはスタイルが求める物なので、「写っていない物を足さない」は既定で OFF（doodle-friends と同じ考え方）。
+    // 写真に無い建物や名所は、場所の構図の保持文の "Nothing invented beyond the photo's edges" が止める
+    defaultToggles: ['no-text', 'one-per-photo'],
+    source: { kind: 'claude', label: 'Claude の自作' },
+  },
+  {
+    id: 'specimen-box',
+    name: '思い出の標本箱',
+    descriptionJa:
+      '写真に写った帽子や靴などの持ち物と、灯台や船の小さな模型のような行った場所の思い出を、木の標本箱の仕切りに並べる',
+    // 場面の配置は保たずに物だけを取り出すので、風景の保持文（同じ配置）とぶつかる。持ち物の保持文を付ける
+    subject: 'objects',
+    base: 'Collect the things visible in this snapshot into a wooden specimen box as mementos from that day, leaving the scene itself out.',
+    // 試作では写真に無いシュシュが入った（女の子のワンピースの柄から作ったと Claude は推定）。作り物は止め、無理に埋めないと書く。
+    // 2026-10-10 の 1 回目は身に付けていた物だけになった。ユーザーの言葉「背景のものが反映されていないのがNG。前回は灯台とかヨットとか、
+    // その時に行った場所の思い出が含まれていました。」を受け、場所の思い出を 3 つ以上入れると書く。
+    // 写真に 3 つ無いときに数を満たそうとして物を作らないよう、少ないときは写っている分だけにする（PR #26 の Codex の指摘）
+    style:
+      'Make the box shallow, with a glass lid and a grid of small square compartments lined with cream paper, set flat on a table and shown from directly above in soft daylight. Fill it with two kinds of keepsakes, one per compartment, each matching its colors, patterns, and shape in the snapshot: things the family had with them, such as hats, sunglasses, shoes, bags, or toys; and mementos of the place itself, such as small models of a landmark, a building, a boat, or play equipment seen in the snapshot, and natural bits picked up there, like a pebble or a leaf, choosing only kinds the snapshot itself shows. When the snapshot shows three or more such reminders of the place, give the place at least three compartments; when it shows fewer, use every one it shows, so the box remembers where the family went, not only what they wore. Choose only things that anyone could point to in the snapshot; leaving a compartment empty is better than filling it with something made up.',
+    negative: [
+      "make up an object from a pattern or print on someone's clothing",
+      'show any people, faces, or body parts',
+      // 生き物を標本にする見せ方とピンを刺す見せ方は止める（調査レポート）。ぬいぐるみなどのおもちゃは残してよい
+      'display real insects or other living creatures as specimens, or push pins through anything',
+    ],
+    defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
+    source: { kind: 'claude', label: 'Claude の自作' },
+  },
   // 旅のスタンプは「風景だけ」と「家族も」で同じ文を使い、ジオラマと同じくアプリが足すブロックで人物の有無を分ける（logs/decisions.md 2026-10-03）
   {
     id: 'travel-stamps',

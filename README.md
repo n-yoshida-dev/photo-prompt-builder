@@ -37,7 +37,7 @@ npm run format:check && npm run lint && npm run typecheck && npm run test && npm
 ## プリセットの出典
 
 3D Miniature Diorama と Editorial Poster は、開発者が実際に使って良い結果が出たプロンプトです（原文は [`docs/seed-prompts.md`](docs/seed-prompts.md)）。
-写真とらくがきの小人・写真の続きを描いたスケッチブック・飛び出す絵本・記念切手・旅のスタンプ（風景だけ・家族も）は、開発に使った AI（Claude）が一から書きました（カードには「出典：Claude の自作」と出ます）。
+写真とらくがきの小人・写真の続きを描いたスケッチブック・飛び出す絵本・記念切手・すごろく盤・思い出の標本箱・旅のスタンプ（風景だけ・家族も）は、開発に使った AI（Claude）が一から書きました（カードには「出典：Claude の自作」と出ます）。
 
 以前は、作者が利用条件を明記して公開しているプロンプトを種にしたスタイルが 3 本ありましたが、2026-10-04 に外しました。
 その原文・書き換えた箇所・出典の記録は [`docs/web-prompts.md`](docs/web-prompts.md)、作者の著作権表示と許諾文は
