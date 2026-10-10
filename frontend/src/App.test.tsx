@@ -47,6 +47,14 @@ describe('App', () => {
     expect(promptText()).toContain(first?.base)
   })
 
+  it('プロンプトの欄は英文として読み上げられるよう lang="en" を持つ', () => {
+    render(<App />)
+    expect(screen.getByRole('textbox', { name: 'できあがったプロンプト' })).toHaveAttribute(
+      'lang',
+      'en',
+    )
+  })
+
   it('スタイルを選び直すとプロンプトが即時に変わる', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('radio', { name: /Editorial Poster/ }))
@@ -83,7 +91,7 @@ describe('App', () => {
     expect(promptText()).not.toContain(optionText('color-mood', 'mono'))
   })
 
-  it('選択肢の下の一文は、ラジオの説明として読まれる（名前は短いまま）', () => {
+  it('選択肢に添える一文は、ラジオの説明として読まれる（名前は短いまま）', () => {
     render(<App />)
     const radio = screen.getByRole('radio', { name: '控えめ（写真に近い）' })
     expect(radio).toHaveAccessibleDescription('元の写真の質感や顔つきを多く残す')

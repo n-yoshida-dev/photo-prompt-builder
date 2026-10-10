@@ -2,7 +2,7 @@
 // 先頭の選択肢が既定で、英文を足さない（プリセット原文の指定と喧嘩しないため）
 // 2026-09-29 に Claude が作成。経緯は KNOWLEDGE.md
 // label は 2026-10-03 にユーザーと決めた（logs/decisions.md「仕上がりを調整する」の言葉を直し、縦横比に形の図を付ける）。
-// note（選択肢の下の一文）は Claude が書いた。2026-10-10 にユーザーが画像と表を見て、直す所として挙げたのは点線の枠だけ（SPEC.md「条件」の表）。
+// note（各選択肢に添える一文）は Claude が書いた。2026-10-10 にユーザーが画像と表を見て、直す所として挙げたのは点線の枠だけ（SPEC.md「条件」の表）。
 // id は最近使った設定に保存されているので、言葉を変えても id は変えない
 import type { Choice } from '../prompt/types'
 
@@ -10,7 +10,7 @@ import type { Choice } from '../prompt/types'
 const FIT_WITHOUT_DISTORTION =
   'To fit, extend or trim only plain background at the edges (such as a plain backdrop, ground, floor, walls, or sky) without adding new objects, never cropping the main subjects more than the photo does and never stretching or squashing anything.'
 
-// 縦横比の選択肢の下の一文の共通部分。英文が守るのは "the main subjects" なので、人物に限らず「主役」と書く
+// 縦横比の選択肢に添える一文の共通部分。英文が守るのは "the main subjects" なので、人物に限らず「主役」と書く
 const FIT_NOTE = '主役は切らず、背景を広げるか削って合わせる'
 
 export const choices: Choice[] = [
