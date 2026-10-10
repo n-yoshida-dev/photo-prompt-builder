@@ -44,7 +44,7 @@
 | `doodle-friends` | 写真とらくがきの小人 | Claude が自作（2026-10-06。着想元の原文と連続 3 語の並びが重ならないことを確かめた） | 人物 |
 | `sketchbook-extension` | 写真の続きを描いたスケッチブック | Claude が自作（同上） | 人物 |
 | `pop-up-book` | 飛び出す絵本 | Claude が自作（2026-10-06。着想元の原文と連続 3 語の並びが重ならないことを確かめた） | 人物と場所 |
-| `commemorative-stamp` | 封筒に貼った記念切手（仮の名前。ユーザーに確認中） | Claude が自作（同上） | 人物と場所 |
+| `commemorative-stamp` | 記念切手（`logs/decisions.md` 2026-10-10） | Claude が自作（同上） | 人物と場所 |
 | `travel-stamps` | 旅のスタンプ（風景だけ） | Claude が自作（利用条件の明記された原文なし） | 風景 |
 | `travel-stamps-family` | 旅のスタンプ（家族も） | Claude が自作（風景だけの版と同じ画風で、人物を残す） | 人物と場所 |
 

@@ -134,9 +134,9 @@ export const presets: Preset[] = [
     source: { kind: 'claude', label: 'Claude の自作' },
   },
   {
-    // 表示名は旅のスタンプと紛らわしくない案をユーザーに確かめる（TODO.md）。今は仮の名前
+    // 表示名はユーザーが選んだ「記念切手」（logs/decisions.md 2026-10-10）
     id: 'commemorative-stamp',
-    name: '封筒に貼った記念切手',
+    name: '記念切手',
     descriptionJa:
       '写真の場面を絵にした記念切手を、消印を押した封筒に貼る。額面の数字と、場面に合った短い英語の題名が入る',
     subject: 'people-in-scene',
