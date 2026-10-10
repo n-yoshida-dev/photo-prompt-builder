@@ -77,7 +77,8 @@ export const preserve: Record<Subject, PreserveSet> = {
   'people-as-pieces': {
     identity: [
       ...PEOPLE_IDENTITY_WITHOUT_ARRANGEMENT,
-      "Anyone being carried, such as a child on someone's shoulders or in someone's arms, kept together with the person carrying them as one figure",
+      // 子どもと身体接触の語を同じ文に置かない（安全フィルタ対策。KNOWLEDGE.md 2026-09-29）ので、child とは書かない
+      "Anyone being carried, whether up on someone's shoulders or in someone's arms, kept together with the person carrying them as one figure",
     ],
     composition: SCENE_COMPOSITION,
   },
