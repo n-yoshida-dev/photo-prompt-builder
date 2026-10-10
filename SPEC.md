@@ -235,7 +235,7 @@ type Toggle = {
 type Choice = {
   id: ChoiceId
   label: string
-  options: { id: string; label: string; note: string; shape?: { width: number; height: number }; text: string }[] // note は下に添える一文、shape は縦横比の形
+  options: { id: string; label: string; note: string; shape?: { width: number; height: number }; text: string }[] // note は各選択肢に添える一文、shape は縦横比の形
 }
 
 // 画面の選択状態。localStorage に保存するのもこの形（写真は含まない）
