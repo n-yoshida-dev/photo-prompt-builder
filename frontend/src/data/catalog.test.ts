@@ -180,7 +180,7 @@ describe('出典の種類', () => {
 })
 
 describe('マスタデータの形', () => {
-  it('ラジオ 3 種・トグル 6 つ・保持文 4 組がある', () => {
+  it('ラジオ 3 種・トグル 6 つ・保持文 5 組がある', () => {
     expect(catalog.choices.map((c) => c.id)).toEqual([
       'style-strength',
       'color-mood',
@@ -190,6 +190,7 @@ describe('マスタデータの形', () => {
     expect(Object.keys(catalog.preserve).sort()).toEqual([
       'objects',
       'people',
+      'people-as-pieces',
       'people-in-scene',
       'scene',
     ])
@@ -290,6 +291,26 @@ describe('マスタデータの形', () => {
     ]) {
       expect(objects.identity).not.toContain(line)
       expect(objects.composition).not.toContain(line)
+    }
+  })
+
+  // すごろく盤は家族をコマにして盤のマスに置くので、写真と同じ位置・並び・本物どおりの大きさを求める文を付けない
+  it('people-as-pieces は人物の顔立ちと場所の構図を持ち、写真と同じ位置や並びは求めない', () => {
+    const pieces = catalog.preserve['people-as-pieces']
+    expect(pieces.composition).toEqual(catalog.preserve.scene.composition)
+    for (const line of catalog.preserve['people-in-scene'].composition) {
+      if (!catalog.preserve.scene.composition.includes(line)) {
+        expect(pieces.composition, line).not.toContain(line)
+      }
+    }
+    const arrangement = catalog.preserve.people.identity.find((l) =>
+      l.startsWith('How the people are arranged'),
+    )
+    expect(arrangement).toBeDefined()
+    expect(pieces.identity).not.toContain(arrangement)
+    // 並び以外の人物の保持文（顔・髪・表情・年齢・体格・服・人数・ポーズ）はすべて持つ
+    for (const line of catalog.preserve.people.identity.filter((l) => l !== arrangement)) {
+      expect(pieces.identity).toContain(line)
     }
   })
 

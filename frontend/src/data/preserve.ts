@@ -3,8 +3,8 @@
 // 見出し「Preserve from the reference photo:」「Composition:」の下に "- " で並ぶので、名詞句で書く
 import type { PreserveSet, Subject } from '../prompt/types'
 
-// 人物の保持文。people と people-in-scene で共通に使う
-const PEOPLE_IDENTITY = [
+// 人物の保持文のうち、並び（左右・前後の順）を除いた行。people・people-in-scene・people-as-pieces で共通に使う
+const PEOPLE_IDENTITY_WITHOUT_ARRANGEMENT = [
   "Every person's identity, recognizable at a glance as the same individual, with the style changing only how people are rendered, not who they are",
   "Each person's facial features and skin tone as they are, including freckles, moles, and small marks, with no beautifying, skin smoothing, or makeup, and glasses if worn",
   "Each person's hairstyle, hair length, bangs, and hair color",
@@ -15,6 +15,11 @@ const PEOPLE_IDENTITY = [
   'The exact number of people and the mix of adults, children, and babies, with no one added, left out, or merged into someone else',
   // 人数の行と並びの行を隣り合わせない（子どもと身体接触の語が近いと安全フィルタに弾かれやすい）
   "Each person's pose, gestures, hand positions, and the direction they are facing, including anything they are holding",
+]
+
+// 人物の保持文。people と people-in-scene で共通に使う（並びの行は最後に置く。人数の行と隣り合わせないため）
+const PEOPLE_IDENTITY = [
+  ...PEOPLE_IDENTITY_WITHOUT_ARRANGEMENT,
   'How the people are arranged: the same order from left to right and front to back, and who is holding hands with, hugging, or carrying whom',
 ]
 
@@ -64,5 +69,15 @@ export const preserve: Record<Subject, PreserveSet> = {
       'Only objects that are clearly visible in the photo, each shown once at most, with nothing invented or merged from several things',
       'Each object at its true size compared with the others, unless the style itself shrinks something large into a small model',
     ],
+  },
+  // 場所は配置どおりに作り替え、人物は写真の位置から取り出してコマなどにして置く（すごろく盤）。2026-10-10 に Claude が作成
+  // people-in-scene の「同じ位置・本物どおりの大きさ」と人物の並び・位置関係の行は、コマを盤のマスに置く見せ方とぶつかるので使わない。
+  // 抱っこや肩車は、取り出しても 1 つの姿のまま残す
+  'people-as-pieces': {
+    identity: [
+      ...PEOPLE_IDENTITY_WITHOUT_ARRANGEMENT,
+      'Who is holding hands with, hugging, or carrying whom, kept together as one figure',
+    ],
+    composition: SCENE_COMPOSITION,
   },
 }

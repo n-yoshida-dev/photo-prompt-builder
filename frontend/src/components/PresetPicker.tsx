@@ -12,6 +12,7 @@ const SUBJECT_LABEL: Record<Preset['subject'], string> = {
   scene: '建物・風景が主役',
   'people-in-scene': '人物と場所が主役',
   objects: '写っている持ち物が主役',
+  'people-as-pieces': '人物と場所が主役',
 }
 
 // スタイル（プリセット）を 1 つだけ選ぶ。見た目はカードだが、中身はラジオボタンなのでキーボードでも選べる
