@@ -161,14 +161,17 @@ export const presets: Preset[] = [
     // 家族を入れる版を作るかはユーザーに確かめる（TODO.md）。今は試作と同じく人物を入れない
     id: 'sugoroku-board',
     name: 'すごろく盤',
-    descriptionJa: '写真の場所の地形をそのまま盤面にした、手作りのすごろくにする。人物は入れない',
-    subject: 'scene',
+    descriptionJa:
+      '写真の場所の地形をそのまま盤面にした、手作りのすごろくにする。写っている家族も盤の上に描く',
+    // 家族を入れる形を既定にした（ユーザーの言葉「写真に写っている人を入れる版がデフォルトでは？」。logs/decisions.md 2026-10-10）
+    subject: 'people-in-scene',
     base: 'Remake the place in this snapshot as a handmade family race game played with a die and counters, so that the real landscape itself becomes the board.',
     // マスに数字や「スタート」の文字が入りやすい（調査レポート）ので、マスは無地と文の中で決める
     style:
-      'Paint the board on a sheet of thick card spread out on a living-room floor, shown from a little above in soft daylight with the whole board in view and a strip of floor around it. Ground, paths, water, buildings, and landmarks keep their real shapes and positions, painted in a cheerful, simplified gouache style, so anyone who was there knows the place at once. A winding track of round spaces starts in one corner, follows the real paths and shorelines, and ends at the most memorable landmark as the goal; a few spaces may be tinted differently, and every space stays plain, with no numbers or words. Set a few small wooden counters and one die on the board.',
+      'Paint the board on a sheet of thick card spread out on a living-room floor, shown from a little above in soft daylight with the whole board in view and a strip of floor around it. Ground, paths, water, buildings, and landmarks keep their real shapes and positions, painted in a cheerful, simplified gouache style, so anyone who was there knows the place at once. A winding track of round spaces starts in one corner, follows the real paths and shorelines, and ends at the most memorable landmark as the goal; a few spaces may be tinted differently, and every space stays plain, with no numbers or words. Paint the people from the snapshot onto the board right at their own spot in the place, in that same cheerful gouache style, large and clear enough that each face, hairstyle, and outfit is easy to recognize. Set a few small wooden counters and one die on the board.',
     negative: [
-      'include any of the people from the photo, even those in the foreground',
+      'leave any family member off the board, since the family is the heart of this keepsake',
+      "paint anyone's face as a blank shape or too small to recognize",
       'turn the place into a generic fantasy map that no longer looks like the real spot',
     ],
     // コマとサイコロはスタイルが求める小道具なので、「写っていない物を足さない」は既定で OFF（doodle-friends と同じ考え方）。

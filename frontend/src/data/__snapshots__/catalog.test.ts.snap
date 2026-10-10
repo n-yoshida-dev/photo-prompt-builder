@@ -231,16 +231,31 @@ exports[`全プリセット × 既定の条件の出力全文 > sugoroku-board 1
 "Remake the place in this snapshot as a handmade family race game played with a die and counters, so that the real landscape itself becomes the board.
 If more than one photo is uploaded, process each photo separately and output one image per photo, without combining photos into a collage or mixing content from different photos.
 
-Paint the board on a sheet of thick card spread out on a living-room floor, shown from a little above in soft daylight with the whole board in view and a strip of floor around it. Ground, paths, water, buildings, and landmarks keep their real shapes and positions, painted in a cheerful, simplified gouache style, so anyone who was there knows the place at once. A winding track of round spaces starts in one corner, follows the real paths and shorelines, and ends at the most memorable landmark as the goal; a few spaces may be tinted differently, and every space stays plain, with no numbers or words. Set a few small wooden counters and one die on the board.
+Paint the board on a sheet of thick card spread out on a living-room floor, shown from a little above in soft daylight with the whole board in view and a strip of floor around it. Ground, paths, water, buildings, and landmarks keep their real shapes and positions, painted in a cheerful, simplified gouache style, so anyone who was there knows the place at once. A winding track of round spaces starts in one corner, follows the real paths and shorelines, and ends at the most memorable landmark as the goal; a few spaces may be tinted differently, and every space stays plain, with no numbers or words. Paint the people from the snapshot onto the board right at their own spot in the place, in that same cheerful gouache style, large and clear enough that each face, hairstyle, and outfit is easy to recognize. Set a few small wooden counters and one die on the board.
+
+Preserve from the reference photo:
+- Every person's identity, recognizable at a glance as the same individual, with the style changing only how people are rendered, not who they are
+- Each person's facial features and skin tone as they are, including freckles, moles, and small marks, with no beautifying, skin smoothing, or makeup, and glasses if worn
+- Each person's hairstyle, hair length, bangs, and hair color
+- Each person's facial expression, including the shape of the smile, any visible teeth or tooth gaps, and where the eyes are looking
+- Each person's apparent age exactly as in the photo, with children not made to look older
+- Each person's build and height compared with the others, with no one made slimmer
+- Each person's clothing and accessories: the same garments, colors, patterns, and prints, and items such as hats, hair clips, and bags, with nothing swapped, added, or removed
+- The exact number of people and the mix of adults, children, and babies, with no one added, left out, or merged into someone else
+- Each person's pose, gestures, hand positions, and the direction they are facing, including anything they are holding
+- How the people are arranged: the same order from left to right and front to back, and who is holding hands with, hugging, or carrying whom
 
 Composition:
+- Each person's position relative to the others and to the surroundings, with no one cropped out
+- Every person kept in the scene at the same spot, at a true-to-life size compared with the place, and doing the same thing as in the photo (for example, still on the same playground equipment)
 - The same layout of the place: where the buildings, structures, and objects that are kept sit relative to one another (left, right, front, and back)
 - The same proportions and scale: relative sizes, heights, and spacing, and the same number of floors, windows, doors, and steps
 - The same main subject as the focus of the image
 - Nothing invented beyond the photo's edges: no extra buildings, rooms, streets, or landmarks
 
 Do not:
-- include any of the people from the photo, even those in the foreground
+- leave any family member off the board, since the family is the heart of this keepsake
+- paint anyone's face as a blank shape or too small to recognize
 - turn the place into a generic fantasy map that no longer looks like the real spot
 - add any new text, letters, numbers, captions, labels, logos, signatures, or watermarks that are not in the photo"
 `;
