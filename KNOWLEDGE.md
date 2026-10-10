@@ -10,6 +10,18 @@
 
 ---
 
+### 2026-10-10：記念切手は「描いた絵」と書くだけでは顔が写実に寄る。「写実的な肖像ではない平らな挿絵」と、顔の線を少なくすることまで書く
+
+- **ハマったこと**：1 回目の文（"illustration, never as a photograph" と、ガッシュ風・柔らかい陰影・線を簡単に）では、切手全体は描いた絵になったが、顔は陰影の多い写実的な肖像のままだった。
+  固定の保持文（そばかすやほくろもそのまま、肌をなめらかにしない）が顔を写実に引っ張る、と Claude は推定している（粘土アニメ風・旅のスタンプ（家族も）と同じ形）
+- **回避**：「写真や写実的な肖像（lifelike portrait）ではない、平らな色で埋めた簡単な形と少しの陰影」「顔は線を少なく平らな肌の色で、絵本の挿絵のように」「誰かは髪型・眼鏡・笑い方・服で分かるように」と書いた 2 回目で、
+  平らな挿絵になり、眼鏡・前歯の抜けた笑顔・帽子・服も残った。どちらも 1 回ずつの結果
+- 英語の題名は "printed in neat capital letters" で「AUTUMN PARK」と大文字の印刷の字で入った。額面の数字は 1 回目が「85」、2 回目が「84」（数字は AI が選ぶ）
+- PR #25 の Codex の指摘で「写っていない物を足さない」を既定で OFF にし（消印がトグルの例外に当たらない）、最後の文で 3 回目を作った。2 回目と同じ仕上がりだったが、
+  消印の輪の上に文字のように見える崩れた線が少し出た（「消印は輪と波線だけ」と書いていても出ることがある。1 回の結果）
+- 飛び出す絵本は 1 回目で、家族が写真から切り抜いた紙として立ち、顔は写真のまま、折り目は顔を避けた。すごろく盤（家族入り）も 1 回目で 4 人が盤の絵の中に入った
+- Codex（gpt-6.1-sol・low）は 1 枚あたり入力 13〜14 万トークン（うち 10 万ほどはキャッシュ）。2026-10-10 は 5 枚作り、上限には当たらなかった
+
 ### 2026-10-07：長く開いておく下書きの PR は、main を merge で取り込む（rebase して force-push しない）
 
 - **設計判断**：画像とユーザーの答えを待つ下書きの PR（#25・#26）を、あとから進んだ main に追従させるときは `git merge main` にした。
@@ -46,6 +58,19 @@
 - Safari（WebKit）は試せていない。Playwright の WebKit は WSL に足りないライブラリ（libgtk-4 など。入れるには管理者の権限が要る）があって起動できない。公開後に iPhone の Safari で一度押して確かめる
 - 確かめのスクリプトは `~/.cache/photo-prompt-builder/tools/check-open-copy.mjs`（対照は `control-popup.mjs`）。`vite preview` を起動してから `node check-open-copy.mjs http://localhost:4173/`（画面ありは `HEADED=1`）。
   フォーカスが本当に移る確かめは `node check-open-copy-cdp.mjs http://localhost:4173/ ChatGPT`（サイト名は Gemini も可）
+
+### 2026-10-06：Codex の利用上限に当たると数日止まる。作業用スクリプトは `~/.cache/photo-prompt-builder/tools/` に置いた
+
+- **ハマったこと**：飛び出す絵本と記念切手の 1 枚目を頼んだところ、2 本とも「You've hit your usage limit. ... try again at Oct 10th, 2026 9:48 AM.」で止まった（モデルは gpt-6.1-sol、考える深さ low）。
+  今回の再開の時刻は 3 日半後（同じ日の昼に当たったときは、表示された時刻の 1 分後に通った）。モデルを変えても同じ利用枠なので、時刻まで待つしかない
+- 依頼書を作るスクリプト（`make-request.ts`）と連続 3 語の照合（`ngram-check.ts`）は、scratchpad ではなく `~/.cache/photo-prompt-builder/tools/` に置いた（セッションの再開で消えないように）。
+  どちらも `cd ~/.cache/photo-prompt-builder/tools && npx --yes tsx <スクリプト> ...` で動く。取ってきた着想元の原文は `~/.cache/photo-prompt-builder/sources/`。
+  Codex は `codex-run.sh -m gpt-6.1-sol -e low -s workspace-write --skip-git-repo-check -C <画像の置き場> -i <元の写真> -f <依頼書> -o <結果>` で呼ぶ
+  （画像を作るのは表の用途 design・screen・review・implement のどれでもないので、表のモデルを -m で明示し、考える深さだけ low にした）
+- 連続 3 語の照合は、大きな集め物の README（JimmyLv・YouMind・PicoTrex）に "in the photo" "of the image" "on a wooden" のような並びが多く、最初は飛び出す絵本で 38 個重なった。
+  "photo" を "snapshot" に言い換え、決まり文句を崩して 0 にした（らくがきの小人が "in the picture" と書いているのと同じやり方）。
+  "pop-up book" も 3 語に数えると "pop up book" で重なるので "pop-up storybook" にした。記念切手の着想元のうち lilachbullock.com は 403 で取れず、X の投稿も開けない（調査のときから同じ）。
+  note の 2 本は記事が日本語で、英文の並びは少ない
 
 ### 2026-10-06：スケッチブックは、AI が元の写真をページ全体に引き伸ばし、真ん中だけを写真で残す
 

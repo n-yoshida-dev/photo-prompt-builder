@@ -166,6 +166,8 @@ describe('出典の種類', () => {
     expect(selfMade.map((p) => p.id)).toEqual([
       'doodle-friends',
       'sketchbook-extension',
+      'pop-up-book',
+      'commemorative-stamp',
       'travel-stamps',
       'travel-stamps-family',
     ])
