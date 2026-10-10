@@ -9,11 +9,10 @@ type Props = {
   onToggleChange: (toggleId: ToggleId, on: boolean) => void
 }
 
-// 縦横比の選択肢に付ける小さな形の図。形を持たない選択肢（元のまま）は、決まった形が無いことを点線の枠で表す
+// 縦横比の選択肢に付ける小さな形の図。形を持たない選択肢（元のまま）には何も出さない
+// （以前は点線の枠を出していた。ユーザーの言葉「そもそもその点線の四角も不要」。logs/decisions.md 2026-10-10）
 function ShapeIcon({ shape }: { shape: ChoiceOption['shape'] }) {
-  if (!shape) {
-    return <span className="option-shape option-shape-free" aria-hidden="true" />
-  }
+  if (!shape) return null
   return (
     <span
       className="option-shape"

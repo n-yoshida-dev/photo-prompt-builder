@@ -10,6 +10,14 @@
 
 ---
 
+### 2026-10-07：長く開いておく下書きの PR は、main を merge で取り込む（rebase して force-push しない）
+
+- **設計判断**：画像とユーザーの答えを待つ下書きの PR（#25・#26）を、あとから進んだ main に追従させるときは `git merge main` にした。
+  rebase すると push に force が要り、リモートの履歴を書き換えることになる（`../CLAUDE.md` で止まって聞く操作）。PR は squash でマージするので、merge のコミットが main に残ることもない
+- 積み重ねた #26 には `git merge feat/popup-stamp` で取り込む。#25 をマージしたら #26 の付け替え先を main にする
+- まだ push していない手元の枝（未レビューの作業）を main に合わせるときは、rebase でよい（`git rebase --onto main <元の分かれ目> <枝>`）。
+  そのとき手元の main を `git pull` してから行う（古い main に rebase して衝突した。2026-10-07）
+
 ### 2026-10-07：お気に入りは最近使った設定と別のキーに置き、書き込めなかったことは画面でも知らせる
 
 - **設計判断**：お気に入り（`storage/favorites.ts`）は `photo-prompt-builder:favorites` に置き、最近使った設定とは分けた。件数の上限・同じ内容をまとめる規則が違い（お気に入りは名前で 1 件）、
