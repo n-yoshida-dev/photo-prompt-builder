@@ -72,11 +72,12 @@ export const preserve: Record<Subject, PreserveSet> = {
   },
   // 場所は配置どおりに作り替え、人物は写真の位置から取り出してコマなどにして置く（すごろく盤）。2026-10-10 に Claude が作成
   // people-in-scene の「同じ位置・本物どおりの大きさ」と人物の並び・位置関係の行は、コマを盤のマスに置く見せ方とぶつかるので使わない。
-  // 抱っこや肩車は、取り出しても 1 つの姿のまま残す
+  // 抱っこや肩車は、取り出しても 1 つの姿のまま残す。手をつなぐ・抱き合うまで含めると、全員が手をつないだ写真で
+  // 全員が 1 つのコマにまとまりかねないので、抱えている・抱えられている人だけにする（SPEC.md「保持は固定」。PR #26 の受け入れレビュー）
   'people-as-pieces': {
     identity: [
       ...PEOPLE_IDENTITY_WITHOUT_ARRANGEMENT,
-      'Who is holding hands with, hugging, or carrying whom, kept together as one figure',
+      "Anyone being carried, such as a child on someone's shoulders or in someone's arms, kept together with the person carrying them as one figure",
     ],
     composition: SCENE_COMPOSITION,
   },

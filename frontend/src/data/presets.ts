@@ -169,12 +169,14 @@ export const presets: Preset[] = [
     subject: 'people-as-pieces',
     base: 'Remake the place in this snapshot as a handmade family race game played with a die, so that the real landscape itself becomes the board and the family members themselves become the playing pieces.',
     // マスに数字や「スタート」の文字が入りやすい（調査レポート）ので、マスは無地と文の中で決める。
-    // コマは写真を厚紙に刷って切り抜いた形にし、顔を描き直さない（飛び出す絵本と同じ考え方）
+    // コマは写真を厚紙に刷って切り抜いた形にし、顔を描き直さない（飛び出す絵本と同じ考え方）。
+    // 「1 人 1 コマ」と「肩車は 1 つのコマ」がぶつからないよう、コマの単位を「1 人、または抱えている人と抱えられている人」と書く（PR #26 の Codex の指摘）。
+    // 手をつないでいるだけの人は別々のコマにする（全員が手をつないだ写真で 1 つのコマにまとまらないように。PR #26 の受け入れレビュー）
     style:
-      "Paint the board on a sheet of thick card spread out on a living-room floor, shown from a little above in soft daylight with the whole board in view and a strip of floor around it. Ground, paths, water, buildings, and landmarks keep their real shapes and positions, painted in a cheerful, simplified gouache style, so anyone who was there knows the place at once; no people are painted into the landscape. A winding track of round spaces starts in one corner, follows the real paths and shorelines, and ends at the most memorable landmark as the goal; a few spaces may be tinted differently, and every space stays plain, with no numbers or words. Make one stand-up game piece for each family member: that person printed from the snapshot onto stiff card, trimmed along the outline with a narrow white edge, and slotted into a little round stand, keeping their pose and clothes from the snapshot, so someone riding on another person's shoulders stays there as one piece. Stand the pieces on different spaces along the track as though the family were partway through a game, with one die resting beside them, and make each piece tall enough that its face is easy to recognize.",
+      "Paint the board on a sheet of thick card spread out on a living-room floor, shown from a little above in soft daylight with the whole board in view and a strip of floor around it. Ground, paths, water, buildings, and landmarks keep their real shapes and positions, painted in a cheerful, simplified gouache style, so anyone who was there knows the place at once; no people are painted into the landscape. A winding track of round spaces starts in one corner, follows the real paths and shorelines, and ends at the most memorable landmark as the goal; a few spaces may be tinted differently, and every space stays plain, with no numbers or words. Make a stand-up game piece for each family member, except that anyone being carried in the snapshot, like a child riding on someone's shoulders or held in someone's arms, stays on one shared piece together with whoever carries them; people only holding hands get pieces of their own. Each piece is that person or pair printed from the snapshot onto stiff card, trimmed along the outline with a narrow white edge, and slotted into a little round stand, keeping their poses and clothes from the snapshot. Stand the pieces on different spaces along the track as though the family were partway through a game, with one die resting beside them, and make each piece tall enough that every face on it is easy to recognize.",
     negative: [
       'paint any family member into the landscape of the board instead of making them a piece',
-      'leave any family member without a piece',
+      'leave any family member off the pieces',
       'add extra counters or pieces that do not stand for someone in the snapshot',
       'turn the place into a generic fantasy map that no longer looks like the real spot',
     ],
@@ -193,9 +195,10 @@ export const presets: Preset[] = [
     base: 'Collect the things visible in this snapshot into a wooden specimen box as mementos from that day, leaving the scene itself out.',
     // 試作では写真に無いシュシュが入った（女の子のワンピースの柄から作ったと Claude は推定）。作り物は止め、無理に埋めないと書く。
     // 2026-10-10 の 1 回目は身に付けていた物だけになった。ユーザーの言葉「背景のものが反映されていないのがNG。前回は灯台とかヨットとか、
-    // その時に行った場所の思い出が含まれていました。」を受け、場所の思い出を 3 つ以上入れると書く
+    // その時に行った場所の思い出が含まれていました。」を受け、場所の思い出を 3 つ以上入れると書く。
+    // 写真に 3 つ無いときに数を満たそうとして物を作らないよう、少ないときは写っている分だけにする（PR #26 の Codex の指摘）
     style:
-      'Make the box shallow, with a glass lid and a grid of small square compartments lined with cream paper, set flat on a table and shown from directly above in soft daylight. Fill it with two kinds of keepsakes, one per compartment, each matching its colors, patterns, and shape in the snapshot: things the family had with them, such as hats, sunglasses, shoes, bags, or toys; and mementos of the place itself, such as small models of a landmark, a building, a boat, or play equipment seen in the snapshot, and natural bits picked up there, like a pebble or a leaf, choosing only kinds the snapshot itself shows. Give the place at least three compartments, so the box remembers where the family went, not only what they wore. Choose only things that anyone could point to in the snapshot; leaving a compartment empty is better than filling it with something made up.',
+      'Make the box shallow, with a glass lid and a grid of small square compartments lined with cream paper, set flat on a table and shown from directly above in soft daylight. Fill it with two kinds of keepsakes, one per compartment, each matching its colors, patterns, and shape in the snapshot: things the family had with them, such as hats, sunglasses, shoes, bags, or toys; and mementos of the place itself, such as small models of a landmark, a building, a boat, or play equipment seen in the snapshot, and natural bits picked up there, like a pebble or a leaf, choosing only kinds the snapshot itself shows. When the snapshot shows three or more such reminders of the place, give the place at least three compartments; when it shows fewer, use every one it shows, so the box remembers where the family went, not only what they wore. Choose only things that anyone could point to in the snapshot; leaving a compartment empty is better than filling it with something made up.',
     negative: [
       "make up an object from a pattern or print on someone's clothing",
       'show any people, faces, or body parts',
