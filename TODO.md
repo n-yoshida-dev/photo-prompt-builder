@@ -141,6 +141,21 @@ PR を作るときは、この行を PR 本文の「完了条件」に引き、�
   2026-10-07：`feat/favorites` で作った。画面の形は Claude の案（最近使った設定の上に入力欄と一覧。SPEC.md「保存（お気に入り）」）で、
   画面の画像を見せて確かめる（「確認待ち」に足した。別の形がよいと言われたら直す）
 
+## フェーズ2.6：見た目の方向（2026-10-10。apps 全体のデザイン改善の試行。進め方は `~/workspace/ops/docs/2026-10-10-apps-デザイン改善の進め方.md` 5 節と 8 節）
+
+- [ ] 見た目の方向を決め、`DESIGN.md` を確定して、選んだ方向の CSS を入れる（5 節の A）
+  完了条件：ユーザーが比較ページ（https://claude.ai/artifact/UiTbChwhHrJi2Lir75o6RA ）の A・B・C から選んだ（部分ごとでもよい）言葉が `logs/decisions.md` にある。
+  `DESIGN.md` の「未定」が埋まり、`npx @google/design.md lint DESIGN.md` がエラー 0。`frontend/src/index.css` が選んだ方向になり、ダークモードの色もある。
+  1280px と 375px で撮った前と後の画像を PR に載せた。既存の単体テストと画面のテストが通る
+  2026-10-10：`docs/design-direction` に `DESIGN.md` の下書き（未定は空けてある。lint はエラー 0、警告は未参照の色 4 つ）。
+  見本 3 案の CSS は `~/.cache/photo-prompt-builder/design-2026-10-10/`（`a-album.css`・`b-order-form.css`・`c-corkboard.css`。そのまま `index.css` に置ける形）、撮った画像は同じ所の `shots/`。
+  比較ページと Claude Design のキャンバス（https://claude.ai/artifact/DCiDXA8qDaXEu8aA24nXR7 ）をユーザーに渡した。残り：ユーザーの選択 → 台帳 → DESIGN.md 確定 → CSS → PR
+- [ ] 画面を変える PR の点検（5 節の B）を 1 回手作業で通し、効いた部分を書き留める
+  完了条件：撮影スクリプトで 1280px と 375px を画面 1 枚分ずつ撮り、新しい文脈の読み取り専用のサブエージェントに画像・`DESIGN.md`・変更点を渡して、
+  DESIGN.md とのずれ・AI がよく作る形・使いやすさの基本（文字の大きさ・色の濃さの差・押せる大きさ・はみ出し・キーボード操作）を見させた。
+  Impeccable の検出器を 1 回当て、点検役の見落としを拾えたかを KNOWLEDGE.md に書いた。SPEC に無いまま足した細かい画面要素（確認待ち、Beads ops-ixl.9）もこの点検で一緒に見てもらった。
+  共通化する候補（apps-workflow に入れるもの）を 1 行ずつ `KNOWLEDGE.md` か apps-design の付箋（Beads ops-ard）に書いた
+
 ## フェーズ3：公開
 
 - [ ] GitHub Pages にデプロイする（Vite の `base` をリポジトリ名に合わせ、Actions で `dist/` を配信）
@@ -210,3 +225,6 @@ PR を作るときは、この行を PR 本文の「完了条件」に引き、�
   2026-10-03 回答：ジオラマと合わせて聞き、選択肢「カードを分ける (Recommended)」（`logs/decisions.md` 2026-10-03）。
   （Claude の説明）人物を残す版と消す版を別のプリセットにする。カードごとに被写体を 1 つに決める作りは変えないが、
   被写体の種類は「人物と場所」が 1 つ増える（SPEC.md「プリセット」）。保持文はトグルにしない
+- [ ] 見た目の方向 A（写真帳の 1 ページ）・B（写真屋さんの注文票）・C（子ども部屋の掲示板）のどれが近いか。部分ごとでもよい。どれも違うなら、今の画面の何が気になっていたか
+  （比較ページ https://claude.ai/artifact/UiTbChwhHrJi2Lir75o6RA 。2026-10-10 の apps-design の試行で Claude が足した問い。Beads ops-ard.2。
+  ユーザーは 2026-10-03 に今の見た目を「問題なし」としたが、2026-10-10 に「画面デザインもちょっと気になっていたところです」と書いた）
