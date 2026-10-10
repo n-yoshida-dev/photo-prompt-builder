@@ -89,10 +89,12 @@ describe('App', () => {
     expect(radio).toHaveAccessibleDescription('元の写真の質感や顔つきを多く残す')
   })
 
-  it('形の図は縦横比の選択肢にだけ付く', () => {
+  it('形の図は縦横比の正方形・縦・横にだけ付く（元のままには付けない。logs/decisions.md 2026-10-10）', () => {
     render(<App />)
     const aspect = screen.getByRole('group', { name: '縦横比' })
-    expect(aspect.querySelectorAll('.option-shape')).toHaveLength(4)
+    expect(aspect.querySelectorAll('.option-shape')).toHaveLength(3)
+    const original = screen.getAllByRole('radio', { name: '元のまま' }).at(-1)?.closest('label')
+    expect(original?.querySelector('.option-shape')).toBeNull()
     const color = screen.getByRole('group', { name: '色味' })
     expect(color.querySelectorAll('.option-shape')).toHaveLength(0)
   })
