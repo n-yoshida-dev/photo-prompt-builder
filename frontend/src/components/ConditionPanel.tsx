@@ -23,7 +23,7 @@ function ShapeIcon({ shape }: { shape: ChoiceOption['shape'] }) {
 }
 
 // 仕上がりの調整。ラジオ（1 つ選ぶ）と ON/OFF を並べる。人物・構図の保持は固定なのでここには出さない（SPEC.md「条件」）
-// ラジオは選択肢ごとのカードにし、下に何が変わるかの一文を置く（logs/decisions.md 2026-10-03）
+// ラジオは選択肢を 1 行ずつ並べ、名前の右（狭い欄では下）に何が変わるかの一文を置く（logs/decisions.md 2026-10-03・2026-10-11。形は index.css）
 export function ConditionPanel({
   choices,
   toggles,
