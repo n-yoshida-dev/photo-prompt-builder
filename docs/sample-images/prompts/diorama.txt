@@ -1,0 +1,15 @@
+Transform this photo into a precise architectural 3D miniature diorama. Preserve the exact spatial layout, proportions, major architectural forms, facade materials, stairs, walls, pipes, street objects, vegetation, and distinctive landmarks from the reference image.
+If more than one photo is uploaded, process each photo separately and output one image per photo, without combining photos into a collage or mixing content from different photos.
+
+Reconstruct the scene as a clean isometric architectural model, viewed from a slightly elevated 3/4 angle, like a physical scale model placed on a square plinth. Style: high-end architectural visualization, miniature maquette, soft realistic materials, simplified but accurate geometry, subtle bevels, crisp edges, restrained detail, no exaggerated stylization. Materials should closely match the source photo but be slightly softened and desaturated: matte brick, painted metal, concrete, ceramic tile, glass, vegetation. Lighting: soft studio daylight from upper left, diffuse shadows cast onto an off-white background, ambient occlusion in corners and joints, no dramatic contrast. Background: warm off-white / ivory paper texture, minimal editorial presentation. Camera: orthographic or near-orthographic isometric view, approximately 35–45° downward angle, no wide-angle distortion. Composition: isolate only the architecture and immediate surrounding elements visible in the photo. Remove unrelated background buildings, sky, people, cars, signage, clutter, and photographic noise unless they are important to the identity of the scene. The final result should feel like a carefully handcrafted architectural scale model rendered in Blender or Cinema 4D, not like a videogame, cartoon, voxel art, or photorealistic photograph. High geometric fidelity to the reference image. Preserve asymmetry and small imperfections from the real place rather than making the architecture generic. Square base slab under the entire reconstructed scene, with soft contact shadow beneath it. No text, no labels, no typography, no border.
+
+Composition:
+- The same layout of the place: where the buildings, structures, and objects that are kept sit relative to one another (left, right, front, and back)
+- The same proportions and scale: relative sizes, heights, and spacing, and the same number of floors, windows, doors, and steps
+- The same main subject as the focus of the image
+- Nothing invented beyond the photo's edges: no extra buildings, rooms, streets, or landmarks
+
+Do not:
+- include any of the people from the photo, even those in the foreground
+- add any new text, letters, numbers, captions, labels, logos, signatures, or watermarks that are not in the photo
+- add people, animals, objects, props, decorations, or effects such as sparkles or confetti that are not in the photo, other than a display base or backdrop that the style itself calls for

@@ -1,0 +1,15 @@
+Turn this photo into one large rubber-stamp print of the same scene, stamped by hand onto a page of a travel journal as a keepsake of the trip.
+If more than one photo is uploaded, process each photo separately and output one image per photo, without combining photos into a collage or mixing content from different photos.
+
+Render the scene the way a hand-carved rubber stamp prints: bold, simplified shapes and lines, flat areas of ink with the slightly uneven coverage, tiny speckles, and soft edges of real ink pressed onto paper, in a small set of flat ink colors that follow the colors in the photo, slightly out of register where the colors overlap. Give the print a simple frame, such as a scalloped postage-stamp edge or a rounded rectangle, with no lettering, numbers, or emblems inside or around it. Keep the same viewpoint and layout of the scene inside the frame, simplified only as much as a carved stamp needs. Show the print on a slightly textured, warm off-white journal page, photographed flat from directly above in soft daylight, with the page filling the image.
+
+Composition:
+- The same layout of the place: where the buildings, structures, and objects that are kept sit relative to one another (left, right, front, and back)
+- The same proportions and scale: relative sizes, heights, and spacing, and the same number of floors, windows, doors, and steps
+- The same main subject as the focus of the image
+- Nothing invented beyond the photo's edges: no extra buildings, rooms, streets, or landmarks
+
+Do not:
+- include any of the people from the photo, even those in the foreground
+- add any new text, letters, numbers, captions, labels, logos, signatures, or watermarks that are not in the photo
+- add people, animals, objects, props, decorations, or effects such as sparkles or confetti that are not in the photo, other than a display base or backdrop that the style itself calls for
