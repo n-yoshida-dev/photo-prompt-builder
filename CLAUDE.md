@@ -9,7 +9,7 @@
 2. **設計・方針を提案する前に `logs/decisions.md` を読む** — ユーザーと合意済みの判断。蒸し返さない
 
 未完タスクは SessionStart フックが `TODO.md` から自動で提示する。
-セッションの区切りには `/apps-workflow:handoff` を実行して引き継ぎを書く。
+引き継ぎは、区切りごとに Claude が `apps-workflow:handoff` をユーザーに聞かずに呼んで書く（`../CLAUDE.md`）。
 
 ## ドキュメントの役割
 
@@ -54,19 +54,9 @@
 
 ## Claude Code の設定
 
-共通のフック3種・スキル3種・エージェント1種は [apps-workflow プラグイン](https://github.com/n-yoshida-dev/claude-plugins)から来る（`.claude/settings.json` の `enabledPlugins`）。
-**`enabledPlugins` だけでは install されない。アプリごとに project スコープで install が要る**（反映は次のセッションから）。手順は `../CLAUDE.md`「新しいアプリを作るとき」を参照。
-
-| 種別 | 中身 | 出どころ |
-|---|---|---|
-| `/apps-workflow:handoff` | HANDOFF / TODO / KNOWLEDGE を更新して次のセッションへ渡す | プラグイン |
-| `/apps-workflow:pr-check` | CI と同じ検査をローカルでまとめて実行する（コミット・PR の前） | プラグイン |
-| `/apps-workflow:pr-flow` | PR の作成からマージまでの手順（完了条件と証拠、CI の待ち方、acceptance-reviewer の呼び方） | プラグイン |
-| `/decide` | 議論で決めたことを `logs/decisions.md` に 1 件追記する | ユーザー設定（`~/.claude/commands/decide.md`。全リポジトリ共通） |
-| `apps-workflow:acceptance-reviewer` | マージ前に差分を「完了条件：」・SPEC.md・「守ること」に照らして検品する読み取り専用エージェント。PR を作って CI を待つ間に Agent ツールで呼ぶ | プラグイン |
-| `guard-secrets.sh` | 秘密情報・ローカル専用ファイルのコミットを阻止（PreToolUse） | プラグイン |
-| `check-edited.sh` | frontend の typecheck / lint、backend の go vet（PostToolUse） | プラグイン |
-| `session-briefing.sh` | TODO.md の未完タスクを起動時に提示（SessionStart） | プラグイン |
+共通のフック・スキル・エージェントは [apps-workflow プラグイン](https://github.com/n-yoshida-dev/claude-plugins)から来る（`.claude/settings.json` の `enabledPlugins`）。
+部品の一覧はプラグインの [README](https://github.com/n-yoshida-dev/claude-plugins/blob/main/plugins/apps-workflow/README.md) にあり、ここには写さない（写すと古くなる）。
+`enabledPlugins` に書くだけでは入らず、アプリごとに project スコープの install が要る（手順は `../app-template/SETUP.md` §2）。
 
 このアプリ固有のフック・スキルは `.claude/` に置く。固有のルールが増えたら `.claude/rules/` に切り出し、CLAUDE.md からはリンクだけにする。
 
