@@ -362,6 +362,7 @@ apps 全体のデザイン改善の試行（Beads ops-ard。進め方は `~/work
   このアプリの lint は oxlint なので、.ts を編集するたびに「eslint 失敗（npx canceled）」が出る。型チェックの結果は正しい
 - **回避**：フックの eslint 失敗は無視し、`npm run lint`（oxlint）を自分で回す。直すならプラグイン側（claude-plugins の `check-edited.sh`）で
   `lint` スクリプトの中身を見て oxlint を呼び分ける
+- **2026-10-11 に直った**：apps-workflow v1.12.1（claude-plugins PR #34）から、フックは `lint` スクリプトに書かれた名前で oxlint を呼ぶ。上の回避はもう要らない
 
 
 ### 2026-09-06：jsdom は 29 系に固定（30 系は Node 24.15 以上を要求）
