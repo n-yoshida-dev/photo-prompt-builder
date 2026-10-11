@@ -15,24 +15,24 @@ colors:
   corner: "#c6bfa9"
 typography:
   title:
-    fontFamily: "'Hiragino Mincho ProN', 'BIZ UDPMincho', 'Yu Mincho', 'Noto Serif JP', serif"
+    fontFamily: "'Hiragino Mincho ProN', 'BIZ UDPMincho', 'Yu Mincho', 'Noto Serif JP', 'Noto Serif CJK JP', serif"
     fontSize: 2.1rem
     fontWeight: 600
     letterSpacing: 0.02em
   heading:
-    fontFamily: "'Hiragino Mincho ProN', 'BIZ UDPMincho', 'Yu Mincho', 'Noto Serif JP', serif"
+    fontFamily: "'Hiragino Mincho ProN', 'BIZ UDPMincho', 'Yu Mincho', 'Noto Serif JP', 'Noto Serif CJK JP', serif"
     fontSize: 1.45rem
     fontWeight: 600
   subheading:
-    fontFamily: "'Hiragino Mincho ProN', 'BIZ UDPMincho', 'Yu Mincho', 'Noto Serif JP', serif"
+    fontFamily: "'Hiragino Mincho ProN', 'BIZ UDPMincho', 'Yu Mincho', 'Noto Serif JP', 'Noto Serif CJK JP', serif"
     fontSize: 1.05rem
     fontWeight: 600
   body:
-    fontFamily: "system-ui, 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic UI', sans-serif"
+    fontFamily: "system-ui, -apple-system, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic UI', sans-serif"
     fontSize: 1rem
     lineHeight: 1.65
   note:
-    fontFamily: "system-ui, 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic UI', sans-serif"
+    fontFamily: "system-ui, -apple-system, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic UI', sans-serif"
     fontSize: 0.85rem
     lineHeight: 1.45
   pen:
@@ -106,16 +106,18 @@ components:
 |---|---|---|---|
 | paper | #f3f4f1 | #171a18 | 画面の紙（緑の布表紙に寄せた、やや緑がかった白。クリーム色にしない。これは Claude が点検の結果で決めた。`logs/decisions.md` 2026-10-11） |
 | ink | #23272a | #e4e5df | 本文の文字・題名の下の線・名前の欄の下線・開くボタンの枠 |
-| ink-muted | #5f6460 | #a3a9a4 | 補足の文字（説明の一文・出典・語数・名前の欄の例文） |
+| ink-muted | #5f6460 | #a3a9a4 | 補足の文字（説明の一文・出典・名前の欄の例文）。台紙の上の語数は、この色ではなく `pen` を不透明度 0.75 にしたもの（台紙の上では ink-muted は読めないため） |
 | rule | #d3d2ca | #3a3f3b | 行を区切る罫線 |
 | album | #1d211e | #0d100e | アルバムの黒い台紙（暗い画面では紙より一段暗く。紙との差が小さいので、縁にペンの色を 16% 混ぜた 1px の線を引く） |
 | pen | #ece9df | #ece9df | 台紙に書く白いペン |
 | primary（`--cloth`） | #2f5d4b | #8cc3ad | アルバムの布表紙の緑。選択中の印・選択中の名前・主ボタン・フォーカスの枠 |
 | primary-soft（`--cloth-soft`） | #e6ede8 | #22302a | 選択中の行の背景（押せる行の hover はこれを半分に薄めたもの） |
 | corner | #c6bfa9 | #6f6a5e | 写真を留めるコーナー |
+| （CSS の `--button` / `--on-button`） | primary / paper と同じ | #2f5d4b / #e4e5df | 塗りのボタン（コピー・保存）の地と字。暗い画面では primary の明るい緑を使わない。明るい緑の塗りだと紙との差（8.79）が台紙と紙の差（1.09）より大きく、「ここだけを目立たせる」台紙より先に目が行ったため。暗い画面の字と地の差は 5.94。これは 2026-10-11 の点検役の指摘に、Claude が選んだ直し方（KNOWLEDGE.md 2026-10-11） |
 
 - 差し色は緑 1 色だけ。赤・青・グラデーションは使わない
 - 文字と背景の濃さの差（WCAG 2 のコントラスト比）は、明暗どちらの画面でも 4.5 以上（2026-10-11 に計算。いちばん低いのは明るい画面の「選択中の行の上の補足の文字」で 5.07）。
+  例外は押せない状態のボタン（名前が空のときの「保存」。不透明度 0.45 で、明るい画面 2.08・暗い画面 2.70）。WCAG でも無効の部品は対象外
   ブラウザ任せの色を残さない（名前の欄の例文はブラウザの既定の灰色だと 4.1 だった）
 - hover の色はマウスのある端末だけで付ける（`@media (hover: hover)`。スマホでは触ったあとに色が残るため）
 - グラフの色：なし（グラフを使わない画面）
@@ -132,7 +134,9 @@ components:
 - 日本語を斜体にしない（日本語の書体には斜体が無く、端末が字を傾けて作るので崩れて見える）。斜体は手順の番号（数字）だけ
 - 文字の大きさの段：題名 2.1rem（狭い画面では 1.5rem まで縮む）／手順の見出し 1.45rem／お気に入りの見出し 1.2rem／台紙の見出し 1.1rem／
   選択の名前 1.05rem／本文 1rem／説明 0.925rem／補足 0.85rem／出典 0.8rem
-- 行間：本文 1.65、補足 1.45、プロンプト 1.8
+- 行間：本文 1.65、プロンプト 1.8。補足のうち、条件の一文（`.option-note`）と見本の説明の一文（`.sample-originals-note`）だけ 1.45（ほかの補足は本文と同じ 1.65。上の YAML の `typography.note` の 1.45 は、この 2 つの値）
+- 折り返し：短い文（手順の見出しの下の一文・スタイルの説明・条件の一文・トグル・コピーの結果の文・開くボタンの上の案内・見本の説明の一文・お気に入りと最近使った設定の変えた条件）は、各行の長さをそろえ（`text-wrap: balance`）、文節の切れ目で折り返す（`word-break: auto-phrase`。Chromium だけで効き、ほかのブラウザでは無視される）。
+  `text-wrap: pretty` では、日本語の文の最後の 1〜2 字だけが次の行に落ちた。これは 2026-10-11 の点検役の指摘に、Claude が選んだ直し方（KNOWLEDGE.md 2026-10-11）
 
 ## Layout
 
@@ -142,7 +146,7 @@ components:
   （1280×800 と 1024×700 で、止まった状態といちばん下までスクロールした状態で収まることを 2026-10-11 に確かめた。スクロールする前は題名の分だけ下にあるので、開くボタンが画面の外に出ることがある）。
   台紙やボタンの余白を増やすと収まらなくなる。増やしたら欄の高さの式（`.album-text`）も直す
 - 全体の幅は最大 76rem、左右の余白 1.25rem
-- **箱を作らない。** 部品のまとまりは罫線（上と下の 1px）と余白で分ける。枠線で囲むのは開くボタンだけ
+- **箱を作らない。** 部品のまとまりは罫線（上と下の 1px）と余白で分ける。枠線で囲むのは開くボタンだけ（台紙の縁の 1px の線は、暗い画面で台紙と紙を分けるためのもので、箱の枠線とは扱わない）
 - **条件の選択肢は 1 行ずつ。** 名前の右に何が変わるかの一文。1 つの選択の中で一文の書き出しを縦にそろえる。
   欄が 26rem より狭いとき（スマホ）は一文を名前の下に回す。行のどこを押してもその選択肢が選ばれる
 - スタイルは罫線で区切った行を 2 列（欄が広ければ）。行の高さは中身で決まる。行のどこ（出典の帯・見本の画像も）を押してもそのスタイルが選ばれる。出典のリンクはリンクとして押せる
@@ -177,9 +181,9 @@ components:
 | 条件の選択肢（`.option-card`） | 罫線で区切った 1 行。ラジオと名前、右に一文（狭い欄では下）。選択中はスタイルの行と同じ背景と名前の色 |
 | トグル（`.toggle`） | OS のチェックボックスと文字。箱なし |
 | 台紙（`.album-page`） | 黒い台紙、四隅に写真のコーナー。見出しは明朝、本文は白いペンの英文（serif）。欄は読み取り専用で縦に伸ばせる |
-| コピーのボタン（`.copy-button`） | 幅いっぱいの緑の塗り。紙の色の字 |
+| コピーのボタン（`.copy-button`） | 幅いっぱいの緑の塗り。紙の色の字。暗い画面では明るい緑にせず、明るい画面と同じ布表紙の緑（#2f5d4b）に `ink`（#e4e5df）の字（下の「Colors」） |
 | 開くボタン（`.open-link`） | 墨の 1px の枠のリンク（新しいタブ） |
-| お気に入り・最近使った設定（`.recent-item`） | 罫線で区切った 1 行。押すと呼び出す |
+| お気に入り・最近使った設定（`.recent-item`） | 罫線で区切った 1 件。押すと呼び出す。1 行目に名前と時刻、2 行目に変えた条件を折り返して全部見せる。条件の名前の中では改行しない（「縦 3:4」）。1 行に詰めると、スマホと 1024px の画面で条件が 1 字か「…」だけになった。2026-10-11 の点検役の指摘に Claude が選んだ形（KNOWLEDGE.md 2026-10-11） |
 | 名前の欄（`.favorite-input`） | 記入欄のような下線だけ |
 | 削除（`.favorite-delete`） | 下線付きの文字のボタン |
 | キーボードのフォーカス | 3px の緑の枠。行の部品は行の内側に引く。例外はプロンプトの欄で、台紙の上では緑が見えないので 2px の白い点線 |

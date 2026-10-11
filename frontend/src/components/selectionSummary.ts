@@ -24,9 +24,11 @@ export function describeSelection(
   return { presetName: preset?.name ?? selection.presetId, changes }
 }
 
-// 既定から変えた点を 1 行にする。何も変えていなければ「既定のまま」
+// 既定から変えた点を 1 つの文にする。何も変えていなければ「既定のまま」
+// 1 つの名前の中の空白は改行しない空白にする（狭い欄で「縦 3:4」が「縦／3:4」に割れないように）
 export function changesText(changes: string[]): string {
-  return changes.length === 0 ? '既定のまま' : changes.join('・')
+  if (changes.length === 0) return '既定のまま'
+  return changes.map((change) => change.replaceAll(' ', ' ')).join('・')
 }
 
 // 保存した日時を「9/29 23:05」の形にする
