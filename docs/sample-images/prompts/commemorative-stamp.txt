@@ -1,0 +1,30 @@
+Make this snapshot the artwork of one commemorative stamp, stuck on an envelope that has been through the post.
+If more than one photo is uploaded, process each photo separately and output one image per photo, without combining photos into a collage or mixing content from different photos.
+
+Paint the stamp's artwork as a flat illustration, never as a photograph or a lifelike portrait: bold, simplified shapes filled with flat color and only a little soft shading, clean outlines, and a fine dot screen as real stamps are printed. Draw faces simply, using few lines and flat skin tones the way a picture-book illustrator would, and let each person be recognized at once by their hairstyle, glasses, smile, and clothes. Everything listed below about people and place refers to the stamp's artwork. Give the stamp a white perforated border with evenly spaced round teeth. Print two things on the stamp besides the artwork: one small numeral for the value in one corner, and along the bottom edge a short English title of two to four words naming what the artwork shows, for example the season, the place, or what the family is doing, printed in neat capital letters. Nothing else is written anywhere: no country names, personal names, dates, or other words on the stamp, postmark, or envelope. Stick the stamp near the upper corner of a cream-colored envelope, with a round postmark of plain rings and wavy lines partly over its edge. Shoot it flat from directly above in soft daylight, framed close so the stamp fills the shot almost entirely and its faces are easy to see.
+
+Preserve from the reference photo:
+- Every person's identity, recognizable at a glance as the same individual, with the style changing only how people are rendered, not who they are
+- Each person's facial features and skin tone as they are, including freckles, moles, and small marks, with no beautifying, skin smoothing, or makeup, and glasses if worn
+- Each person's hairstyle, hair length, bangs, and hair color
+- Each person's facial expression, including the shape of the smile, any visible teeth or tooth gaps, and where the eyes are looking
+- Each person's apparent age exactly as in the photo, with children not made to look older
+- Each person's build and height compared with the others, with no one made slimmer
+- Each person's clothing and accessories: the same garments, colors, patterns, and prints, and items such as hats, hair clips, and bags, with nothing swapped, added, or removed
+- The exact number of people and the mix of adults, children, and babies, with no one added, left out, or merged into someone else
+- Each person's pose, gestures, hand positions, and the direction they are facing, including anything they are holding
+- How the people are arranged: the same order from left to right and front to back, and who is holding hands with, hugging, or carrying whom
+
+Composition:
+- Each person's position relative to the others and to the surroundings, with no one cropped out
+- Every person kept in the scene at the same spot, at a true-to-life size compared with the place, and doing the same thing as in the photo (for example, still on the same playground equipment)
+- The same layout of the place: where the buildings, structures, and objects that are kept sit relative to one another (left, right, front, and back)
+- The same proportions and scale: relative sizes, heights, and spacing, and the same number of floors, windows, doors, and steps
+- The same main subject as the focus of the image
+- Nothing invented beyond the photo's edges: no extra buildings, rooms, streets, or landmarks
+
+Do not:
+- render the stamp's artwork as a photograph or a filtered photo
+- draw faces with fine engraved lines or cross-hatching that make anyone look older
+- show more than one stamp
+- copy the emblem, logo, or postmark design of any real postal service

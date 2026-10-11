@@ -1,0 +1,28 @@
+Show this photo as a printed snapshot taped into an open sketchbook, with the scene carried on past the print's edges as a pencil sketch on the paper.
+If more than one photo is uploaded, process each photo separately and output one image per photo, without combining photos into a collage or mixing content from different photos.
+
+Photograph the sketchbook from directly above, lying open on a wooden desk in soft daylight, with both pages taking up nearly the whole frame. Fix the print near the middle of the pages with two pieces of washi tape at its corners, small enough to leave plenty of paper around it. The print shows the whole photo, uncropped and with nothing moved, so its four edges are the photo's own edges; inside it nothing changes, it remains the real photo, and the lists below about the people and the place apply to the print. On the paper around the print, sketch new scenery that the camera never captured: the view beside, above, and below the frame that a much wider lens would have caught, such as more of the coastline, more sky, the far end of the street, or more of the park. Keep the print and the sketch at one shared scale, so a horizon, shoreline, road, or fence that meets the photo's border carries straight on into the sketch at the same height and angle, and finish any tree that an edge cuts through. Treat each building and landmark in the photo as one of a kind: the sketch may add plainer things such as rocks, trees, fences, hills, and clouds, but never another building, tower, or landmark like it. Use graphite pencil with light colored-pencil shading, and let the strokes get looser and lighter until they fade into blank paper near the page edges.
+
+Preserve from the reference photo:
+- Every person's identity, recognizable at a glance as the same individual, with the style changing only how people are rendered, not who they are
+- Each person's facial features and skin tone as they are, including freckles, moles, and small marks, with no beautifying, skin smoothing, or makeup, and glasses if worn
+- Each person's hairstyle, hair length, bangs, and hair color
+- Each person's facial expression, including the shape of the smile, any visible teeth or tooth gaps, and where the eyes are looking
+- Each person's apparent age exactly as in the photo, with children not made to look older
+- Each person's build and height compared with the others, with no one made slimmer
+- Each person's clothing and accessories: the same garments, colors, patterns, and prints, and items such as hats, hair clips, and bags, with nothing swapped, added, or removed
+- The exact number of people and the mix of adults, children, and babies, with no one added, left out, or merged into someone else
+- Each person's pose, gestures, hand positions, and the direction they are facing, including anything they are holding
+- How the people are arranged: the same order from left to right and front to back, and who is holding hands with, hugging, or carrying whom
+
+Composition:
+- The original camera angle and framing, including how much of each person is visible
+- Each person's position relative to the others and to the surroundings, with no one cropped out
+- The same place and background, restyled to fit the look and simplified only as much as the style needs, never replaced with a different scene
+
+Do not:
+- redraw, paint over, or restyle anything inside the printed photo
+- crop the photo inside the print or shift anything within it
+- copy, enlarge, or trace the photo or pieces of it into the sketched area, or draw a second copy of any building, landmark, tree, or object that already appears inside the print
+- draw any people or animals in the sketched area
+- add any new text, letters, numbers, captions, labels, logos, signatures, or watermarks that are not in the photo

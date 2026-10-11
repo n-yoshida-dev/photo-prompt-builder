@@ -7,6 +7,7 @@ import { PromptView } from './components/PromptView'
 import { RecentList } from './components/RecentList'
 import { aiSites } from './data/aiSites'
 import { catalog } from './data/catalog'
+import { presetSamples, sampleOriginals } from './data/samples'
 import { buildPrompt } from './prompt/buildPrompt'
 import { defaultSelection, switchPreset } from './prompt/selection'
 import type { ChoiceId, Selection, ToggleId } from './prompt/types'
@@ -93,6 +94,8 @@ function App() {
         <div className="controls">
           <PresetPicker
             presets={catalog.presets}
+            samples={presetSamples}
+            originals={sampleOriginals}
             selectedId={selection.presetId}
             onSelect={(presetId) => setSelection((current) => switchPreset(current, presetId))}
           />

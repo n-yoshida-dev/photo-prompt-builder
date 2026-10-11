@@ -1,0 +1,19 @@
+Collect the things visible in this snapshot into a wooden specimen box as mementos from that day, leaving the scene itself out.
+If more than one photo is uploaded, process each photo separately and output one image per photo, without combining photos into a collage or mixing content from different photos.
+
+Make the box shallow, with a glass lid and a grid of small square compartments lined with cream paper, set flat on a table and shown from directly above in soft daylight. Fill it with two kinds of keepsakes, one per compartment, each matching its colors, patterns, and shape in the snapshot: things the family had with them, such as hats, sunglasses, shoes, bags, or toys; and mementos of the place itself, such as small models of a landmark, a building, a boat, or play equipment seen in the snapshot, and natural bits picked up there, like a pebble or a leaf, choosing only kinds the snapshot itself shows. When the snapshot shows three or more such reminders of the place, give the place at least three compartments; when it shows fewer, use every one it shows, so the box remembers where the family went, not only what they wore. Choose only things that anyone could point to in the snapshot; leaving a compartment empty is better than filling it with something made up.
+
+Preserve from the reference photo:
+- Each object exactly as it looks in the photo: the same colors, patterns, prints, materials, and shape, with nothing recolored or redesigned
+- Any signs of use visible in the photo, such as scuffs, creases, or faded spots, so each object is the very one from that day
+
+Composition:
+- Only objects that are clearly visible in the photo, each shown once at most, with nothing invented or merged from several things
+- Each object at its true size compared with the others, unless the style itself shrinks something large into a small model
+
+Do not:
+- make up an object from a pattern or print on someone's clothing
+- show any people, faces, or body parts
+- display real insects or other living creatures as specimens, or push pins through anything
+- add any new text, letters, numbers, captions, labels, logos, signatures, or watermarks that are not in the photo
+- add people, animals, objects, props, decorations, or effects such as sparkles or confetti that are not in the photo, other than a display base or backdrop that the style itself calls for

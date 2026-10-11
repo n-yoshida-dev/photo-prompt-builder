@@ -181,17 +181,79 @@ body {
   border-top: 1px solid var(--rule);
 }
 
+/* 行の幅で見本の置き方を変えるため、行を container にする（中身の並びは .preset-card-body が持つ） */
 .preset-card {
   position: relative;
+  container-type: inline-size;
   border-bottom: 1px solid var(--rule);
 }
 
-/* 押すとラジオが選ばれる範囲。出典の行（.preset-credit）はリンクを含むのでこの外に置く */
+/* 狭い行（2 列の PC とスマホ）：見本を文の上に、文の欄と同じ幅で置く */
+.preset-card-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* 押すとラジオが選ばれる範囲。出典の行（.preset-credit）はリンクを含むのでこの外に置く。
+   ラジオは左の細い列に置き、見本が上に来てもラジオが名前の横に付いていくようにする */
 .preset-choice {
   display: grid;
-  gap: 0.15rem;
-  padding: 0.95rem 0.5rem 0.75rem 2rem;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  align-content: start;
+  row-gap: 0.15rem;
+  padding: 0.95rem 0.5rem 0.75rem;
   cursor: pointer;
+}
+
+.preset-choice > span {
+  grid-column: 2;
+}
+
+/* 見本は高さだけをそろえ、横幅は画像の形のままにする（写真帳に高さをそろえて貼る形）。
+   正方形のジオラマや縦長のポスターを横長の枠に収めると、小さくなってまわりに余白の箱ができるため。
+   幅が足りないときだけ、欄の幅に合わせて縮め、切らずに収める */
+.preset-sample {
+  order: -1;
+  display: block;
+  justify-self: start;
+  width: auto;
+  max-width: calc(100% - 2.5rem);
+  height: 10rem;
+  margin: 0.95rem 0.5rem 0 2rem;
+  object-fit: contain;
+}
+
+/* 見本と名前の間は詰め、1 組に見えるようにする（点検で、新しい値 0.6rem を近くの値 0.5rem にそろえた。詰める側を選んだのは Claude） */
+.preset-card:has(.preset-sample) .preset-choice {
+  padding-top: 0.5rem;
+}
+
+/* 広い行（1024px の画面の 1 列など）：見本を右に小さく置き、行が縦に伸びすぎないようにする。
+   右の列は見本の横幅に合わせ（auto）、正方形や縦長の見本の行では文の欄を広く使う */
+@container (min-width: 26rem) {
+  .preset-card-body {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding-right: 0.5rem;
+  }
+
+  .preset-choice,
+  .preset-credit {
+    grid-column: 1;
+  }
+
+  .preset-sample {
+    order: 0;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    justify-self: end;
+    max-width: 100%;
+    height: 6.75rem;
+    margin: 0.95rem 0 0.75rem;
+  }
+
+  .preset-card:has(.preset-sample) .preset-choice {
+    padding-top: 0.95rem;
+  }
 }
 
 /* 押せる範囲を行全体（出典の帯も含む）に広げる。出典のリンクとラジオは、この覆いの上に出す */
@@ -201,7 +263,8 @@ body {
   inset: 0;
 }
 
-.preset-choice:has(+ .preset-credit) {
+/* 出典がある行は、出典の帯との間を詰める（見本がラベルと出典の間に入ったので、隣り合わせの + では選ばない） */
+.preset-card:has(.preset-credit) .preset-choice {
   padding-bottom: 0.3rem;
 }
 
@@ -234,12 +297,15 @@ body {
   outline-offset: -3px;
 }
 
+/* ラジオは行の覆い（.preset-choice::after）より上に出す（Playwright の check() が覆いに止められないように） */
 .preset-card input {
-  position: absolute;
+  position: relative;
   z-index: 1;
-  top: 1.15rem;
-  left: 0.5rem;
-  margin: 0;
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  justify-self: start;
+  margin: 0.25rem 0 0; /* 名前の 1 行目にそろえる（トグルのチェックボックスと同じ値） */
   accent-color: var(--cloth);
 }
 
@@ -284,6 +350,46 @@ body {
 
 .preset-credit-modified {
   display: block;
+}
+
+/* 見本の元にした架空の写真（一覧の下に 1 回だけ。補足の扱いなので小さく、色も控えめに） */
+.sample-originals {
+  margin: 1rem 0 0;
+}
+
+.sample-originals-note {
+  margin-bottom: 0.5rem;
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.sample-originals-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 6.5rem));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sample-original {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.sample-original img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.sample-original-label {
+  color: var(--ink-muted);
+  font-size: 0.8rem;
 }
 
 /* ---- 2. 仕上がりの調整（選択肢は 1 行ずつ。名前の右に何が変わるかの一文） ---- */
