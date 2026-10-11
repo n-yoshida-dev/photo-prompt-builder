@@ -70,7 +70,7 @@ export const preserve: Record<Subject, PreserveSet> = {
     identity: [],
     composition: SCENE_COMPOSITION,
   },
-  // 場所と人物の両方を模型などに作り替える（ジオラマ・旅のスタンプの「家族も」）。2026-10-03 に Claude が作成
+  // 場所と人物の両方を模型などに作り替える（ジオラマの「家族も」・飛び出す絵本・記念切手）。2026-10-03 に Claude が作成（旅のスタンプの「家族も」は 2026-10-11 に下の people-in-scene-drawn へ移した）
   // people の構図の「元のカメラの角度」「同じ背景」は、ジオラマの斜め上からの見せ方や台座だけの背景とぶつかるので使わない
   'people-in-scene': {
     identity: PEOPLE_IDENTITY,

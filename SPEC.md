@@ -48,7 +48,7 @@
 | `sugoroku-board` | すごろく盤 | Claude が自作（同上） | 人物のコマと場所 |
 | `specimen-box` | 思い出の標本箱 | Claude が自作（同上） | 持ち物 |
 | `travel-stamps` | 旅のスタンプ（風景だけ） | Claude が自作（利用条件の明記された原文なし） | 風景 |
-| `travel-stamps-family` | 旅のスタンプ（家族も） | Claude が自作（風景だけの版と同じ画風で、人物を残す） | 人物と場所 |
+| `travel-stamps-family` | 旅のスタンプ（家族も） | Claude が自作（風景だけの版と同じ画風で、人物を残す） | 人物と場所・顔も絵にする |
 
 2026-10-04〜05 のスタイルの見直し（`TODO.md` フェーズ2.5）：
 

@@ -115,7 +115,7 @@ export const presets: Preset[] = [
     source: { kind: 'claude', label: 'Claude の自作' },
   },
   // ここから 2 本は、写真の場面が紙の物・印刷物になる（Claude の自作。2026-10-06。試作は docs/style-trials-2026-10-04.md）。
-  // 場所と人物の両方を作り替えるので被写体は people-in-scene（ジオラマ・旅のスタンプの「家族も」と同じ。元のカメラの角度は求めない）
+  // 場所と人物の両方を作り替えるので被写体は people-in-scene（ジオラマの「家族も」と同じ。元のカメラの角度は求めない）
   {
     id: 'pop-up-book',
     name: '飛び出す絵本',
