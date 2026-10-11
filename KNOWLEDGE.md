@@ -15,7 +15,7 @@
 点検役が案を並べた 3 件（前回の報告は手元の `~/.cache/photo-prompt-builder/look/2026-10-11/look-reviewer-report.md`）。どちらも Claude が選んだ直し方で、ユーザーの決定ではない。
 
 - **短い文の最後の 1〜2 字が次の行に落ちる**：`text-wrap: pretty` は、Chromium では日本語の文に効かなかった（「…並べ／る」「…添付し／ます。」が残った）。
-  - 選んだ形：スタイルの説明・条件の一文・トグル・開くボタンの上の案内・見本の説明の一文を `text-wrap: balance`（各行の長さをそろえる）＋ `word-break: auto-phrase`（文節の切れ目で折り返す）。
+  - 選んだ形：短い文（対象の一覧は DESIGN.md「Typography」の折り返しの項）を `text-wrap: balance`（各行の長さをそろえる）＋ `word-break: auto-phrase`（文節の切れ目で折り返す）。
   - balance だけにしたときは字の落ちは消えたが、「写／真」「鉛／筆」のように語の途中で切れる所が目立った。auto-phrase を足すと切れ目が文節になった（Chromium だけ。Safari・Firefox では無視され、balance だけが効く。`index.html` の `lang="ja"` が要る）
   - 選ばなかった案：文言や列の幅を変える（11 本の説明と条件の一文の全部に効く手が無い）
 - **暗い画面でコピーのボタンが台紙より目立つ**：明るい緑（#8cc3ad）の塗りは紙との差 8.79 で、台紙と紙の差 1.09 より大きかった。
