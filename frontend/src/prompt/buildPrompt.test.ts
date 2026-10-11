@@ -36,6 +36,7 @@ const fixture: Catalog = {
     'people-in-scene': { identity: ['face'], composition: ['layout with people'] },
     objects: { identity: ['object look'], composition: ['only visible objects'] },
     'people-as-pieces': { identity: ['face as piece'], composition: ['layout of place'] },
+    'people-in-scene-drawn': { identity: ['drawn face'], composition: ['layout with people'] },
   },
   toggles: [
     { id: 'no-text', label: '文字', block: 'negative', text: 'add text' },

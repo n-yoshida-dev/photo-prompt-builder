@@ -115,7 +115,7 @@ export const presets: Preset[] = [
     source: { kind: 'claude', label: 'Claude の自作' },
   },
   // ここから 2 本は、写真の場面が紙の物・印刷物になる（Claude の自作。2026-10-06。試作は docs/style-trials-2026-10-04.md）。
-  // 場所と人物の両方を作り替えるので被写体は people-in-scene（ジオラマ・旅のスタンプの「家族も」と同じ。元のカメラの角度は求めない）
+  // 場所と人物の両方を作り替えるので被写体は people-in-scene（ジオラマの「家族も」と同じ。元のカメラの角度は求めない）
   {
     id: 'pop-up-book',
     name: '飛び出す絵本',
@@ -225,13 +225,18 @@ export const presets: Preset[] = [
     id: 'travel-stamps-family',
     name: '旅のスタンプ（家族も）',
     descriptionJa: '旅先の景色と家族をいっしょに、旅日記に押した大きなゴム印のスタンプにする',
-    subject: 'people-in-scene',
+    // 顔もスタンプの線で描くので、顔立ちの行をゆるめた被写体を使う（logs/decisions.md 2026-10-04 の「うちの子と分かる範囲で画風に寄せる」）。
+    // 「加工の強さ：しっかり」だけでは顔が写実のままだった（KNOWLEDGE.md 2026-10-11）
+    subject: 'people-in-scene-drawn',
     base: TRAVEL_STAMP_BASE,
     style: TRAVEL_STAMP_STYLE,
-    // スタンプは線が単純になるので、顔を塗りつぶしや影絵にしない（誰だか分からなくなる）
+    // スタンプは線が単純になるので、顔を塗りつぶしや影絵にしない（誰だか分からなくなる）。
+    // 逆に、顔だけ写真のような肖像にしない、とも書く（この一文だけでは 2 回中 1 回しかスタンプの顔にならず、顔立ちの行をゆるめる被写体と合わせて試した。KNOWLEDGE.md 2026-10-11）。
+    // 風景だけの版と同じ文を保つため、base と style ではなくここに書く（CLAUDE.md「守ること」）
     negative: [
       'remove any of the people in the photo, since they are the main subject of this keepsake',
       "carve anyone's face as a blank shape or a silhouette",
+      'carve faces as lifelike photographic portraits with smooth shading or fine skin texture, finer than the rest of the print (faces should get the same bold lines and flat ink as everything else, and each person should still be known at once by their hairstyle, glasses, smile, and clothes)',
     ],
     defaultToggles: ['no-text', 'no-extra-objects', 'one-per-photo'],
     source: { kind: 'claude', label: 'Claude の自作' },

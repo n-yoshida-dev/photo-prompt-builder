@@ -16,8 +16,10 @@ export type ChoiceId = 'style-strength' | 'color-mood' | 'aspect-ratio'
 // 被写体。人物を残すプリセットか、建物や風景を主役にして人物を消すプリセットか、
 // 建物や遊具などの場所と人物の両方を模型やスタンプのように作り替えるプリセットか（people-in-scene。logs/decisions.md 2026-10-03）、
 // 場面の配置は保たずに写っている持ち物だけを取り出すプリセットか（objects。思い出の標本箱のために 2026-10-06 に Claude が足した）、
-// 場所は配置どおりに作り替え、人物は写真の位置から取り出してコマなどにして置くプリセットか（people-as-pieces。すごろく盤のために 2026-10-10 に Claude が足した）
-export type Subject = 'people' | 'scene' | 'people-in-scene' | 'objects' | 'people-as-pieces'
+// 場所は配置どおりに作り替え、人物は写真の位置から取り出してコマなどにして置くプリセットか（people-as-pieces。すごろく盤のために 2026-10-10 に Claude が足した）、
+// people-in-scene と同じだが顔も画風の線と平らな色で描き直すプリセットか（people-in-scene-drawn。旅のスタンプ（家族も）のために 2026-10-11 に Claude が足した）
+export type Subject =
+  'people' | 'scene' | 'people-in-scene' | 'objects' | 'people-as-pieces' | 'people-in-scene-drawn'
 
 // プロンプト上のブロック。トグル文をどこに差し込むかを決める
 export type ToggleBlock = 'base' | 'style' | 'negative'

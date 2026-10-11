@@ -148,7 +148,8 @@ describe('人物を残す版と消す版のペア（logs/decisions.md 2026-10-03
     expect(family.style).toBe(scene.style)
     expect(family.defaultToggles).toEqual(scene.defaultToggles)
     expect(scene.subject).toBe('scene')
-    expect(family.subject).toBe('people-in-scene')
+    // 旅のスタンプ（家族も）は、顔もスタンプの線で描く版の被写体を使う（logs/decisions.md 2026-10-04）
+    expect(['people-in-scene', 'people-in-scene-drawn']).toContain(family.subject)
     expect(scene.negative.join(' ')).toMatch(/include any of the people/)
     expect(family.negative.join(' ')).toMatch(/remove any of the people/)
   })
@@ -180,7 +181,7 @@ describe('出典の種類', () => {
 })
 
 describe('マスタデータの形', () => {
-  it('ラジオ 3 種・トグル 6 つ・保持文 5 組がある', () => {
+  it('ラジオ 3 種・トグル 6 つ・保持文 6 組がある', () => {
     expect(catalog.choices.map((c) => c.id)).toEqual([
       'style-strength',
       'color-mood',
@@ -192,6 +193,7 @@ describe('マスタデータの形', () => {
       'people',
       'people-as-pieces',
       'people-in-scene',
+      'people-in-scene-drawn',
       'scene',
     ])
   })
@@ -279,6 +281,22 @@ describe('マスタデータの形', () => {
     const cameraLine = catalog.preserve.people.composition[0]
     expect(cameraLine).toMatch(/camera angle/)
     expect(mixed.composition).not.toContain(cameraLine)
+  })
+
+  // 顔も画風に寄せる版は、顔立ちの行だけが違う。そばかすまで残す・肌をなめらかにしない、が顔を写実に引っ張るため（KNOWLEDGE.md 2026-10-11）
+  it('people-in-scene-drawn は people-in-scene と顔立ちの行だけが違い、顔も画風の線で描く', () => {
+    const mixed = catalog.preserve['people-in-scene']
+    const drawn = catalog.preserve['people-in-scene-drawn']
+    expect(drawn.composition).toEqual(mixed.composition)
+    expect(drawn.identity).toHaveLength(mixed.identity.length)
+    const changed = drawn.identity.filter((line, i) => line !== mixed.identity[i])
+    expect(changed).toHaveLength(1)
+    expect(changed[0]).toMatch(/same few bold lines and flat colors/)
+    expect(changed[0]).not.toMatch(/freckles|skin smoothing/)
+    // 誰か分かる手がかり（肌の色・眼鏡）と、美化しないことは残す
+    expect(changed[0]).toMatch(/skin tone/)
+    expect(changed[0]).toMatch(/glasses if worn/)
+    expect(changed[0]).toMatch(/no beautifying or makeup/)
   })
 
   // 標本箱は物を仕切りに並べ直すので、場所の配置を保つ文とぶつかる。人物も写さない
