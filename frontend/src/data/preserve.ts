@@ -3,10 +3,20 @@
 // 見出し「Preserve from the reference photo:」「Composition:」の下に "- " で並ぶので、名詞句で書く
 import type { PreserveSet, Subject } from '../prompt/types'
 
+// 顔立ちの行。そばかすやほくろまで写真のまま残させる
+const FACE_AS_IS =
+  "Each person's facial features and skin tone as they are, including freckles, moles, and small marks, with no beautifying, skin smoothing, or makeup, and glasses if worn"
+
+// 顔立ちの行の、顔も画風に寄せる版（people-in-scene-drawn）。2026-10-11 に Claude が作成。
+// FACE_AS_IS の「そばかすもそのまま」「肌をなめらかにしない」が顔を写実に引っ張り、旅のスタンプ（家族も）の顔がスタンプにならなかった。
+// 誰か分かる手がかり（顔の形・目・眉・鼻・口・肌の色・眼鏡）は残し、細かさだけを画風に合わせる（logs/decisions.md 2026-10-04、KNOWLEDGE.md 2026-10-11）
+const FACE_DRAWN =
+  "Each person's face shape, eyes, eyebrows, nose, mouth, and skin tone, drawn with the same few bold lines and flat colors as the rest of the picture rather than in photographic detail, yet still clearly that person, with no beautifying or makeup, and glasses if worn"
+
 // 人物の保持文のうち、並び（左右・前後の順）を除いた行。people・people-in-scene・people-as-pieces で共通に使う
 const PEOPLE_IDENTITY_WITHOUT_ARRANGEMENT = [
   "Every person's identity, recognizable at a glance as the same individual, with the style changing only how people are rendered, not who they are",
-  "Each person's facial features and skin tone as they are, including freckles, moles, and small marks, with no beautifying, skin smoothing, or makeup, and glasses if worn",
+  FACE_AS_IS,
   "Each person's hairstyle, hair length, bangs, and hair color",
   "Each person's facial expression, including the shape of the smile, any visible teeth or tooth gaps, and where the eyes are looking",
   "Each person's apparent age exactly as in the photo, with children not made to look older",
@@ -23,6 +33,11 @@ const PEOPLE_IDENTITY = [
   'How the people are arranged: the same order from left to right and front to back, and who is holding hands with, hugging, or carrying whom',
 ]
 
+// 人物の保持文の、顔も画風に寄せる版。顔立ちの行だけを差し替える（people-in-scene-drawn）
+const PEOPLE_IDENTITY_DRAWN = PEOPLE_IDENTITY.map((line) =>
+  line === FACE_AS_IS ? FACE_DRAWN : line,
+)
+
 // 人物どうしと周りとの位置関係。people と people-in-scene で共通に使う
 const PEOPLE_POSITION =
   "Each person's position relative to the others and to the surroundings, with no one cropped out"
@@ -33,6 +48,13 @@ const SCENE_COMPOSITION = [
   'The same proportions and scale: relative sizes, heights, and spacing, and the same number of floors, windows, doors, and steps',
   'The same main subject as the focus of the image',
   "Nothing invented beyond the photo's edges: no extra buildings, rooms, streets, or landmarks",
+]
+
+// 場所と人物の両方を作り替えるときの構図の保持文。people-in-scene と people-in-scene-drawn で共通に使う
+const PEOPLE_IN_SCENE_COMPOSITION = [
+  PEOPLE_POSITION,
+  'Every person kept in the scene at the same spot, at a true-to-life size compared with the place, and doing the same thing as in the photo (for example, still on the same playground equipment)',
+  ...SCENE_COMPOSITION,
 ]
 
 export const preserve: Record<Subject, PreserveSet> = {
@@ -52,11 +74,13 @@ export const preserve: Record<Subject, PreserveSet> = {
   // people の構図の「元のカメラの角度」「同じ背景」は、ジオラマの斜め上からの見せ方や台座だけの背景とぶつかるので使わない
   'people-in-scene': {
     identity: PEOPLE_IDENTITY,
-    composition: [
-      PEOPLE_POSITION,
-      'Every person kept in the scene at the same spot, at a true-to-life size compared with the place, and doing the same thing as in the photo (for example, still on the same playground equipment)',
-      ...SCENE_COMPOSITION,
-    ],
+    composition: PEOPLE_IN_SCENE_COMPOSITION,
+  },
+  // people-in-scene と同じだが、顔も画風の線と平らな色で描き直す（旅のスタンプの「家族も」）。2026-10-11 に Claude が作成
+  // people-in-scene はジオラマ（家族も）・飛び出す絵本・記念切手も使うので、顔立ちの行を変えずに別の被写体にした
+  'people-in-scene-drawn': {
+    identity: PEOPLE_IDENTITY_DRAWN,
+    composition: PEOPLE_IN_SCENE_COMPOSITION,
   },
   // 場面の配置は保たずに、写っている持ち物だけを取り出す（思い出の標本箱）。2026-10-06 に Claude が作成
   // 「Preserve from the reference photo:」の下には人物ではなく物の見た目を置く。人物は写さないので人物の保持文は付けない

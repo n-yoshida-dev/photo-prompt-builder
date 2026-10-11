@@ -284,7 +284,7 @@ Render the scene the way a hand-carved rubber stamp prints: bold, simplified sha
 
 Preserve from the reference photo:
 - Every person's identity, recognizable at a glance as the same individual, with the style changing only how people are rendered, not who they are
-- Each person's facial features and skin tone as they are, including freckles, moles, and small marks, with no beautifying, skin smoothing, or makeup, and glasses if worn
+- Each person's face shape, eyes, eyebrows, nose, mouth, and skin tone, drawn with the same few bold lines and flat colors as the rest of the picture rather than in photographic detail, yet still clearly that person, with no beautifying or makeup, and glasses if worn
 - Each person's hairstyle, hair length, bangs, and hair color
 - Each person's facial expression, including the shape of the smile, any visible teeth or tooth gaps, and where the eyes are looking
 - Each person's apparent age exactly as in the photo, with children not made to look older
@@ -305,6 +305,7 @@ Composition:
 Do not:
 - remove any of the people in the photo, since they are the main subject of this keepsake
 - carve anyone's face as a blank shape or a silhouette
+- carve faces as lifelike photographic portraits with smooth shading or fine skin texture, finer than the rest of the print (faces should get the same bold lines and flat ink as everything else, and each person should still be known at once by their hairstyle, glasses, smile, and clothes)
 - add any new text, letters, numbers, captions, labels, logos, signatures, or watermarks that are not in the photo
 - add people, animals, objects, props, decorations, or effects such as sparkles or confetti that are not in the photo, other than a display base or backdrop that the style itself calls for"
 `;
