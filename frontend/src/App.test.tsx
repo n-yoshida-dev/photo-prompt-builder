@@ -37,7 +37,9 @@ function promptText(): string {
 describe('App', () => {
   it('アプリ名の見出しを表示する', () => {
     render(<App />)
-    expect(screen.getByRole('heading', { name: 'photo-prompt-builder' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: '子ども・家族写真の加工プロンプトメーカー' }),
+    ).toBeInTheDocument()
   })
 
   it('起動時は先頭のプリセットのプロンプトが出ている', () => {
@@ -276,7 +278,9 @@ describe('最近使った設定', () => {
     localStorage.setItem(RECENT_KEY, JSON.stringify(stored))
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     render(<App />)
-    expect(screen.getByRole('heading', { name: 'photo-prompt-builder' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: '子ども・家族写真の加工プロンプトメーカー' }),
+    ).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /Editorial Poster/ }))
     expect(promptText()).toContain(presetBase('editorial-poster'))
     expect(warn).toHaveBeenCalledWith(expect.stringContaining('5 件'))

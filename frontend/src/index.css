@@ -103,6 +103,10 @@ body {
   font-size: clamp(1.5rem, 4vw + 0.5rem, 2.1rem);
   font-weight: 600;
   letter-spacing: 0.02em;
+  /* 語の途中で折り返さず、題名の <wbr> の位置で折り返す（Safari でも効く） */
+  word-break: keep-all;
+  /* 320px より狭い画面や文字を大きくする設定で 1 行に入らないときだけ、語の途中でも折り返す */
+  overflow-wrap: anywhere;
 }
 
 .app-lead {

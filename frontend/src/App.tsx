@@ -85,7 +85,12 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1 className="app-title">photo-prompt-builder</h1>
+        {/* 狭い画面では「の」の後ろだけで折り返す（wbr と CSS の keep-all の組み合わせ） */}
+        <h1 className="app-title">
+          子ども・家族写真の
+          <wbr />
+          加工プロンプトメーカー
+        </h1>
         <p className="app-lead">
           子どもの写真を AI で加工するための英語のプロンプトを、選ぶだけで組み立てます。
         </p>
