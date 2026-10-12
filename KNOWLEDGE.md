@@ -10,6 +10,21 @@
 
 ---
 
+### 2026-10-12：GitHub Pages の公開は相対パス（`base: './'`）と skill-matrix と同じワークフロー。無料プランでは Public が先
+
+- **ハマったこと**：非公開のリポジトリで `gh api -X POST repos/{owner}/{repo}/pages -f build_type=workflow` を呼ぶと、
+  422「Your current plan does not support GitHub Pages for this repository.」で断られる。無料プランでは Public が先
+- **ハマったこと**：`gh repo edit --visibility public` は、`~/.claude` の PreToolUse フック（危険なコマンドの検知）に止められる。ユーザーが GitHub の設定画面で切り替える
+- **設計判断**：Vite の `base` は `'./'`（相対パス）。`/<リポジトリ名>/` の住所の下でも、独自ドメインの直下でも、そのまま開ける。
+  見本の画像は `import.meta.env.BASE_URL`（ビルド後は `./`）を頭に付けて読むので、そのまま届く。
+  手元で `dist/` を `/photo-prompt-builder/` の下に置いて開き、題名・画像 14 枚・プロンプト・エラー 0 件を確かめた。
+  選ばなかった案：環境変数で `/photo-prompt-builder/` を渡す（ワークフローとビルドの両方に値が要り、独自ドメインに移すと直しが要る）。画面は 1 枚でルーターが無いので、相対パスの弱み（深い URL で崩れる）は当たらない
+- **設計判断**：`.github/workflows/pages.yml` は skill-matrix のものを写した。Pages が無効の間はビルドだけして公開を飛ばすので、Public の前にマージしても赤くならない
+- 会話で調べた規約（2026-10-12 に確認）：Vercel の無料プランは「個人の非商用に限る」で、商用の例に「AdSense などの広告を載せる」「アフィリエイトのリンクがサイトの主な目的」「訪問者に支払いを求める」がある（寄付は商用に当たらない。https://vercel.com/docs/limits/fair-use-guidelines ）。
+  GitHub Pages は「ネット上の商売・通販サイトの無料の置き場」に使えない（https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits ）。Cloudflare Pages の商用の扱いは一次の文面を確かめられなかった
+
+---
+
 ### 2026-10-11：公開前の点検の直し方 3 つは Claude が選んだ（短い文は balance＋auto-phrase、暗い画面の塗りのボタンは沈んだ緑、スマホの履歴は条件を 2 行目へ）
 
 点検役が案を並べた 3 件（前回の報告は手元の `~/.cache/photo-prompt-builder/look/2026-10-11/look-reviewer-report.md`）。どちらも Claude が選んだ直し方で、ユーザーの決定ではない。
