@@ -186,13 +186,23 @@ PR を作るときは、この行を PR 本文の「完了条件」に引き、�
 - [ ] GitHub Pages にデプロイする（Vite の `base` をリポジトリ名に合わせ、Actions で `dist/` を配信）
   完了条件：公開 URL で画面が開き、プリセットを選ぶとプロンプトが出る。
   iPhone の Safari で「コピーして ChatGPT を開く」を押し、新しいタブが開いてプロンプトを貼れる（2026-10-07 に Claude が足した。Safari は WSL で試せなかった。KNOWLEDGE.md 2026-10-07）
+  2026-10-12：`base: './'` と `.github/workflows/pages.yml`（skill-matrix と同じ形。Pages が無効の間は公開を飛ばす）を `chore/deploy-pages` の PR に入れた。
+  無料プランでは非公開のリポジトリで Pages を有効にできない（KNOWLEDGE.md 2026-10-12）ので、下の Public が先。
+  Public になったら、Claude が Pages を「GitHub Actions から公開」で有効にし、Pages のワークフローを流し直す
 - [ ] リポジトリを Public にする（公開設定の変更はユーザー確認が要る操作。タイミングはユーザーが決める）
   完了条件：リポジトリの visibility が Public
+  2026-10-12：ユーザーの返事「Public でよい」（`logs/decisions.md` 2026-10-12）。Claude の `gh repo edit --visibility` は PreToolUse フックに止められたので、
+  ユーザーが GitHub の設定画面（Settings → General の一番下 → Change visibility）で切り替える
 
 ## 公開後
 
 - [ ] 幅 280px の画面（折りたたみスマホを閉じた状態など）で、スタイルのカードが 7px 横にはみ出すのを直す（2026-10-12 の題名の PR で見つけた。main でも同じ。320px でははみ出さない）
   完了条件：幅 280px で `document.documentElement.scrollWidth` が 280 以下
+- [ ] お金を稼ぐ仕組み（Amazon アソシエイト・AdSense など）を入れるかを決める（2026-10-12 にユーザーが例として挙げた。作るものの範囲が変わる判断なのでユーザーが決める）。
+  入れるなら、置き場所（GitHub Pages は商売の置き場に使えない、Vercel の無料プランは広告・アフィリエイトが主目的のサイトを認めない）と自分のドメインを決め直す（会話の調べは KNOWLEDGE.md 2026-10-12）
+  完了条件：入れるか入れないかが `logs/decisions.md` にある
+- [ ] README の「ライセンス」（今は「未定。公開時に決める」）を決める
+  完了条件：README の「ライセンス」に決めたライセンスか「定めない（すべての権利を留保）」が書いてある
 
 ## 確認待ち（ユーザーの回答が要るもの）
 

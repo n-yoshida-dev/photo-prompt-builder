@@ -19,7 +19,7 @@
 ## 進捗
 
 ```
-進捗（TODO.md より自動集計・2026-10-11）
+進捗（TODO.md より自動集計・2026-10-12）
 
 ████████████████████ 100%  残り  0 /  3  フェーズ0：立ち上げ（2026-09-06、apps 直下のセッションで実施）
 ████████████████████ 100%  残り  0 /  2  フェーズ1：設計の確認
@@ -29,20 +29,25 @@
 ██████░░░░░░░░░░░░░░  33%  残り  2 /  3  フェーズ3：公開
 ██████████████████░░  93%  残り  2 / 30  合計
 公開まで残り 2 件（TODO の上から「フェーズ3：公開」の節までの未完）
-あなたの回答待ち：3 件（回答済み 18 件）
+あなたの回答待ち：2 件（回答済み 19 件）
+公開後（合計に含めない）：3 件（済み 0 件）
 
-前回の区切り（2026-10-11）から：完了 +1 件、新たに見つかったタスク +0 件
+前回の区切り（2026-10-12）から：完了 +0 件、新たに見つかったタスク +0 件
 ```
 
 ## 現在地
 
-- フェーズ：フェーズ3（公開）の残り 2 件。公開前の見た目の点検は `fix/look-before-release` の PR で終えた（この PR がマージされた後の状態として書いている）
+- フェーズ：フェーズ3（公開）の残り 2 件。題名は PR #40 で直した。デプロイの設定は `chore/deploy-pages` の PR（この PR がマージされた後の状態として書いている）
+- リポジトリはまだ Private。ユーザーは「Public でよい」と返したが、Claude の公開設定の変更はフックに止められたので、ユーザーが設定画面で切り替える（TODO.md フェーズ3）
+- Pages のワークフロー（`.github/workflows/pages.yml`）は、Pages が無効の間は公開を飛ばす。Public になったら Claude が Pages を有効にして流し直す（KNOWLEDGE.md 2026-10-12）
 - 点検の直し方 3 つは Claude が選んだもの（KNOWLEDGE.md 2026-10-11）。前と後の比較ページ https://claude.ai/artifact/G4cpHKvfsRXo8NWpcbqCSL は渡したが、ユーザーの返事はまだ無い
 - プリセット・保持文・トグルの文を変えると `samples.test.ts` が落ちる。そのときは見本を作り直す（手順は `docs/sample-images.md`、道具は `~/.cache/photo-prompt-builder/tools/`。KNOWLEDGE.md 2026-10-11）
 - 画面を変えるときの点検は `/apps-workflow:look` の B。画面全体を撮るときは `look.mjs shoot --setup ~/.cache/photo-prompt-builder/tools/setup-full.mjs`（お気に入り・最近使った設定を入れて撮る）
 
 ## 次セッションで最初にやること
 
-1. フェーズ3 の「GitHub Pages にデプロイする」（題名は 2026-10-12 に「子ども・家族写真の加工プロンプトメーカー」に決めて直した）
+1. `gh repo view --json visibility` で Public になったかを見る。Public なら `gh api -X POST 'repos/{owner}/{repo}/pages' -f build_type=workflow` で Pages を有効にし、
+   `gh workflow run pages.yml` で公開して https://n-yoshida-dev.github.io/photo-prompt-builder/ を確かめる（TODO.md フェーズ3「GitHub Pages にデプロイする」の完了条件）。
+   Private のままなら、切り替えをユーザーに頼む
 
 `TODO.md` の先頭と一致させる。書くのは最初の一手だけで、一覧は `TODO.md` が持つ。
