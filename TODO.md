@@ -183,7 +183,7 @@ PR を作るときは、この行を PR 本文の「完了条件」に引き、�
   前と後の比較ページ https://claude.ai/artifact/G4cpHKvfsRXo8NWpcbqCSL
   直さずに残した好みの問題・気づき（点検役の言葉を Claude が要約）：題名の下の線が広い画面で台紙の途中で終わる、狭い欄の条件の一文の書き出しが名前より約 4px 右、
   スマホで語の途中の折り返しが少し残る（「小人た／ち」、題名の下の説明）、1024×700 の右の列の余りが約 17px
-- [ ] GitHub Pages にデプロイする（Vite の `base` をリポジトリ名に合わせ、Actions で `dist/` を配信）
+- [ ] GitHub Pages にデプロイする（Vite の `base` を相対パス（`./`）にし、Actions で `dist/` を配信）
   完了条件：公開 URL で画面が開き、プリセットを選ぶとプロンプトが出る。
   iPhone の Safari で「コピーして ChatGPT を開く」を押し、新しいタブが開いてプロンプトを貼れる（2026-10-07 に Claude が足した。Safari は WSL で試せなかった。KNOWLEDGE.md 2026-10-07）
   2026-10-12：`base: './'` と `.github/workflows/pages.yml`（skill-matrix と同じ形。Pages が無効の間は公開を飛ばす）を `chore/deploy-pages` の PR に入れた。
