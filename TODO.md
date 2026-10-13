@@ -189,10 +189,13 @@ PR を作るときは、この行を PR 本文の「完了条件」に引き、�
   2026-10-12：`base: './'` と `.github/workflows/pages.yml`（skill-matrix と同じ形。Pages が無効の間は公開を飛ばす）を `chore/deploy-pages` の PR に入れた。
   無料プランでは非公開のリポジトリで Pages を有効にできない（KNOWLEDGE.md 2026-10-12）ので、下の Public が先。
   Public になったら、Claude が Pages を「GitHub Actions から公開」で有効にし、Pages のワークフローを流し直す
-- [ ] リポジトリを Public にする（公開設定の変更はユーザー確認が要る操作。タイミングはユーザーが決める）
+  2026-10-13：Pages を有効にして公開した（https://n-yoshida-dev.github.io/photo-prompt-builder/ ）。公開 URL を Playwright の Chromium で 1280×800 と iPhone 13 相当で開き、
+  題名・画像 14/14・Editorial Poster のプロンプトが出て、エラーと外部への通信は 0 件。残りは iPhone の Safari の実機での確かめ（ユーザーの作業。Beads ops-ixl.17）
+- [x] リポジトリを Public にする（公開設定の変更はユーザー確認が要る操作。タイミングはユーザーが決める）
   完了条件：リポジトリの visibility が Public
   2026-10-12：ユーザーの返事「Public でよい」（`logs/decisions.md` 2026-10-12）。Claude の `gh repo edit --visibility` は PreToolUse フックに止められたので、
   ユーザーが GitHub の設定画面（Settings → General の一番下 → Change visibility）で切り替える
+  2026-10-13：ユーザーの返事「変えた」。`gh repo view --json visibility` で PUBLIC を確かめた
 
 ## 公開後
 
