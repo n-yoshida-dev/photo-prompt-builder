@@ -19,35 +19,33 @@
 ## 進捗
 
 ```
-進捗（TODO.md より自動集計・2026-10-12）
+進捗（TODO.md より自動集計・2026-10-13）
 
 ████████████████████ 100%  残り  0 /  3  フェーズ0：立ち上げ（2026-09-06、apps 直下のセッションで実施）
 ████████████████████ 100%  残り  0 /  2  フェーズ1：設計の確認
 ████████████████████ 100%  残り  0 / 10  フェーズ2：MVP 実装
 ████████████████████ 100%  残り  0 / 10  フェーズ2.5：触ってみた意見の反映（2026-10-03）
 ████████████████████ 100%  残り  0 /  2  フェーズ2.6：見た目の方向（2026-10-10。apps 全体のデザイン改善の試行。進め方は `~/workspace/ops/docs/2026-10-10-apps-デザイン改善の進め方.md` 5 節と 8 節）
-██████░░░░░░░░░░░░░░  33%  残り  2 /  3  フェーズ3：公開
-██████████████████░░  93%  残り  2 / 30  合計
-公開まで残り 2 件（TODO の上から「フェーズ3：公開」の節までの未完）
+█████████████░░░░░░░  66%  残り  1 /  3  フェーズ3：公開
+███████████████████░  96%  残り  1 / 30  合計
+公開まで残り 1 件（TODO の上から「フェーズ3：公開」の節までの未完）
 あなたの回答待ち：2 件（回答済み 19 件）
 公開後（合計に含めない）：3 件（済み 0 件）
 
-前回の区切り（2026-10-12）から：完了 +0 件、新たに見つかったタスク +0 件
+前回の区切り（2026-10-12）から：完了 +1 件、新たに見つかったタスク +0 件
 ```
 
 ## 現在地
 
-- フェーズ：フェーズ3（公開）の残り 2 件。題名は PR #40 で直した。デプロイの設定は `chore/deploy-pages` の PR（この PR がマージされた後の状態として書いている）
-- リポジトリはまだ Private。ユーザーは「Public でよい」と返したが、Claude の公開設定の変更はフックに止められたので、ユーザーが設定画面で切り替える（TODO.md フェーズ3）
-- Pages のワークフロー（`.github/workflows/pages.yml`）は、Pages が無効の間は公開を飛ばす。Public になったら Claude が Pages を有効にして流し直す（KNOWLEDGE.md 2026-10-12）
+- フェーズ：フェーズ3（公開）の残り 1 件。リポジトリは Public、https://n-yoshida-dev.github.io/photo-prompt-builder/ で公開済み（main に入るたびに `pages.yml` が公開し直す）
+- 「GitHub Pages にデプロイする」の完了条件のうち、残りは iPhone の Safari の実機での確かめだけ。ユーザーに頼んでいて、返事待ち（Beads ops-ixl.17）
 - 点検の直し方 3 つは Claude が選んだもの（KNOWLEDGE.md 2026-10-11）。前と後の比較ページ https://claude.ai/artifact/G4cpHKvfsRXo8NWpcbqCSL は渡したが、ユーザーの返事はまだ無い
 - プリセット・保持文・トグルの文を変えると `samples.test.ts` が落ちる。そのときは見本を作り直す（手順は `docs/sample-images.md`、道具は `~/.cache/photo-prompt-builder/tools/`。KNOWLEDGE.md 2026-10-11）
 - 画面を変えるときの点検は `/apps-workflow:look` の B。画面全体を撮るときは `look.mjs shoot --setup ~/.cache/photo-prompt-builder/tools/setup-full.mjs`（お気に入り・最近使った設定を入れて撮る）
 
 ## 次セッションで最初にやること
 
-1. `gh repo view --json visibility` で Public になったかを見る。Public なら `gh api -X POST 'repos/{owner}/{repo}/pages' -f build_type=workflow` で Pages を有効にし、
-   `gh workflow run pages.yml` で公開して https://n-yoshida-dev.github.io/photo-prompt-builder/ を確かめる（TODO.md フェーズ3「GitHub Pages にデプロイする」の完了条件）。
-   Private のままなら、切り替えをユーザーに頼む
+1. iPhone の Safari での確かめ（公開版で「コピーして ChatGPT を開く」を押し、新しいタブが開いてプロンプトを貼れるか）の結果をユーザーに聞く。
+   できたら TODO.md フェーズ3「GitHub Pages にデプロイする」を `[x]` にし、Beads ops-ixl.17 を閉じる。できなかったら、何が起きたかを聞いて直す
 
 `TODO.md` の先頭と一致させる。書くのは最初の一手だけで、一覧は `TODO.md` が持つ。
