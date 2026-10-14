@@ -10,6 +10,19 @@
 
 ---
 
+### 2026-10-14：スマホで開くボタンが ChatGPT のアプリでなく Safari で開いた。アプリで開く URL の一覧を調べた
+
+- **ハマったこと**：iPhone の Safari で `<a href="https://chatgpt.com/" target="_blank">` を押すと、ChatGPT のアプリではなく Safari の新しいタブで開いた（ユーザーの実機。2026-10-14）
+- iOS では、アプリの持ち主のサイトが `/.well-known/apple-app-site-association` に「アプリで開く URL」を載せている（universal link）。
+  2026-10-14 に取得した https://chatgpt.com/.well-known/apple-app-site-association では、`/`（「Matches ChatGPT home. This will start a new conversation in-app.」）と、
+  `/?prompt=…`・`/?q=…`・`/?hints=…`・`/?mode=…` がアプリで開く対象。`#no_universal_links` と `?no_universal_links=1` は除外。
+  Gemini（https://gemini.google.com/.well-known/apple-app-site-association ）は `/app` を `target=agent` などの付いたときだけ対象にしていて、今の `https://gemini.google.com/app` は対象外
+- 行き先の URL は対象に入っているので、Safari で開いた原因は開き方の側にあると Claude は見ている（候補：`target="_blank"` の新しいタブ、押したときのクリップボードの書き込み、
+  アプリの中で右上の「chatgpt.com」を押して Safari を選んだことがあると、その端末ではしばらく Safari で開く）。どれも Claude の知識で、確かめていない
+- 確かめ方：試験ページ `frontend/public/link-test.html`（公開版の `link-test.html`）に、新しいタブ・同じタブ・`?prompt=` 付きを並べ、実機で押し比べてもらう
+
+---
+
 ### 2026-10-12：GitHub Pages の公開は相対パス（`base: './'`）と skill-matrix と同じワークフロー。無料プランでは Public が先
 
 - **ハマったこと**：非公開のリポジトリで `gh api -X POST repos/{owner}/{repo}/pages -f build_type=workflow` を呼ぶと、
