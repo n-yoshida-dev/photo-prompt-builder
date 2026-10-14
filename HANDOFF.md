@@ -30,7 +30,7 @@
 ██████████████████░░  93%  残り  2 / 31  合計
 公開まで残り 2 件（TODO の上から「フェーズ3：公開」の節までの未完）
 あなたの回答待ち：2 件（回答済み 19 件）
-公開後（合計に含めない）：4 件（済み 0 件）
+公開後（合計に含めない）：3 件（済み 1 件）
 
 前回の区切り（2026-10-14）から：完了 +0 件、新たに見つかったタスク +0 件
 ```
@@ -40,14 +40,15 @@
 - フェーズ：フェーズ3（公開）の残り 2 件。リポジトリは Public、https://n-yoshida-dev.github.io/photo-prompt-builder/ で公開済み（main に入るたびに `pages.yml` が公開し直す）
 - ChatGPT の開くボタンを `?prompt=` 付きにして公開した（PR #44）。iPhone でアプリが開き文も入ることは試験ページでユーザーが確かめ済み。
   公開版のボタンでの実機の確かめが残り（KNOWLEDGE.md 2026-10-14、Beads ops-ixl.17）
-- スマホでスタイルを選ぶときのスクロールが長い件は、触って比べるデモ https://claude.ai/artifact/XLdxhkonnFwxw29rx74Ax2 （A 横にめくる／B 2 列のカード／今の形）を渡し、どれにするかの返事待ち（TODO.md「公開後」）
+- スマホのスタイルの一覧を 2 列にした（ユーザーがデモから「B」。`feat/phone-two-column-styles` の PR。この PR がマージされた後の状態として書いている。`logs/decisions.md` 2026-10-14）。
+  前と後の比較ページ https://claude.ai/artifact/UsJAnxB8KznksyTCD2zd2b を渡し、好みの問題 1 件（括弧から始まる行の字下げ）を含めて返事待ち
 - 点検の直し方 3 つは Claude が選んだもの（KNOWLEDGE.md 2026-10-11）。前と後の比較ページ https://claude.ai/artifact/G4cpHKvfsRXo8NWpcbqCSL は渡したが、ユーザーの返事はまだ無い
 - プリセット・保持文・トグルの文を変えると `samples.test.ts` が落ちる。そのときは見本を作り直す（手順は `docs/sample-images.md`、道具は `~/.cache/photo-prompt-builder/tools/`。KNOWLEDGE.md 2026-10-11）
 - 画面を変えるときの点検は `/apps-workflow:look` の B。画面全体を撮るときは `look.mjs shoot --setup ~/.cache/photo-prompt-builder/tools/setup-full.mjs`（お気に入り・最近使った設定を入れて撮る）
 
 ## 次セッションで最初にやること
 
-1. デモの返事（A・B・今の形のどれか）を聞き、選ばれた形の上書きの CSS（`~/.cache/photo-prompt-builder/demo-2026-10-14/*-override.css`）を `index.css` に入れ、`/apps-workflow:look` の B を通して PR にする。
-   そのあと、公開版の ChatGPT のボタンでアプリが開き全文が入るかを聞き、できたら TODO.md フェーズ3 の 2 件を `[x]` にし、Beads ops-ixl.17 を閉じる
+1. 公開版を iPhone で使ってもらった結果を聞く（ChatGPT のボタンでアプリが開き全文が入るか、2 列のスタイルで選び直したときにカードがずれないか）。
+   ChatGPT がよければ TODO.md フェーズ3 の 2 件を `[x]` にし、Beads ops-ixl.17 を閉じる
 
 `TODO.md` の先頭と一致させる。書くのは最初の一手だけで、一覧は `TODO.md` が持つ。

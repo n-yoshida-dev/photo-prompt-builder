@@ -368,6 +368,60 @@ body {
   display: block;
 }
 
+/* スマホ：見本を小さくして 2 列に並べ、説明・主役・出典は選んだカードにだけ出す（logs/decisions.md 2026-10-14）。
+   選んだカードはマスの中で縦に伸びるだけにし、横に広げない（広げると並びが動き、押した場所からカードが逃げるため。Claude の設計） */
+@media (max-width: 40rem) {
+  .preset-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 0.75rem;
+  }
+
+  .preset-sample {
+    justify-self: center;
+    max-width: calc(100% - 1rem);
+    height: 6.5rem;
+    margin: 0.5rem 0.5rem 0;
+  }
+
+  /* 余白はほかの部品と同じ 0.5rem にそろえる（新しい値を増やさない。DESIGN.md「Layout」） */
+  .preset-choice {
+    grid-template-columns: 1.25rem minmax(0, 1fr);
+    padding: 0.5rem;
+  }
+
+  .preset-card:has(.preset-sample) .preset-choice {
+    padding-top: 0.5rem;
+  }
+
+  /* 欄が約 8 字分と細いので、名前も短い文と同じく行の長さをそろえ、文節の切れ目で折り返す（「…小／人」のような 1 字落ちを防ぐ） */
+  .preset-name {
+    font-size: 0.925rem;
+    line-height: 1.45;
+    text-wrap: balance;
+    word-break: auto-phrase;
+  }
+
+  .preset-card:not(:has(input:checked)) .preset-description,
+  .preset-card:not(:has(input:checked)) .preset-subject,
+  .preset-card:not(:has(input:checked)) .preset-credit {
+    display: none;
+  }
+
+  /* 出典を隠したカードは、出典の帯の分を詰める指定（.preset-card:has(.preset-credit) .preset-choice）を打ち消し、ほかと同じ 0.5rem に戻す */
+  .preset-card:not(:has(input:checked)) .preset-choice {
+    padding-bottom: 0.5rem;
+  }
+
+  .preset-description {
+    font-size: 0.85rem;
+  }
+
+  /* 出典の書き出しを名前にそろえる（ラジオの列 1.25rem ＋ 余白 0.5rem） */
+  .preset-credit {
+    padding: 0 0.5rem 0.5rem calc(1.25rem + 0.5rem);
+  }
+}
+
 /* 見本の元にした架空の写真（一覧の下に 1 回だけ。補足の扱いなので小さく、色も控えめに） */
 .sample-originals {
   margin: 1rem 0 0;
