@@ -10,6 +10,21 @@
 
 ---
 
+### 2026-10-14：スマホの 2 列のスタイルは CSS だけで作り、選んだカードは横に広げない
+
+- **設計判断**：ユーザーが選んだ B（`logs/decisions.md` 2026-10-14）を、HTML を変えずに `index.css` の `@media (max-width: 40rem)` だけで入れた。説明・主役・出典は `.preset-card:not(:has(input:checked))` で隠す。
+  隠した文はラジオの名前に入らない（ラベルの中だが `display: none` のため）ので、読み上げでも選んでから説明が聞こえる
+- 選んだカードは 2 列分に広げない。広げると、右の列のカードを押したときに並びが動き、押した場所からカードが逃げるため（デモの段階で Claude が決めた）。
+  代わりに、同じ行の隣のカードも同じ高さまで伸びて下が空く。点検役の気づき：前に選んだカードが上の行にあると、選び直したときにその行が縮み、押したカードが上へずれるはず（iPhone の Safari では確かめていない）
+- 点検役の直すべき 3 件の直し方（Claude が選んだ）：名前にも短い文と同じ `text-wrap: balance` と `word-break: auto-phrase`（「…小／人」の 1 字落ち。iPhone の Safari では balance だけが効く）。
+  余白は 0.5rem、名前は説明の段 0.925rem にそろえた（デモでは 0.45・0.6・0.4・0.9rem と新しい値を増やしていた）
+- **ハマったこと**（2 回目の点検）：出典のあるカードは `.preset-card:has(.preset-credit) .preset-choice`（詳細度 0,3,0）が下の余白を 0.3rem に詰めるので、スマホの `.preset-choice { padding: 0.5rem }`（0,1,0）が負け、出典を隠した選んでいないカードだけ余白が狭かった。
+  `.preset-card:not(:has(input:checked)) .preset-choice` で 0.5rem に戻した
+- 直さずに残した気づき：見本を真ん中に置くので、細い見本では文と左端がそろわない。選んだカードの説明は 1 行 7〜8 字で 5 行前後になる。
+  好みの問題：balance で、名前の行の頭に「（」が来ると、括弧の左の空きの分だけ字下げしたように見える（`text-spacing-trim: trim-start` で詰められるが Chromium だけ）
+
+---
+
 ### 2026-10-14：スマホで開くボタンが ChatGPT のアプリでなく Safari で開いた。`?prompt=` を付けるとアプリが開き、文も入る
 
 - **ハマったこと**：iPhone の Safari で `<a href="https://chatgpt.com/" target="_blank">` を押すと、ChatGPT のアプリではなく Safari の新しいタブで開いた（ユーザーの実機。2026-10-14）
