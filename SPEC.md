@@ -272,7 +272,7 @@ function buildPrompt(selection: Selection, catalog?: Catalog): string
 | 場所 | 中身 | 触ってよいもの |
 |---|---|---|
 | `data/presets.ts` `data/preserve.ts` `data/toggles.ts` `data/choices.ts` `data/headings.ts` `data/catalog.ts` | マスタデータ。英文（見出しを含む）はここだけに置く。`catalog.ts` は一式をまとめるだけ | 定数のみ |
-| `data/aiSites.ts` | 「開く」ボタンの行き先（サイト名と URL）。URL にプロンプトは載せない | 定数のみ |
+| `data/aiSites.ts` | 「開く」ボタンの行き先（サイト名・URL・プロンプトを載せるクエリ名）。プロンプトを載せるのは `promptParam` のあるサイト（ChatGPT）だけ | 定数のみ |
 | `data/samples.ts` | スタイルの見本画像のファイル名・元の写真・画像の説明（alt）。画像そのものは `frontend/public/samples/` | 定数のみ |
 | `prompt/buildPrompt.ts` | プロンプト組み立ての純粋関数 | React・DOM・localStorage を import しない |
 | `storage/recent.ts` `storage/favorites.ts` | 最近使った設定とお気に入りの保存・復元 | localStorage を触るのはここだけ |

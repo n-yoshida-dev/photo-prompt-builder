@@ -184,6 +184,25 @@ describe('コピーと開くボタン', () => {
     expect(href().searchParams.has('q')).toBe(false)
   })
 
+  it('ChatGPT を開いたら「文が入った状態で開く」と知らせ、Gemini とコピーボタンでは「貼り付けて」と知らせる', async () => {
+    stubClipboard(vi.fn().mockResolvedValue(undefined))
+    render(<App />)
+    const open = (name: string) => {
+      const link = screen.getByRole('link', { name: `コピーして ${name} を開く` })
+      // jsdom はリンク先へ移動できないので、既定の動きだけを止める（止めたのはテストで、アプリは止めない）
+      link.addEventListener('click', (event) => event.preventDefault())
+      fireEvent.click(link)
+    }
+    open('ChatGPT')
+    expect(await screen.findByText(/ChatGPT は文が入った状態で開きます/)).toBeInTheDocument()
+    open('Gemini')
+    expect(await screen.findByText(/開いた先の入力欄に貼り付けてください/)).toBeInTheDocument()
+    open('ChatGPT')
+    await screen.findByText(/ChatGPT は文が入った状態で開きます/)
+    fireEvent.click(screen.getByRole('button', { name: 'プロンプトをコピー' }))
+    expect(await screen.findByText(/開いた先の入力欄に貼り付けてください/)).toBeInTheDocument()
+  })
+
   it('Gemini を開くリンクは URL にプロンプトを載せない（アプリで開く形が無い）', () => {
     render(<App />)
     const link = screen.getByRole('link', { name: 'コピーして Gemini を開く' })
