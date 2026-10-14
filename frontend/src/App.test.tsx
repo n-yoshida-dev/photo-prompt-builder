@@ -165,17 +165,30 @@ describe('コピーと開くボタン', () => {
     expect(console.error).toHaveBeenCalled()
   })
 
-  it.each(aiSites.map((site) => [site.name, site.url]))(
-    '%s を開くリンクは新しいタブで開き、URL にプロンプトを載せない',
-    (name, url) => {
-      render(<App />)
-      const link = screen.getByRole('link', { name: `コピーして ${name} を開く` })
-      expect(link).toHaveAttribute('href', url)
-      expect(link).toHaveAttribute('target', '_blank')
-      expect(link).toHaveAttribute('rel', 'noopener noreferrer')
-      expect(link.getAttribute('href')).not.toContain('?')
-    },
-  )
+  it.each(aiSites.map((site) => [site.name]))('%s を開くリンクは新しいタブで開く', (name) => {
+    render(<App />)
+    const link = screen.getByRole('link', { name: `コピーして ${name} を開く` })
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
+  it('ChatGPT を開くリンクは ?prompt= に今のプロンプトを載せ、条件を変えると追いつく（KNOWLEDGE.md 2026-10-14）', () => {
+    render(<App />)
+    const href = () =>
+      new URL(screen.getByRole('link', { name: 'コピーして ChatGPT を開く' }).getAttribute('href')!)
+    expect(href().origin + href().pathname).toBe('https://chatgpt.com/')
+    expect(href().searchParams.get('prompt')).toBe(promptText())
+    fireEvent.click(screen.getByRole('radio', { name: '白黒' }))
+    expect(href().searchParams.get('prompt')).toBe(promptText())
+    // ?q= は自動で送信されることがあるので使わない
+    expect(href().searchParams.has('q')).toBe(false)
+  })
+
+  it('Gemini を開くリンクは URL にプロンプトを載せない（アプリで開く形が無い）', () => {
+    render(<App />)
+    const link = screen.getByRole('link', { name: 'コピーして Gemini を開く' })
+    expect(link).toHaveAttribute('href', 'https://gemini.google.com/app')
+  })
 
   it('開くボタンは ChatGPT と Gemini の 2 つで、Claude は無い（logs/decisions.md 2026-10-03）', () => {
     render(<App />)

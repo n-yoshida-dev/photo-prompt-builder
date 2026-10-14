@@ -10,7 +10,7 @@
 
 ---
 
-### 2026-10-14：スマホで開くボタンが ChatGPT のアプリでなく Safari で開いた。アプリで開く URL の一覧を調べた
+### 2026-10-14：スマホで開くボタンが ChatGPT のアプリでなく Safari で開いた。`?prompt=` を付けるとアプリが開き、文も入る
 
 - **ハマったこと**：iPhone の Safari で `<a href="https://chatgpt.com/" target="_blank">` を押すと、ChatGPT のアプリではなく Safari の新しいタブで開いた（ユーザーの実機。2026-10-14）
 - iOS では、アプリの持ち主のサイトが `/.well-known/apple-app-site-association` に「アプリで開く URL」を載せている（universal link）。
@@ -19,7 +19,14 @@
   Gemini（https://gemini.google.com/.well-known/apple-app-site-association ）は `/app` を `target=agent` などの付いたときだけ対象にしていて、今の `https://gemini.google.com/app` は対象外
 - 行き先の URL は対象に入っているので、Safari で開いた原因は開き方の側にあると Claude は見ている（候補：`target="_blank"` の新しいタブ、押したときのクリップボードの書き込み、
   アプリの中で右上の「chatgpt.com」を押して Safari を選んだことがあると、その端末ではしばらく Safari で開く）。どれも Claude の知識で、確かめていない
-- 確かめ方：試験ページ `frontend/public/link-test.html`（公開版の `link-test.html`）に、新しいタブ・同じタブ・`?prompt=` 付きを並べ、実機で押し比べてもらう
+- 確かめ方：試験ページ `frontend/public/link-test.html`（公開版の `link-test.html`。結果を入れたので消した）に、新しいタブ・同じタブ・`?prompt=` 付きを並べ、実機で押し比べてもらう
+- **結果（ユーザーの iPhone）**：ユーザーの言葉「3, 4ならアプリが開かれた。文字も入ったので、スマホで貼る手間は無くなった。」。
+  3 は同じタブ＋`?prompt=`、4 は新しいタブ＋`?prompt=`。クエリの無い `https://chatgpt.com/` は、新しいタブ（1）でも同じタブ（2）でもアプリが開かなかった。Gemini（5）もアプリは開かなかった。
+  一覧では `/` だけでも対象に見えるが、実際にはクエリ付きの行（`?prompt=` など）だけが効いた、と Claude は読んでいる（なぜかは確かめていない）
+- **設計判断**：ChatGPT の開くボタンを `https://chatgpt.com/?prompt=<プロンプト>` にした（`data/aiSites.ts` の `promptParam` と `components/siteUrl.ts`）。新しいタブ・押したときのコピーは変えない（4 で効いたため。コピーは Gemini と、入らなかったときの控え）。
+  PC のブラウザ（ログアウト中の Chromium）でも、入力欄に入るだけで送信されないことを確かめた。今のプロンプト（2,896 字、URL は 3,967 字）も全文が入った。
+  URL に載るのはプリセットと条件から組んだ英文だけで、写真・お気に入りの名前などの利用者の入力は入らない（CLAUDE.md「写真を端末の外に出さない」は崩さない）
+- 選ばなかった案：`?q=`（自動で送信されることがある。KNOWLEDGE.md 2026-09-29）、スマホのときだけ `?prompt=` にする（PC でも貼る手間が減り、送信もされないので分ける理由が無い）
 
 ---
 

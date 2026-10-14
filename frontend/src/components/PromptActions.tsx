@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { AiSite } from '../data/aiSites'
+import { siteUrl } from './siteUrl'
 
 type Props = {
   prompt: string
@@ -59,7 +60,7 @@ export function PromptActions({ prompt, sites, onCopied, onCopyFailed }: Props) 
           <li key={site.id}>
             <a
               className="open-link"
-              href={site.url}
+              href={siteUrl(site, prompt)}
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleOpen}
