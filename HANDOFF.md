@@ -38,15 +38,16 @@
 ## 現在地
 
 - フェーズ：フェーズ3（公開）の残り 2 件。リポジトリは Public、https://n-yoshida-dev.github.io/photo-prompt-builder/ で公開済み（main に入るたびに `pages.yml` が公開し直す）
-- iPhone の Safari で開くボタンを押すと、ChatGPT のアプリではなく Safari で開いた（2026-10-14 のユーザーの実機）。試験ページ `link-test.html` を `chore/link-test` の PR で公開し（この PR がマージされた後の状態として書いている）、
-  どの開き方ならアプリが開くかをユーザーに押し比べてもらっている（KNOWLEDGE.md 2026-10-14、Beads ops-ixl.17）
+- ChatGPT の開くボタンを `?prompt=` 付きにした（`feat/chatgpt-prefill` の PR。この PR がマージされた後の状態として書いている）。iPhone でアプリが開き文も入ることは試験ページでユーザーが確かめ済み。
+  公開版のボタンでの実機の確かめが残り（KNOWLEDGE.md 2026-10-14、Beads ops-ixl.17）
+- スマホでスタイルを選ぶときのスクロールが長い件は、ユーザーが「横にめくる形」と「2 列の小さなカードで選んだものだけ説明」の 2 つのデモを見たいと言っている（TODO.md「公開後」）
 - 点検の直し方 3 つは Claude が選んだもの（KNOWLEDGE.md 2026-10-11）。前と後の比較ページ https://claude.ai/artifact/G4cpHKvfsRXo8NWpcbqCSL は渡したが、ユーザーの返事はまだ無い
 - プリセット・保持文・トグルの文を変えると `samples.test.ts` が落ちる。そのときは見本を作り直す（手順は `docs/sample-images.md`、道具は `~/.cache/photo-prompt-builder/tools/`。KNOWLEDGE.md 2026-10-11）
 - 画面を変えるときの点検は `/apps-workflow:look` の B。画面全体を撮るときは `look.mjs shoot --setup ~/.cache/photo-prompt-builder/tools/setup-full.mjs`（お気に入り・最近使った設定を入れて撮る）
 
 ## 次セッションで最初にやること
 
-1. 試験ページ https://n-yoshida-dev.github.io/photo-prompt-builder/link-test.html の 1〜5 のどれでアプリが開いたかをユーザーに聞き、
-   アプリが開いた形を開くボタンに入れる（TODO.md フェーズ3「スマホで…ChatGPT のアプリが開くようにする」）。どれでも開かなければ、アプリ内で「chatgpt.com」を押して Safari を選んだことが無いかを聞く
+1. スクロールの件のデモ 2 つ（横にめくる／2 列の小さなカードで選んだものだけ説明）を、今の画面の CSS を差し替えてスマホの幅で撮り、比較ページで見せる（`/apps-workflow:look` の A の形）。
+   公開版の開くボタンでアプリが開いたかの返事が来たら、TODO.md フェーズ3 の 2 件を `[x]` にし、Beads ops-ixl.17 を閉じる
 
 `TODO.md` の先頭と一致させる。書くのは最初の一手だけで、一覧は `TODO.md` が持つ。

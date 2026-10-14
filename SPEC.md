@@ -272,7 +272,7 @@ function buildPrompt(selection: Selection, catalog?: Catalog): string
 | 場所 | 中身 | 触ってよいもの |
 |---|---|---|
 | `data/presets.ts` `data/preserve.ts` `data/toggles.ts` `data/choices.ts` `data/headings.ts` `data/catalog.ts` | マスタデータ。英文（見出しを含む）はここだけに置く。`catalog.ts` は一式をまとめるだけ | 定数のみ |
-| `data/aiSites.ts` | 「開く」ボタンの行き先（サイト名と URL）。URL にプロンプトは載せない | 定数のみ |
+| `data/aiSites.ts` | 「開く」ボタンの行き先（サイト名・URL・プロンプトを載せるクエリ名）。プロンプトを載せるのは `promptParam` のあるサイト（ChatGPT）だけ | 定数のみ |
 | `data/samples.ts` | スタイルの見本画像のファイル名・元の写真・画像の説明（alt）。画像そのものは `frontend/public/samples/` | 定数のみ |
 | `prompt/buildPrompt.ts` | プロンプト組み立ての純粋関数 | React・DOM・localStorage を import しない |
 | `storage/recent.ts` `storage/favorites.ts` | 最近使った設定とお気に入りの保存・復元 | localStorage を触るのはここだけ |
@@ -340,11 +340,13 @@ Do not:
 
 ## AI を開くボタン
 
-- ChatGPT と Gemini の 2 サイト。押すとプロンプトのクリップボードへのコピーを始め、同じ操作でトップページを新しいタブで開く
+- ChatGPT と Gemini の 2 サイト。押すとプロンプトのクリップボードへのコピーを始め、同じ操作で各サイトを新しいタブで開く
   （`logs/decisions.md` 2026-10-03。Claude は画像を生成しないので外した）
 - ボタンの中身はリンクのままで、新しいタブはリンクの既定の動きで開く。ポップアップではないので、ブラウザのポップアップ制限に止められない（Claude の設計。KNOWLEDGE.md 2026-10-07）
-- URL のクエリでの本文の事前入力（`chatgpt.com/?q=` / `claude.ai/new?q=`）は 2026-09-29 に調べ、MVP では使わない
-  （ChatGPT はログアウト中だと写真を添付する前に自動送信されることがある。Gemini には無い。KNOWLEDGE.md 2026-09-29）
+- ChatGPT は `https://chatgpt.com/?prompt=<プロンプト>` を開く。iPhone の Safari ではアプリが開いて入力欄に文が入り、PC のブラウザでも入力欄に入るだけで送信はされない
+  （2026-10-14。ユーザーの実機の試験と Claude の確かめ。KNOWLEDGE.md 2026-10-14。きっかけはユーザーの「スマホユーザーは通常アプリ版のChatGPTを使うから」）。
+  `?q=` は写真を添付する前に自動送信されることがあるので使わない（KNOWLEDGE.md 2026-09-29）。
+  Gemini はアプリで開く形が無いので、トップページを開くだけ。コピーはどちらのボタンでも続ける
 - 画像の添付は各サイトで手動。画面にその旨を書く
 
 ## API
