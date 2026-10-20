@@ -30,9 +30,9 @@
 ████████████████████ 100%  残り  0 / 31  合計
 公開まで残り 0 件（TODO の上から「フェーズ3：公開」の節までの未完）
 あなたの回答待ち：2 件（回答済み 19 件）
-公開後（合計に含めない）：2 件（済み 3 件）
+公開後（合計に含めない）：3 件（済み 3 件）
 
-前回の区切り（2026-10-19）から：完了 +0 件、新たに見つかったタスク +0 件
+前回の区切り（2026-10-20）から：完了 +0 件、新たに見つかったタスク +0 件
 ```
 
 ## 現在地
@@ -41,15 +41,16 @@
 - 公開版の iPhone での確かめは 2026-10-18 に済んだ（ChatGPT のアプリが開きプロンプトが全文入る、2 列のスタイル。ユーザーの「1, 3はOK」）
 - スマホの 2 列のスタイルで下のカードがずれる件は、今のままにすると決めた（ユーザーの「Aで」。`logs/decisions.md` 2026-10-19）
 - 点検の直し方 3 つは Claude が選んだもの（KNOWLEDGE.md 2026-10-11）。前と後の比較ページ https://claude.ai/artifact/G4cpHKvfsRXo8NWpcbqCSL は渡したが、ユーザーの返事はまだ無い
-- 幅 280px のはみ出しは直した（`fix/narrow-280-overflow`、この PR のマージで main に入る）。280px で名前が 1〜2 字落ちるのは受け入れた（Claude の判断。DESIGN.md「Typography」）。
+- 幅 280px のはみ出しは直した（PR #49）。280px で名前が 1〜2 字落ちるのは受け入れた（Claude の判断。DESIGN.md「Typography」）。
   前と後の比較ページ https://claude.ai/artifact/CRJemoNKTzHpwtvKd28SdG は渡したが、ユーザーの返事はまだ無い
-- 「公開後」と「確認待ち」の残りは、どれもユーザーが決めるかユーザーの作業（公開後：ライセンス・お金を稼ぐ仕組み。確認待ち：子どもの写真で AI が断らないかの確かめ・Claude が足した細かい形）。Claude だけで進められるタスクは無い
+- 子どもの写真の試し：ChatGPT は「問題なかった」。Gemini は iPhone でアプリでなく Web 版が開き、編集を断るかはまだ聞いていない
+- Gemini のアプリが開く形を押し比べる試験ページ https://n-yoshida-dev.github.io/photo-prompt-builder/gemini-link-test.html を置いた（`chore/gemini-link-test` の PR のマージで公開）。ユーザーの結果待ち
 - プリセット・保持文・トグルの文を変えると `samples.test.ts` が落ちる。そのときは見本を作り直す（手順は `docs/sample-images.md`、道具は `~/.cache/photo-prompt-builder/tools/`。KNOWLEDGE.md 2026-10-11）
 - 画面を変えるときの点検は `/apps-workflow:look` の B。画面全体を撮るときは `look.mjs shoot --setup ~/.cache/photo-prompt-builder/tools/setup-full.mjs`（お気に入り・最近使った設定を入れて撮る）
 
 ## 次セッションで最初にやること
 
-1. TODO.md「公開後」の先頭「お金を稼ぐ仕組み（Amazon アソシエイト・AdSense など）を入れるかを決める」。作るものの範囲が変わるのでユーザーが決める。
-   入れると置き場所（GitHub Pages は商売に使えない）と自分のドメインも決め直しになることを、例で説明してから 1 件だけ聞く（調べは KNOWLEDGE.md 2026-10-12）
+1. TODO.md「公開後」の先頭「スマホで「コピーして Gemini を開く」を押すと、Gemini のアプリが開くようにする」。
+   ユーザーの試験の結果（どの番号でアプリが開いたか）を聞き、開いた形をスマホのときだけ開くボタンに入れ、試験ページを消す。どれも開かなければ KNOWLEDGE.md に書いて今のままにする
 
 `TODO.md` の先頭と一致させる。書くのは最初の一手だけで、一覧は `TODO.md` が持つ。
