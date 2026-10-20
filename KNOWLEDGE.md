@@ -16,7 +16,8 @@
   2026-10-20 に取得した https://gemini.google.com/.well-known/apple-app-site-association では、`/app` は `?target=agent`・`spark` などが付いたときだけアプリで開く対象。
   対象に入っていて使えそうなのは、ダウンロードの住所 `/app/download/mobile`・`/app/download/ios`
 - **試験の結果（ユーザーの iPhone）**：試験ページで、`/app/download/mobile`（新しいタブ・同じタブ）、`/app/download/ios`、呼び出し名 `googlegemini://` の 4 つを押し比べた。
-  ユーザーの言葉「全部アプリが開いた。」「画像編集もできた。」。どれも押すとコピーもする形（Codex の指摘で、本物のボタンと同じ条件にした）
+  ユーザーの言葉「全部アプリが開いた。」「画像編集もできた。」。どれも押すとコピーもする形（Codex の指摘で、本物のボタンと同じ条件にした）。
+  PR #52 のマージ後、公開版のボタンそのものも、ユーザーが iPhone で 1 回押してアプリが開くのを確かめた
 - **ほかの端末の行き先**（2026-10-20 に Claude が確かめた。curl の端末の名乗りを替えて追った行き先と、Playwright の PC の画面）：
   アプリの無い iPhone → App Store。Android → Google Play（アプリがあるときにアプリが開くかは確かめていない）。PC → `https://gemini.google.com/app`（今までの行き先と同じ。入力欄もある）
 - **設計判断**：開くボタンの行き先を、全員 `/app/download/mobile` にした。PC では今までと同じ画面に着くので、端末を見分けて分ける処理を足さずに済む。
