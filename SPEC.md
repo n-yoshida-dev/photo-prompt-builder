@@ -348,7 +348,8 @@ Do not:
   （2026-10-14。ユーザーの実機の試験と Claude の確かめ。KNOWLEDGE.md 2026-10-14。きっかけはユーザーの「スマホユーザーは通常アプリ版のChatGPTを使うから」）。
   `?q=` は写真を添付する前に自動送信されることがあるので使わない（KNOWLEDGE.md 2026-09-29）。
   Gemini は `https://gemini.google.com/app/download/mobile` を開く。iPhone の Safari ではアプリが開き（ユーザーの実機の試験。2026-10-20 のユーザーの言葉「全部アプリが開いた。」）、
-  アプリが無い iPhone では App Store、PC のブラウザでは今までと同じ `https://gemini.google.com/app` に着く（Claude の確かめ。KNOWLEDGE.md 2026-10-20）。
+  アプリが無い iPhone では App Store、Android では Google Play、PC のブラウザでは今までと同じ `https://gemini.google.com/app` に着く（Claude の確かめ。KNOWLEDGE.md 2026-10-20）。
+  アプリの無いスマホでは Web 版は開かない（Claude の設計。ユーザーは未確認）。
   Gemini には文を載せる形が無いので、URL にプロンプトは載せない。コピーはどちらのボタンでも続ける
 - 画像の添付は各サイトで手動。画面にその旨を書く
 

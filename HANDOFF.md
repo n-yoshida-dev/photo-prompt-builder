@@ -30,7 +30,7 @@
 ████████████████████ 100%  残り  0 / 31  合計
 公開まで残り 0 件（TODO の上から「フェーズ3：公開」の節までの未完）
 あなたの回答待ち：1 件（回答済み 20 件）
-公開後（合計に含めない）：2 件（済み 4 件）
+公開後（合計に含めない）：3 件（済み 4 件）
 
 前回の区切り（2026-10-20）から：完了 +0 件、新たに見つかったタスク +0 件
 ```
@@ -45,7 +45,7 @@
   前と後の比較ページ https://claude.ai/artifact/CRJemoNKTzHpwtvKd28SdG は渡したが、ユーザーの返事はまだ無い
 - 子どもの写真の試しは済んだ（ChatGPT「問題なかった」、Gemini「画像編集もできた。」）。宣伝してよい状態
 - Gemini の開くボタンは `/app/download/mobile` にした（`feat/gemini-app-link`、この PR のマージで公開。iPhone ではアプリ、PC では今までと同じ `/app`。KNOWLEDGE.md 2026-10-20）。試験ページは消した
-- 「公開後」と「確認待ち」の残りは、どれもユーザーが決めること（公開後：お金を稼ぐ仕組み・ライセンス。確認待ち：Claude が足した細かい形）。Claude だけで進められるタスクは無い
+- 「公開後」と「確認待ち」の残りは、どれもユーザーが決めること（公開後：お金を稼ぐ仕組み・アプリの無いスマホで Gemini の Web 版を開くか・ライセンス。確認待ち：Claude が足した細かい形）。Claude だけで進められるタスクは無い
 - プリセット・保持文・トグルの文を変えると `samples.test.ts` が落ちる。そのときは見本を作り直す（手順は `docs/sample-images.md`、道具は `~/.cache/photo-prompt-builder/tools/`。KNOWLEDGE.md 2026-10-11）
 - 画面を変えるときの点検は `/apps-workflow:look` の B。画面全体を撮るときは `look.mjs shoot --setup ~/.cache/photo-prompt-builder/tools/setup-full.mjs`（お気に入り・最近使った設定を入れて撮る）
 
