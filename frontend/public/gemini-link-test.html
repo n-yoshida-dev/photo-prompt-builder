@@ -55,19 +55,18 @@
     <p>
       iPhone で上から順に押して、Gemini が<strong>アプリで開いたか、Safari で開いたか</strong
       >を見てください。 見終わったら、このページに戻って次を押します。
+      どのボタンも、今の開くボタンと同じく押すと「これは試験です」をコピーします。
     </p>
 
     <ol>
       <li>
-        ダウンロードの住所を、今のボタンと同じ形（新しいタブ・押すとコピーも）で開く<br />
+        ダウンロードの住所を、今のボタンと同じ形（新しいタブ）で開く<br />
         <a
-          id="current"
           href="https://gemini.google.com/app/download/mobile"
           target="_blank"
           rel="noopener noreferrer"
           >Gemini を開く</a
         >
-        <div class="note">コピーされる文は「これは試験です」</div>
       </li>
       <li>
         ダウンロードの住所を、同じタブで開く<br />
@@ -87,12 +86,15 @@
     </ol>
 
     <script>
-      // 1 番は今のボタンと同じく、押したときにクリップボードへ書き込む（書き込みが開き方に影響するかを見るため）
-      document.getElementById('current').addEventListener('click', () => {
-        navigator.clipboard.writeText('これは試験です').catch((error) => {
-          console.error('コピーに失敗しました', error)
+      // どのボタンも今の開くボタンと同じく、押したときにクリップボードへ書き込む
+      // （本物のボタンと同じ条件で比べるため。同じタブで開くとコピーが途中で切れることもあるので、それも一緒に見る）
+      for (const link of document.querySelectorAll('ol a')) {
+        link.addEventListener('click', () => {
+          navigator.clipboard.writeText('これは試験です').catch((error) => {
+            console.error('コピーに失敗しました', error)
+          })
         })
-      })
+      }
     </script>
   </body>
 </html>
