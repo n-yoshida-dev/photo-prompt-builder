@@ -203,10 +203,10 @@ describe('コピーと開くボタン', () => {
     expect(await screen.findByText(/開いた先の入力欄に貼り付けてください/)).toBeInTheDocument()
   })
 
-  it('Gemini を開くリンクは URL にプロンプトを載せない（アプリで開く形が無い）', () => {
+  it('Gemini を開くリンクは、iPhone でアプリが開くダウンロードの住所で、URL にプロンプトを載せない', () => {
     render(<App />)
     const link = screen.getByRole('link', { name: 'コピーして Gemini を開く' })
-    expect(link).toHaveAttribute('href', 'https://gemini.google.com/app')
+    expect(link).toHaveAttribute('href', 'https://gemini.google.com/app/download/mobile')
   })
 
   it('開くボタンは ChatGPT と Gemini の 2 つで、Claude は無い（logs/decisions.md 2026-10-03）', () => {
