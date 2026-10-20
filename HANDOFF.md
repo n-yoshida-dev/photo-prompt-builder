@@ -43,7 +43,7 @@
 - 点検の直し方 3 つは Claude が選んだもの（KNOWLEDGE.md 2026-10-11）。前と後の比較ページ https://claude.ai/artifact/G4cpHKvfsRXo8NWpcbqCSL は渡したが、ユーザーの返事はまだ無い
 - 幅 280px のはみ出しは直した（`fix/narrow-280-overflow`、この PR のマージで main に入る）。280px で名前が 1〜2 字落ちるのは受け入れた（Claude の判断。DESIGN.md「Typography」）。
   前と後の比較ページ https://claude.ai/artifact/CRJemoNKTzHpwtvKd28SdG は渡したが、ユーザーの返事はまだ無い
-- 公開後の残りは、どれもユーザーが決めるかユーザーの作業（ライセンス・お金を稼ぐ仕組み・子どもの写真で AI が断らないかの確かめ）。Claude だけで進められるタスクは無い
+- 「公開後」と「確認待ち」の残りは、どれもユーザーが決めるかユーザーの作業（公開後：ライセンス・お金を稼ぐ仕組み。確認待ち：子どもの写真で AI が断らないかの確かめ・Claude が足した細かい形）。Claude だけで進められるタスクは無い
 - プリセット・保持文・トグルの文を変えると `samples.test.ts` が落ちる。そのときは見本を作り直す（手順は `docs/sample-images.md`、道具は `~/.cache/photo-prompt-builder/tools/`。KNOWLEDGE.md 2026-10-11）
 - 画面を変えるときの点検は `/apps-workflow:look` の B。画面全体を撮るときは `look.mjs shoot --setup ~/.cache/photo-prompt-builder/tools/setup-full.mjs`（お気に入り・最近使った設定を入れて撮る）
 
