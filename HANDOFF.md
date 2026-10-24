@@ -47,14 +47,14 @@
 - 子どもの写真の試しは済んだ（ChatGPT「問題なかった」、Gemini「画像編集もできた。」）。宣伝してよい状態
 - Gemini の開くボタンは `/app/download/mobile`（PR #52 で公開。iPhone ではアプリ、PC では今までと同じ `/app`。KNOWLEDGE.md 2026-10-20）。公開版のボタンで iPhone のアプリが開くのは、ユーザーが 2026-10-20 に確かめた
 - X（SNS）の宣伝文の案は 2026-10-20 に会話で渡した（リポジトリには置いていない）
-- 住所はこのアプリ専用のドメインにすると決めた（`logs/decisions.md` 2026-10-24）。収入の仕組みは今すぐは入れず、住所を移したあとに決める。X の宣伝は住所を移してから
+- 住所はこのアプリ専用のドメイン `omoide-prompt.com` にすると決めた（`logs/decisions.md` 2026-10-24）。置き場所は Cloudflare Workers にする案を 2026-10-24 に会話で説明した（Claude の設計）。収入の仕組みは今すぐは入れず、住所を移したあとに決める。X の宣伝は住所を移してから
 - 「公開後」と「確認待ち」の残りは、ドメインの取得のほかはどれもユーザーが決めること（アプリの無いスマホで Gemini の Web 版を開くか・ライセンス・Claude が足した細かい形）
 - プリセット・保持文・トグルの文を変えると `samples.test.ts` が落ちる。そのときは見本を作り直す（手順は `docs/sample-images.md`、道具は `~/.cache/photo-prompt-builder/tools/`。KNOWLEDGE.md 2026-10-11）
 - 画面を変えるときの点検は `/apps-workflow:look` の B。画面全体を撮るときは `look.mjs shoot --setup ~/.cache/photo-prompt-builder/tools/setup-full.mjs`（お気に入り・最近使った設定を入れて撮る）
 
 ## 次セッションで最初にやること
 
-1. TODO.md「公開後」の先頭「このアプリ専用のドメインを取り、サイトをその住所で開けるようにする」。2026-10-24 にドメイン名の候補を会話で出して、ユーザーの返事待ち。
-   名前が決まったら、ユーザーが Cloudflare でドメインを買う手順を URL つきで渡す。買えたら、置き場所（GitHub Pages のまま自分のドメインを付けるか、Cloudflare Pages へ移すか）を Claude が決めて設定する（調べは KNOWLEDGE.md 2026-10-24）
+1. TODO.md「公開後」の先頭「このアプリ専用のドメインを取り、サイトをその住所で開けるようにする」。ドメイン名は `omoide-prompt.com`。2026-10-24 に Cloudflare で買う手順を会話で渡し、ユーザーが買うのを待っている。
+   買えたら、`feat/cloudflare-hosting` で `wrangler.jsonc` を置き、ユーザーに Cloudflare の画面でリポジトリをつないでもらい、住所を付け、`pages.yml` を転送のページに変える（形は KNOWLEDGE.md 2026-10-24）
 
 `TODO.md` の先頭と一致させる。書くのは最初の一手だけで、一覧は `TODO.md` が持つ。
