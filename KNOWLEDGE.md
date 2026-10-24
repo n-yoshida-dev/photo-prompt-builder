@@ -30,6 +30,20 @@
   住所の設定（ネームサーバー）は Cloudflare に固定（ほかの会社の DNS を使うには、ドメインごと移す）。期限が切れると約 75 日で手放され、他人が取れるようになる
 - **値段**（二次の情報 https://costgoat.com/pricing/cloudflare-domains 、2026-10-20 時点）：.com は登録・更新とも $10.46。2026-11-01 に卸値が上がり約 $11.17 の見込み。
   .app は初年 $8.20・更新 $14.20、.dev は初年 $8.20・更新 $12.20。.jp は一覧に無い
+- **買うときの注意**（https://developers.cloudflare.com/registrar/get-started/register-domain/ ）：アカウントのメールの確認が先に要る。連絡先は ASCII の文字だけ（住所はローマ字）。
+  登録者のメールの確認をしないと、ドメインが止められる
+
+### 2026-10-24：置き場所は Cloudflare Workers の静的ファイル配信にし、github.io は転送のページにする（Claude の設計。ユーザーの了承前）
+
+- **比べたもの**（2026-10-24 に一次の文書で確認）：
+  - Vercel の無料プラン（Hobby）は個人の非商用に限り、商用の例に「AdSense などの広告を載せる」「アフィリエイトが主な目的」がある。広告を載せるなら Pro（月 $20）が要る（https://vercel.com/docs/limits/fair-use-guidelines 、https://vercel.com/pricing ）
+  - GitHub Pages は広告の語が無く、グレー（上の節）
+  - Cloudflare は Pages の文書で「新しいプロジェクトは Workers で始める」と書き（https://developers.cloudflare.com/pages/ ）、Workers の静的ファイルへのアクセスは「無料で無制限」（https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/ ）。
+    Application Services の個別の規約には、広告・商用を禁じる文は無かった（https://www.cloudflare.com/service-specific-terms-application-services/ ）
+- **選んだ理由**：無料のまま広告を載せられる見込みが最も高く、ドメインと同じ画面で済み、ユーザーが Cloudflare に慣れておきたい。選ばなかった案：Vercel（広告を載せると月 $20）、GitHub Pages に自分のドメインを付ける（広告がグレーで、広告を決めたときにもう一度移す）
+- **確かめたこと**：`npm run build` の `frontend/dist` を、`assets.directory` だけの `wrangler.jsonc` で `wrangler@4 deploy --dry-run` に通した（21 ファイルを読めた）。Vite の `base: './'` はドメインの直下でもそのまま動く（2026-10-12 の節）
+- **予定の形**：Cloudflare の画面で GitHub のリポジトリをつなぎ（Workers Builds）、main に入るたびに Cloudflare がビルドして公開する。`pages.yml` は、古い住所の全ページを新しい住所へ送る転送のページ（`meta refresh` と `canonical`）を公開する形に変える。
+  GitHub Pages の自動の 301 は、GitHub Pages が自分のドメインを配信しているときだけ効くので、置き場所を移すと使えない
 
 ---
 
