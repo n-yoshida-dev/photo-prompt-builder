@@ -19,7 +19,7 @@
 ## 進捗
 
 ```
-進捗（TODO.md より自動集計・2026-10-20） / Progress from TODO.md
+進捗（TODO.md より自動集計・2026-10-24） / Progress from TODO.md
 
                      完了率  残り/全体  フェーズ   (done %, open/total, phase)
 ████████████████████  100%     0 / 3     フェーズ0：立ち上げ（2026-09-06、apps 直下のセッションで実施）
@@ -31,9 +31,9 @@
 ████████████████████  100%     0 / 31    合計 / Total
 公開まで残り 0 件（上から「フェーズ3：公開」の節まで） / 0 open until release
 回答待ち：1 件（回答済み 20 件） / Waiting: 1 open, 20 answered
-公開後（合計に含めない）：3 件（済み 4 件） / After release (not in total): 3 open, 4 done
+公開後（合計に含めない）：4 件（済み 5 件） / After release (not in total): 4 open, 5 done
 
-前回の区切り（2026-10-20）から：完了 +0 件、タスクの数 +0 件 / Since last checkpoint (2026-10-20): done +0, tasks +0
+前回の区切り（2026-10-24）から：完了 +0 件、タスクの数 +0 件 / Since last checkpoint (2026-10-24): done +0, tasks +0
 ```
 
 ## 現在地
@@ -47,14 +47,14 @@
 - 子どもの写真の試しは済んだ（ChatGPT「問題なかった」、Gemini「画像編集もできた。」）。宣伝してよい状態
 - Gemini の開くボタンは `/app/download/mobile`（PR #52 で公開。iPhone ではアプリ、PC では今までと同じ `/app`。KNOWLEDGE.md 2026-10-20）。公開版のボタンで iPhone のアプリが開くのは、ユーザーが 2026-10-20 に確かめた
 - X（SNS）の宣伝文の案は 2026-10-20 に会話で渡した（リポジトリには置いていない）
-- 「公開後」と「確認待ち」の残りは、どれもユーザーが決めること（公開後：お金を稼ぐ仕組み・アプリの無いスマホで Gemini の Web 版を開くか・ライセンス。確認待ち：Claude が足した細かい形）。Claude だけで進められるタスクは無い
+- 住所はこのアプリ専用のドメインにすると決めた（`logs/decisions.md` 2026-10-24）。収入の仕組みは今すぐは入れず、住所を移したあとに決める。X の宣伝は住所を移してから
+- 「公開後」と「確認待ち」の残りは、ドメインの取得のほかはどれもユーザーが決めること（アプリの無いスマホで Gemini の Web 版を開くか・ライセンス・Claude が足した細かい形）
 - プリセット・保持文・トグルの文を変えると `samples.test.ts` が落ちる。そのときは見本を作り直す（手順は `docs/sample-images.md`、道具は `~/.cache/photo-prompt-builder/tools/`。KNOWLEDGE.md 2026-10-11）
 - 画面を変えるときの点検は `/apps-workflow:look` の B。画面全体を撮るときは `look.mjs shoot --setup ~/.cache/photo-prompt-builder/tools/setup-full.mjs`（お気に入り・最近使った設定を入れて撮る）
 
 ## 次セッションで最初にやること
 
-1. TODO.md「公開後」の先頭「お金を稼ぐ仕組み（Amazon アソシエイト・AdSense など）を入れるかを決める」。2026-10-24 のユーザーの返事の要旨：今すぐでなくてよい、貼るだけで簡単なら貼ってもよい、
-   ドメインを変えるなら最初がよいのでは（SEO・今までの人が来られなくなる）。Claude は「住所だけ X で宣伝する前に決める」をすすめ、
-   住所の 3 案（このアプリ専用のドメイン／ブログのドメインの下のサブドメイン／今のまま github.io）を会話で聞いた。返事を `/decide` で `logs/decisions.md` に記録する（調べは KNOWLEDGE.md 2026-10-24）
+1. TODO.md「公開後」の先頭「このアプリ専用のドメインを取り、サイトをその住所で開けるようにする」。2026-10-24 にドメイン名の候補を会話で出して、ユーザーの返事待ち。
+   名前が決まったら、ユーザーが Cloudflare でドメインを買う手順を URL つきで渡す。買えたら、置き場所（GitHub Pages のまま自分のドメインを付けるか、Cloudflare Pages へ移すか）を Claude が決めて設定する（調べは KNOWLEDGE.md 2026-10-24）
 
 `TODO.md` の先頭と一致させる。書くのは最初の一手だけで、一覧は `TODO.md` が持つ。
