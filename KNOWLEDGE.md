@@ -10,6 +10,24 @@
 
 ---
 
+### 2026-10-24：住所（ドメイン）をあとで変えるときの影響と、広告の置き場所の調べ
+
+ユーザーの問い「アクセスが増えたあとにドメインを変えると、SEO が下がる・今までの人が来られなくなるのでは」に答えるために調べたこと。決定ではない。
+
+- **Google の扱い**：301 などの恒久的な転送では評価（PageRank）は失われない。転送は少なくとも 1 年残す。新しい住所が検索に出るまで数週間かかり、その間は順位が揺れる
+  （https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes 。2026-10-24 に確認）
+- **GitHub Pages の転送**：project のサイトに自分のドメインを付けると、`<user>.github.io/<repo>/` は自分のドメインへ 301 で転送される。公式の文書には書いていないが、
+  2026-10-24 に curl で `twbs.github.io/bootstrap/` → `getbootstrap.com`、`sindresorhus.github.io/github-markdown-css/` → `sindresorhus.com/github-markdown-css/` の 301 を確かめた
+- **住所と置き場所は別**：自分のドメインを先に付けておけば、あとで置き場所（GitHub Pages → Cloudflare Pages など）を移しても、利用者と検索から見た住所は変わらない
+- **GitHub Pages の規約の文面**（https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits 、2026-10-24 に再確認）：禁止は「ネット上の商売の無料の置き場」「商取引が主な目的のサイト」「有料の SaaS」で、広告・アフィリエイトの語は無い。
+  ツールに広告を少し貼るのがこれに当たるかは文面からは決まらない（2026-10-12 の要約「商売に使えない」は、この幅を持つ）
+- **Cloudflare Pages**：商用を禁じる文面は、二次の情報では見つからないとされる。一次の規約は今回も確かめられていない
+- **AdSense のサブドメイン**：公式のヘルプは「サブドメインをサイトの一覧に足したり管理したりはできなくなった」とだけ書き、承認済みのドメインの配下で自動で広告が出るかは書いていない
+  （https://support.google.com/adsense/answer/12170421 ）。二次の情報では「承認済みのサイトのサブドメイン・サブディレクトリには、別の審査なしで出る」。
+  ユーザーは AdSense の審査が通ったブログを持っているので、その配下に置くと審査を省ける見込みがある（未確認）
+
+---
+
 ### 2026-10-20：Gemini の開くボタンは、ダウンロードの住所 `/app/download/mobile` にするとアプリが開く
 
 - **ハマったこと**：iPhone の Safari で `https://gemini.google.com/app` を開くと、アプリでなく Web 版が開く（ユーザーの実機。10-14 の試験でも同じ）。
