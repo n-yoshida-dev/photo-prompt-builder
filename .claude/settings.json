@@ -15,6 +15,7 @@
       "Bash(npm run format:check)",
       "Bash(gh run watch *)",
       "Bash(gh search code *)",
+      "Bash(bd show *)",
       "Bash(npx tsc *)",
       "Bash(npx vitest *)",
       "Bash(npx eslint *)",
