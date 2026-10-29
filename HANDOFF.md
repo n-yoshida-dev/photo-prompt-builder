@@ -30,7 +30,7 @@
 ████████████████████  100%     0 / 4     フェーズ3：公開
 ████████████████████  100%     0 / 31    合計 / Total
 公開まで残り 0 件（上から「フェーズ3：公開」の節まで） / 0 open until release
-回答待ち：0 件（回答済み 21 件） / Waiting: 0 open, 21 answered
+回答待ち：2 件（回答済み 21 件） / Waiting: 2 open, 21 answered
 公開後（合計に含めない）：5 件（済み 5 件） / After release (not in total): 5 open, 5 done
 
 前回の区切り（2026-10-24）から：完了 +0 件、タスクの数 +0 件 / Since last checkpoint (2026-10-24): done +0, tasks +0
@@ -41,14 +41,12 @@
 - フェーズ：公開まで完了。https://n-yoshida-dev.github.io/photo-prompt-builder/ （リポジトリは Public。main に入るたびに `pages.yml` が公開し直す）。ここからは TODO.md「公開後」
 - 公開版の iPhone での確かめは 2026-10-18 に済んだ（ChatGPT のアプリが開きプロンプトが全文入る、2 列のスタイル。ユーザーの「1, 3はOK」）
 - スマホの 2 列のスタイルで下のカードがずれる件は、今のままにすると決めた（ユーザーの「Aで」。`logs/decisions.md` 2026-10-19）
-- 点検の直し方 3 つは Claude が選んだもの（KNOWLEDGE.md 2026-10-11）。前と後の比較ページ https://claude.ai/artifact/G4cpHKvfsRXo8NWpcbqCSL は渡したが、ユーザーの返事はまだ無い
-- 幅 280px のはみ出しは直した（PR #49）。280px で名前が 1〜2 字落ちるのは受け入れた（Claude の判断。DESIGN.md「Typography」）。
-  前と後の比較ページ https://claude.ai/artifact/CRJemoNKTzHpwtvKd28SdG は渡したが、ユーザーの返事はまだ無い
+- 点検の直し方 3 つ（KNOWLEDGE.md 2026-10-11）と、幅 280px のはみ出しの直し（PR #49）は Claude の判断。見てもらう比較ページは TODO.md「確認待ち（本人）」の W1・W2
 - 子どもの写真の試しは済んだ（ChatGPT「問題なかった」、Gemini「画像編集もできた。」）。宣伝してよい状態
 - Gemini の開くボタンは `/app/download/mobile`（PR #52 で公開。iPhone ではアプリ、PC では今までと同じ `/app`。KNOWLEDGE.md 2026-10-20）。公開版のボタンで iPhone のアプリが開くのは、ユーザーが 2026-10-20 に確かめた
 - X（SNS）の宣伝文の案は 2026-10-20 に会話で渡した（リポジトリには置いていない）
 - 住所はこのアプリ専用のドメイン `omoide-prompt.com` にすると決めた（`logs/decisions.md` 2026-10-24）。置き場所は Cloudflare Workers にする案を 2026-10-24 に会話で説明した（Claude の設計）。収入の仕組みは今すぐは入れず、住所を移したあとに決める。X の宣伝は住所を移してから
-- 「確認待ち」は空になった。Claude が足した細かい形・要素は 2026-10-29 に答えをもらい、「出典：Claude の自作」を外す 1 件だけが「公開後」のタスクになった（`logs/decisions.md` 2026-10-29）。Claude だけで進められる
+- Claude が足した細かい形・要素は 2026-10-29 に答えをもらい、「出典：Claude の自作」を外す 1 件だけが「公開後」のタスクになった（`logs/decisions.md` 2026-10-29）。Claude だけで進められる
 - 「公開後」の残りのうち、ユーザーが決めることはアプリの無いスマホで Gemini の Web 版を開くか・ライセンス・広告
 - プリセット・保持文・トグルの文を変えると `samples.test.ts` が落ちる。そのときは見本を作り直す（手順は `docs/sample-images.md`、道具は `~/.cache/photo-prompt-builder/tools/`。KNOWLEDGE.md 2026-10-11）
 - 画面を変えるときの点検は `/apps-workflow:look` の B。画面全体を撮るときは `look.mjs shoot --setup ~/.cache/photo-prompt-builder/tools/setup-full.mjs`（お気に入り・最近使った設定を入れて撮る）
