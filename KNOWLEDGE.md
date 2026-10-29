@@ -10,6 +10,22 @@
 
 ---
 
+### 2026-10-29：GitHub Pages のままでも Amazon のリンクは置ける見込み。AdSense は住所を移してから
+
+ユーザーの問い「GitHub Pages では Amazon のリンクや AdSense を載せられないのか、Vercel の無料版はだめだったか」に答えるために調べたこと（一次の文書、2026-10-29 に確認）。
+
+- **GitHub の利用規約（Acceptable Use Policies の 10 節 Advertising on GitHub）**：「広告のための利用を一般には禁じない」。
+  ただし Pages を含め、アカウントで出す内容の「主な目的」が広告・宣伝であってはならない（https://docs.github.com/en/site-policy/acceptable-use-policies/github-acceptable-use-policies ）。
+  Pages の制限の文書が禁じるのは、商売・通販・有料の SaaS の無料の置き場（下の 2026-10-24 の節）。
+  プロンプトを作る道具に Amazon のリンクを少し置くのは、主な目的が広告に当たらない見込み（Claude の読み。GitHub に問い合わせてはいない）
+- **Amazon アソシエイト（日本の運営規約 5 節）**：「Amazonのアソシエイトとして、［名前］は適格販売により収入を得ています。」を、リンクを置くサイトに目立つように出す（https://affiliate.amazon.co.jp/help/operating/agreement ）。
+  規約の本文には、リンクを置くサイトを一つずつ登録せよという定めは見当たらなかった（アカウントの登録の画面で聞かれる項目は確かめていない）
+- **設計の前提（Claude）**：リンクは文字だけにし、Amazon のスクリプトや商品画像を読み込まない。読み込むと、画面を開いただけで利用者の訪問が Amazon に伝わる（写真を外に出さない方針と同じく、外へ出すものを増やさない）
+- **AdSense**：審査の申し込みはドメインの単位（下の 2026-10-24 の節）。`github.io` の下の 1 ページを申し込めるか・通るかは確かめていない。1 ページの道具は中身が少なく見られやすい（Claude の見立て）。住所を移すとき（TODO.md「保留」H1・H2）に回す
+- **Vercel の無料プラン（Hobby）**：AdSense などの広告は商用に当たり不可。アフィリエイトは「サイトの主な目的」のときだけ商用（https://vercel.com/docs/limits/fair-use-guidelines ）。GitHub Pages より有利な点は無い
+
+---
+
 ### 2026-10-24：住所（ドメイン）をあとで変えるときの影響と、広告の置き場所の調べ
 
 ユーザーの問い「アクセスが増えたあとにドメインを変えると、SEO が下がる・今までの人が来られなくなるのでは」に答えるために調べたこと。決定ではない。
@@ -34,6 +50,8 @@
   登録者のメールの確認をしないと、ドメインが止められる
 
 ### 2026-10-24：置き場所は Cloudflare Workers の静的ファイル配信にし、github.io は転送のページにする（Claude の設計。ユーザーの了承前）
+
+（2026-10-29 に、ドメインは買わず GitHub Pages のままと決まった（`logs/decisions.md` 2026-10-29）。この節は TODO.md「保留」H1 で移すときの設計として残す）
 
 - **比べたもの**（2026-10-24 に一次の文書で確認）：
   - Vercel の無料プラン（Hobby）は個人の非商用に限り、商用の例に「AdSense などの広告を載せる」「アフィリエイトが主な目的」がある。広告を載せるなら Pro（月 $20）が要る（https://vercel.com/docs/limits/fair-use-guidelines 、https://vercel.com/pricing ）
